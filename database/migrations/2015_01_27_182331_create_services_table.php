@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('services', function (Blueprint $table) {
-            $table->tinyIncrements('id');
+            $table->smallIncrements('id');
             $table->string('name');
             $table->float('cost');
             $table->smallInteger('type_income');

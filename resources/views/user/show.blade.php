@@ -21,36 +21,24 @@
                     <div class="card-body">
                         
                         <div class="form-group">
-                            <strong>Type:</strong>
-                            {{ $user->type }}
-                        </div>
-                        <div class="form-group">
                             <strong>Name:</strong>
                             {{ $user->name }}
                         </div>
                         <div class="form-group">
-                            <strong>Second Name:</strong>
-                            {{ $user->second_name }}
+                            <strong>Username:</strong>
+                            {{ $user->username }}
                         </div>
                         <div class="form-group">
-                            <strong>Last Name:</strong>
-                            {{ $user->last_name }}
+                            <strong>Post:</strong>
+                            {{ $user->post }}
                         </div>
                         <div class="form-group">
-                            <strong>Mother Last Name:</strong>
-                            {{ $user->mother_last_name }}
+                            <strong>Profile Id:</strong>
+                            {{ $user->profile_id }}
                         </div>
                         <div class="form-group">
-                            <strong>Town:</strong>
-                            {{ $user->town }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Email:</strong>
-                            {{ $user->email }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Status:</strong>
-                            {{ $user->status }}
+                            <strong>Location Id:</strong>
+                            {{ $user->location_id }}
                         </div>
 
                     </div>

@@ -14,7 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('groups_services', function (Blueprint $table) {
-            $table->id();
+            $table->smallIncrements('id');
+            $table->unsignedTinyInteger('group_id');
+            $table->foreign('group_id')->references('id')->on('groups');
+            $table->unsignedSmallInteger('service_id');
+            $table->foreign('service_id')->references('id')->on('services');
             $table->timestamps();
         });
     }

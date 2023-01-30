@@ -20,7 +20,7 @@
                 </a>
             </div>
             <div class="col-md-6 col-lg-3">
-                <a href="index.html" class="card">
+                <a href="transactions" class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-2 d-flex align-items-center">

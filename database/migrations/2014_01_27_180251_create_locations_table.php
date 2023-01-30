@@ -17,7 +17,7 @@ return new class extends Migration
             $table->tinyIncrements('id');
             $table->string('location');
             $table->string('name');
-            $table->unsignedSmallInteger('group_id');
+            $table->unsignedTinyInteger('group_id');
             $table->foreign('group_id')->references('id')->on('groups');
             $table->timestamps();
             $table->softDeletes();

@@ -14,13 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->tinyIncrements('id');
+            $table->smallIncrements('id');
             $table->string('name');
             $table->string('username')->unique();
             $table->string('password');
             $table->string('post');
             $table->rememberToken();
-            $table->unsignedSmallInteger('profile_id');
+            $table->unsignedTinyInteger('profile_id');
             $table->foreign('profile_id')->references('id')->on('profiles');
             $table->unsignedTinyInteger('location_id');
             $table->foreign('location_id')->references('id')->on('locations');

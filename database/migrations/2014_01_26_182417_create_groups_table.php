@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('groups', function (Blueprint $table) {
-            $table->smallIncrements('id');
+            $table->tinyIncrements('id');
             $table->string('name');
-            $table->smallInteger('order');
+            $table->tinyInteger('order');
             $table->timestamps();
             $table->softDeletes();
         });

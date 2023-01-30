@@ -3,40 +3,42 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class User
  *
  * @property $id
- * @property $type
  * @property $name
- * @property $second_name
- * @property $last_name
- * @property $mother_last_name
- * @property $town
- * @property $email
- * @property $email_verified_at
+ * @property $username
  * @property $password
+ * @property $post
  * @property $remember_token
- * @property $status
+ * @property $profile_id
+ * @property $location_id
  * @property $created_at
  * @property $updated_at
+ * @property $deleted_at
  *
- * @property Nna[] $nnas
- * @property Point[] $points
- * @property UserReport[] $userReports
+ * @property CancellationHistory[] $cancellationHistories
+ * @property Location $location
+ * @property PartialPayment[] $partialPayments
+ * @property Profile $profile
+ * @property ReprintHistory[] $reprintHistories
+ * @property Transaction[] $transactions
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class User extends Model
 {
-    
+    use SoftDeletes;
+
     static $rules = [
 		'name' => 'required',
-		'last_name' => 'required',
-		'mother_last_name' => 'required',
-		'town' => 'required',
-		'email' => 'required',
+		'username' => 'required',
+		'post' => 'required',
+		'profile_id' => 'required',
+		'location_id' => 'required',
     ];
 
     protected $perPage = 20;
@@ -46,31 +48,55 @@ class User extends Model
      *
      * @var array
      */
-    protected $fillable = ['type','name','second_name','last_name','mother_last_name','town','email','status'];
+    protected $fillable = ['name','username','post','profile_id','location_id'];
 
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function nnas()
+    public function cancellationHistories()
     {
-        return $this->hasMany('App\Models\Nna', 'user_id', 'id');
+        return $this->hasMany('App\Models\CancellationHistory', 'user_id', 'id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function location()
+    {
+        return $this->hasOne('App\Models\Location', 'id', 'location_id');
     }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function points()
+    public function partialPayments()
     {
-        return $this->hasMany('App\Models\Point', 'user_id', 'id');
+        return $this->hasMany('App\Models\PartialPayment', 'user_id', 'id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function profile()
+    {
+        return $this->hasOne('App\Models\Profile', 'id', 'profile_id');
     }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function userReports()
+    public function reprintHistories()
     {
-        return $this->hasMany('App\Models\UserReport', 'user_id', 'id');
+        return $this->hasMany('App\Models\ReprintHistory', 'user_id', 'id');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function transactions()
+    {
+        return $this->hasMany('App\Models\Transaction', 'user_id', 'id');
     }
     
 

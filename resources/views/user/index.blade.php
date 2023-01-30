@@ -37,12 +37,10 @@
                                         <th>No</th>
                                         
 										<th>Name</th>
-										<th>Second Name</th>
-										<th>Last Name</th>
-										<th>Mother Last Name</th>
-										<th>Town</th>
-										<th>Email</th>
-										<th>Status</th>
+										<th>Username</th>
+										<th>Post</th>
+										<th>Profile Id</th>
+										<th>Location Id</th>
 
                                         <th></th>
                                     </tr>
@@ -52,14 +50,11 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-
 											<td>{{ $user->name }}</td>
-											<td>{{ $user->second_name }}</td>
-											<td>{{ $user->last_name }}</td>
-											<td>{{ $user->mother_last_name }}</td>
-											<td>{{ $user->town }}</td>
-											<td>{{ $user->email }}</td>
-											<td>{{ $user->status }}</td>
+											<td>{{ $user->username }}</td>
+											<td>{{ $user->post }}</td>
+											<td>{{ $user->profile_id }}</td>
+											<td>{{ $user->location_id }}</td>
 
                                             <td>
                                                 <form action="{{ route('users.destroy',$user->id) }}" method="POST">

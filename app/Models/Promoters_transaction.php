@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Reprint_history extends Model
+class Promoters_transaction extends Model
 {
     use HasFactory;
 }

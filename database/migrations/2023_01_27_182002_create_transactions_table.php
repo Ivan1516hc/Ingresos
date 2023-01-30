@@ -18,15 +18,14 @@ return new class extends Migration
             $table->string('invoice');
             $table->string('bill');
             $table->float('total');
+            $table->string('beneficiary_id');
+            $table->string('beneficiary_name');
             $table->unsignedTinyInteger('location_id');
             $table->foreign('location_id')->references('id')->on('locations');
-            $table->unsignedTinyInteger('user_id');
+            $table->unsignedSmallInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedTinyInteger('therapist_id');
-            $table->foreign('therapist_id')->references('id')->on('therapists');
-            $table->unsignedTinyInteger('location_id');
-            $table->foreign('location_id')->references('id')->on('locations');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

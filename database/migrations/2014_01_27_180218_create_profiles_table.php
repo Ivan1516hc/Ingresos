@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('profiles', function (Blueprint $table) {
-            $table->smallIncrements('id');
+            $table->tinyIncrements('id');
             $table->string('name');
             $table->timestamps();
             $table->softDeletes();
