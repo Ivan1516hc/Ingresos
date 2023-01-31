@@ -52,5 +52,11 @@ class GroupsService extends Model
         return $this->hasOne('App\Models\Service', 'id', 'service_id');
     }
     
+    public function setAttribute($key, $value)
+    {
+        parent::setAttribute($key, $value);
 
+        if (is_string($value))
+            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+    }
 }

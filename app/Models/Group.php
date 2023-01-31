@@ -36,7 +36,7 @@ class Group extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','order'];
+    protected $fillable = ['name'];
 
 
     /**
@@ -53,6 +53,13 @@ class Group extends Model
     public function locations()
     {
         return $this->hasMany('App\Models\Location', 'group_id', 'id');
+    }
+    public function setAttribute($key, $value)
+    {
+        parent::setAttribute($key, $value);
+
+        if (is_string($value))
+            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
     }
     
 

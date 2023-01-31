@@ -48,7 +48,12 @@ class User extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','username','post','profile_id','location_id'];
+    protected $fillable = ['name','username','post','profile_id','location_id','password'];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
 
     /**
@@ -57,6 +62,11 @@ class User extends Model
     public function cancellationHistories()
     {
         return $this->hasMany('App\Models\CancellationHistory', 'user_id', 'id');
+    }
+
+    public function cancellationHistoriesAuthorized()
+    {
+        return $this->hasMany('App\Models\CancellationHistory', 'authorized_user_id', 'id');
     }
     
     /**
@@ -99,5 +109,11 @@ class User extends Model
         return $this->hasMany('App\Models\Transaction', 'user_id', 'id');
     }
     
+    public function setAttribute($key, $value)
+    {
+        parent::setAttribute($key, $value);
 
+        if (is_string($value) && $key != 'password')
+            $this->attributes[$key] = trim(mb_strtoupper($value),'UTF-8');
+    }
 }

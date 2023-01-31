@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->tinyIncrements('id');
+            $table->tinyInteger('level');
             $table->string('name');
-            $table->string('descripcion');
-            $table->unsignedTinyInteger('group_id');
-            $table->foreign('group_id')->references('id')->on('groups');
-            $table->unsignedTinyInteger('department_id');
-            $table->foreign('department_id')->references('id')->on('departments');
+            $table->tinyInteger('direction');
+            $table->tinyInteger('dependence');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('departments');
     }
 };

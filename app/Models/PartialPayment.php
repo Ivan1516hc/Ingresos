@@ -73,5 +73,11 @@ class PartialPayment extends Model
         return $this->hasOne('App\Models\User', 'id', 'user_id');
     }
     
+    public function setAttribute($key, $value)
+    {
+        parent::setAttribute($key, $value);
 
+        if (is_string($value))
+            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+    }
 }

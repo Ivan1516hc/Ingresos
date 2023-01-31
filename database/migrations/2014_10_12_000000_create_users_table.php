@@ -27,6 +27,11 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('locations', function (Blueprint $table) {
+            $table->unsignedSmallInteger('manager_id')->nullable();
+            $table->foreign('manager_id')->references('id')->on('users');
+        });
     }
 
     /**

@@ -5,25 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ServicesTransaction
+ * Class TherapistsTransaction
  *
  * @property $id
+ * @property $therapist_id
  * @property $transaction_id
- * @property $service_id
  * @property $created_at
  * @property $updated_at
  *
- * @property Service $service
+ * @property Therapist $therapist
  * @property Transaction $transaction
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class ServicesTransaction extends Model
+class TherapistsTransaction extends Model
 {
     
     static $rules = [
+		'therapist_id' => 'required',
 		'transaction_id' => 'required',
-		'service_id' => 'required',
     ];
 
     protected $perPage = 20;
@@ -33,15 +33,15 @@ class ServicesTransaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['transaction_id','service_id'];
+    protected $fillable = ['therapist_id','transaction_id'];
 
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function service()
+    public function therapist()
     {
-        return $this->hasOne('App\Models\Service', 'id', 'service_id');
+        return $this->hasOne('App\Models\Therapist', 'id', 'therapist_id');
     }
     
     /**

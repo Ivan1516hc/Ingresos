@@ -5,25 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class ServicesTransaction
+ * Class PromotersTransaction
  *
  * @property $id
+ * @property $promoter_id
  * @property $transaction_id
- * @property $service_id
  * @property $created_at
  * @property $updated_at
  *
- * @property Service $service
+ * @property Promoter $promoter
  * @property Transaction $transaction
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
-class ServicesTransaction extends Model
+class PromotersTransaction extends Model
 {
     
     static $rules = [
+		'promoter_id' => 'required',
 		'transaction_id' => 'required',
-		'service_id' => 'required',
     ];
 
     protected $perPage = 20;
@@ -33,15 +33,15 @@ class ServicesTransaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['transaction_id','service_id'];
+    protected $fillable = ['promoter_id','transaction_id'];
 
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function service()
+    public function promoter()
     {
-        return $this->hasOne('App\Models\Service', 'id', 'service_id');
+        return $this->hasOne('App\Models\Promoter', 'id', 'promoter_id');
     }
     
     /**

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Cancellation History
+    Promoters Transaction
 @endsection
 
 @section('content')
@@ -13,11 +13,11 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Cancellation History') }}
+                                {{ __('Promoters Transaction') }}
                             </span>
 
                              <div class="float-right">
-                                <a href="{{ route('cancellation-histories.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
+                                <a href="{{ route('promoters-transactions.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
                                   {{ __('Create New') }}
                                 </a>
                               </div>
@@ -36,26 +36,24 @@
                                     <tr>
                                         <th>No</th>
                                         
+										<th>Promoter Id</th>
 										<th>Transaction Id</th>
-										<th>User Id</th>
-										<th>Authorized User Id</th>
 
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($cancellationHistories as $cancellationHistory)
+                                    @foreach ($promotersTransactions as $promotersTransaction)
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-											<td>{{ $cancellationHistory->transaction_id }}</td>
-											<td>{{ $cancellationHistory->user_id }}</td>
-											<td>{{ $cancellationHistory->authorized_user_id }}</td>
+											<td>{{ $promotersTransaction->promoter_id }}</td>
+											<td>{{ $promotersTransaction->transaction_id }}</td>
 
                                             <td>
-                                                <form action="{{ route('cancellation-histories.destroy',$cancellationHistory->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('cancellation-histories.show',$cancellationHistory->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('cancellation-histories.edit',$cancellationHistory->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
+                                                <form action="{{ route('promoters-transactions.destroy',$promotersTransaction->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('promoters-transactions.show',$promotersTransaction->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('promoters-transactions.edit',$promotersTransaction->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
@@ -68,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $cancellationHistories->links() !!}
+                {!! $promotersTransactions->links() !!}
             </div>
         </div>
     </div>

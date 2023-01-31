@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreign('transaction_id')->references('id')->on('transactions');
             $table->unsignedSmallInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedSmallInteger('authorized_user_id')->nullable();
+            $table->foreign('authorized_user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('name');
-            $table->tinyInteger('order');
             $table->timestamps();
             $table->softDeletes();
         });

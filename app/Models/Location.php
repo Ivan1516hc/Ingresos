@@ -66,5 +66,11 @@ class Location extends Model
         return $this->hasMany('App\Models\User', 'location_id', 'id');
     }
     
+    public function setAttribute($key, $value)
+    {
+        parent::setAttribute($key, $value);
 
+        if (is_string($value))
+            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+    }
 }
