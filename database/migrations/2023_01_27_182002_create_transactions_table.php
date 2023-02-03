@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->string('invoice');
-            $table->string('bill');
+            $table->unsignedBigInteger('id')->autoIncrement();
+            $table->unsignedBigInteger('invoice')->unique();
+            $table->string('bill')->nullable();
             $table->float('total');
             $table->string('beneficiary_id');
             $table->string('beneficiary_name');
@@ -24,8 +24,8 @@ return new class extends Migration
             $table->foreign('location_id')->references('id')->on('locations');
             $table->unsignedSmallInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->tinyInteger('status');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

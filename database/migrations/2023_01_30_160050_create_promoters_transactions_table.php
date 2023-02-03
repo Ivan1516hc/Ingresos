@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('promoter_id');
             $table->foreign('promoter_id')->references('id')->on('promoters');
             $table->unsignedBigInteger('transaction_id');
-            $table->foreign('transaction_id')->references('id')->on('transactions');
+            $table->foreign('transaction_id')->references('invoice')->on('transactions');
             $table->timestamps();
         });
     }

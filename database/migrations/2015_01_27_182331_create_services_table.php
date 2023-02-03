@@ -17,8 +17,8 @@ return new class extends Migration
             $table->smallIncrements('id');
             $table->string('name');
             $table->float('cost');
-            $table->smallInteger('type_income');
-            $table->smallInteger('code_income');
+            $table->smallInteger('type_income')->nullable();
+            $table->smallInteger('code_income')->nullable();
             $table->boolean('not_binding');
             $table->smallInteger('id_gu');
             $table->boolean('partial');

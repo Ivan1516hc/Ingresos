@@ -17,8 +17,8 @@ return new class extends Migration
             $table->tinyIncrements('id');
             $table->tinyInteger('level');
             $table->string('name');
-            $table->tinyInteger('direction');
-            $table->tinyInteger('dependence');
+            $table->tinyInteger('direction')->nullable();
+            $table->tinyInteger('dependence')->nullable();
             $table->timestamps();
         });
     }

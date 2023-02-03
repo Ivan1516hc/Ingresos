@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('descripcion');
             $table->unsignedTinyInteger('group_id');
             $table->foreign('group_id')->references('id')->on('groups');
-            $table->unsignedTinyInteger('department_id');
+            $table->unsignedTinyInteger('department_id')->nullable();
             $table->foreign('department_id')->references('id')->on('departments');
             $table->timestamps();
             $table->softDeletes();

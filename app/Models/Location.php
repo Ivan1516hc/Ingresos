@@ -30,6 +30,9 @@ class Location extends Model
 		'location' => 'required',
 		'name' => 'required',
 		'group_id' => 'required',
+        'department_id',
+        'group_id' => 'required',
+        'manager_id',
     ];
 
     protected $perPage = 20;
@@ -39,7 +42,7 @@ class Location extends Model
      *
      * @var array
      */
-    protected $fillable = ['location','name','group_id'];
+    protected $fillable = ['descripcion','name','group_id','department_id','manager_id'];
 
 
     /**

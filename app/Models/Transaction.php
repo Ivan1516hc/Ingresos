@@ -52,7 +52,7 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['invoice','bill','total','beneficiary_id','beneficiary_name','location_id','user_id'];
+    protected $fillable = ['invoice','bill','total','beneficiary_id','beneficiary_name','location_id','user_id','status'];
 
 
     /**
