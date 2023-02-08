@@ -27,7 +27,7 @@
                                 <i class="las fa-list-ul icon-home bg-success text-light"></i>
                             </div>
                             <div class="col-9 offset-1">
-                                <h5>CATÁLOGO</h5>
+                                <h5 >CATÁLOGO</h5>
                             </div>
                         </div>
                     </div>

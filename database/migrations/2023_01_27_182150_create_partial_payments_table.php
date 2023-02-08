@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('beneficiary_name');
             $table->unsignedSmallInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services');
-            $table->unsignedBigInteger('transaction_id');
-            $table->foreign('transaction_id')->references('id')->on('transactions');
             $table->unsignedSmallInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->smallInteger('payment');

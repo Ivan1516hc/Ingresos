@@ -23,7 +23,7 @@ class DatosController extends Controller
             } elseif (empty($value) && $value !== 0) {
                 $convertedData[$key] = null;
             } else {
-                $convertedData[$key] = trim(mb_strtoupper($value), 'UTF-8');
+                $convertedData[$key] = trim(mb_strtoupper($value));
             }
         }
 
@@ -199,35 +199,27 @@ class DatosController extends Controller
             }
             fclose($handle);
         }
+    }
 
-        $file = 'C:\Users\Humberto\Downloads\movimientos (4).csv';
+    public function import()
+    {
+        $keyToExclude = ['pwd'];
 
-        if (($handle = fopen($file, "r")) !== false) {
-            $header = fgetcsv($handle);
-
-            while (($data = fgetcsv($handle)) !== false) {
-                $data = array_combine($header, $data);
-                // Check if a value exists and assign null if not
-                foreach ($data as &$value) {
-                    $value = $value === '' ? null : $value;
-                }
-                // Replace 'idUser' value if it is equal to 110
-                if ($data['user_id'] === '110') {
-                    $data['user_id'] = '109';
-                }
-                // Save the processed data to the database
-                DB::table('cancellation_histories')->insert($data);
-            }
-            fclose($handle);
+        $cancellations = DB::connection('mysql_2')->table("movimientos")->where('estatus',3)->get();
+        foreach ($cancellations as $cancellation) {
+            $cancellation = $this->convertValuesToUppercase($cancellation, $keyToExclude);
+                DB::table('cancellation_histories')->insert([
+                    'transaction_id' => $cancellation['idventa'],
+                    'user_id' => $cancellation['idUser'],
+                    'created_at' => $cancellation['fecha'],
+                ]);
         }
 
         $file2 = 'C:\Users\Humberto\Downloads\movimientos (3).csv';
         if (($handle = fopen($file2, "r")) !== false) {
             $header = fgetcsv($handle);
-
             while (($data = fgetcsv($handle)) !== false) {
                 $data = array_combine($header, $data);
-
                 // Check if a value exists and assign null if not
                 foreach ($data as &$value) {
                     $value = $value === '' ? null : $value;
@@ -239,28 +231,36 @@ class DatosController extends Controller
         }
     }
 
-    public function reprintHistories(){
-        $file4 = 'C:\Users\Humberto\Downloads\historialreimp.csv';
-        if (($handle = fopen($file4, "r")) !== false) {
-            $header = fgetcsv($handle);
-
-            while (($data = fgetcsv($handle)) !== false) {
-                $data = array_combine($header, $data);
-
-                // Check if a value exists and assign null if not
-                foreach ($data as &$value) {
-                    $value = $value === '' ? null : $value;
-                }
-                // Save the processed data to the database
-                DB::table('reprint_histories')->insert($data);
-            }
-            fclose($handle);
-        }
-    }
-
-    public function partialPayments()
+    public function reprintHistories()
     {
         $keyToExclude = ['pwd'];
+        // $file4 = 'C:\Users\Humberto\Downloads\historialreimp.csv';
+        // if (($handle = fopen($file4, "r")) !== false) {
+        //     $header = fgetcsv($handle);
+
+        //     while (($data = fgetcsv($handle)) !== false) {
+        //         $data = array_combine($header, $data);
+
+        //         // Check if a value exists and assign null if not
+        //         foreach ($data as &$value) {
+        //             $value = $value === '' ? null : $value;
+        //         }
+        //         // Save the processed data to the database
+        //         DB::table('reprint_histories')->insert($data);
+        //     }
+        //     fclose($handle);
+        // }
+        $reprints = DB::connection('mysql_2')->table("historialreimp")->get();
+        foreach ($reprints as $reprint) {
+            $reprint = $this->convertValuesToUppercase($reprint, $keyToExclude);
+                DB::table('reprint_histories')->insert([
+                    'id'  => $reprint['idhistorialreimp'],
+                    'transaction_id' => $reprint['idventa'],
+                    'user_id' => $reprint['iduser'],
+                    'created_at' => $reprint['fecha'],
+                ]);
+        }
+
         $partialPayments = DB::connection('mysql_2')->table("parcialidades")->get();
         foreach ($partialPayments as $partialPayment) {
             $partialPayment = $this->convertValuesToUppercase($partialPayment, $keyToExclude);
@@ -268,42 +268,28 @@ class DatosController extends Controller
                 'beneficiary_id'  => $partialPayment['idBeneficiario'],
                 'beneficiary_name'  => $partialPayment['nombreBeneficiario'],
                 'service_id'  => $partialPayment['idProducto'],
-                'transaction_id'  => $partialPayment['idpromotores'],
-                'user_id'  => $partialPayment['idpromotores'],
-                'payment'  => $partialPayment['idpromotores'],
-                'partiality'  => $partialPayment['idpromotores'],
-                'status'  => $partialPayment['idpromotores'],
-                'created'  => $partialPayment['idpromotores'],
+                'user_id'  => $partialPayment['idUser'],
+                'payment'  => $partialPayment['Abonado'],
+                'partiality'  => $partialPayment['Numero'],
+                'status'  => $partialPayment['Estatus'],
+                'created_at'  => $partialPayment['Fec_ini'],
+                'updated_at' => $partialPayment['Fec_Ult']
             ]);
         }
-        return response()->json($partialPayments);
-    }
-
-    public function promotersTransactions()
-    {
-        $keyToExclude = ['pwd'];
-        $promoters = DB::connection('mysql_2')->table("promotores")->get();
-        foreach ($promoters as $promoter) {
-            $promoter = $this->convertValuesToUppercase($promoter, $keyToExclude);
-            Promoter::create([
-                'id'  => $promoter['idpromotores'],
-                'name'  => $promoter['nombre'],
-            ]);
-        }
-        return response()->json($promoters);
     }
 
     public function therapistsTransactions()
     {
         $keyToExclude = ['pwd'];
-        $promoters = DB::connection('mysql_2')->table("promotores")->get();
-        foreach ($promoters as $promoter) {
-            $promoter = $this->convertValuesToUppercase($promoter, $keyToExclude);
-            Promoter::create([
-                'id'  => $promoter['idpromotores'],
-                'name'  => $promoter['nombre'],
+        $transactions_therapists = DB::connection('mysql_2')->table("movimientos")->select('idventa','terapeuta','fecha')->where('terapeuta','<>','')->first();
+        dd($transactions_therapists);
+        foreach ($transactions_therapists as $transaction_therapist) {
+            $transaction_therapist = $this->convertValuesToUppercase($transaction_therapist, $keyToExclude);
+            DB::table('therapists_transactions')->insert([
+                'therapist_id'  => $transaction_therapist['terapeuta'],
+                'transactions_id'  => $transaction_therapist['idventa'],
+                'created_at'  => $transaction_therapist['fecha'],
             ]);
         }
-        return response()->json($promoters);
     }
 }
