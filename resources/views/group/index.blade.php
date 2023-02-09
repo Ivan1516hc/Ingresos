@@ -37,7 +37,6 @@
                                         <th>No</th>
                                         
 										<th>Name</th>
-										<th>Order</th>
 
                                         <th></th>
                                     </tr>
@@ -48,7 +47,6 @@
                                             <td>{{ ++$i }}</td>
                                             
 											<td>{{ $group->name }}</td>
-											<td>{{ $group->order }}</td>
 
                                             <td>
                                                 <form action="{{ route('groups.destroy',$group->id) }}" method="POST">

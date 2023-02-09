@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property $beneficiary_id
  * @property $beneficiary_name
  * @property $service_id
- * @property $transaction_id
  * @property $user_id
  * @property $payment
  * @property $partiality
@@ -20,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property $updated_at
  *
  * @property Service $service
- * @property Transaction $transaction
  * @property User $user
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
@@ -32,7 +30,6 @@ class PartialPayment extends Model
 		'beneficiary_id' => 'required',
 		'beneficiary_name' => 'required',
 		'service_id' => 'required',
-		'transaction_id' => 'required',
 		'user_id' => 'required',
 		'payment' => 'required',
 		'partiality' => 'required',
@@ -46,7 +43,7 @@ class PartialPayment extends Model
      *
      * @var array
      */
-    protected $fillable = ['beneficiary_id','beneficiary_name','service_id','transaction_id','user_id','payment','partiality','status'];
+    protected $fillable = ['beneficiary_id','beneficiary_name','service_id','user_id','payment','partiality','status'];
 
 
     /**
@@ -55,14 +52,6 @@ class PartialPayment extends Model
     public function service()
     {
         return $this->hasOne('App\Models\Service', 'id', 'service_id');
-    }
-    
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function transaction()
-    {
-        return $this->hasOne('App\Models\Transaction', 'id', 'transaction_id');
     }
     
     /**
@@ -78,6 +67,6 @@ class PartialPayment extends Model
         parent::setAttribute($key, $value);
 
         if (is_string($value))
-            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
 }

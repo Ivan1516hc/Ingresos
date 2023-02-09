@@ -39,7 +39,6 @@
 										<th>Beneficiary Id</th>
 										<th>Beneficiary Name</th>
 										<th>Service Id</th>
-										<th>Transaction Id</th>
 										<th>User Id</th>
 										<th>Payment</th>
 										<th>Partiality</th>
@@ -56,7 +55,6 @@
 											<td>{{ $partialPayment->beneficiary_id }}</td>
 											<td>{{ $partialPayment->beneficiary_name }}</td>
 											<td>{{ $partialPayment->service_id }}</td>
-											<td>{{ $partialPayment->transaction_id }}</td>
 											<td>{{ $partialPayment->user_id }}</td>
 											<td>{{ $partialPayment->payment }}</td>
 											<td>{{ $partialPayment->partiality }}</td>

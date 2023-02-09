@@ -35,8 +35,6 @@ class Service extends Model
     static $rules = [
 		'name' => 'required',
 		'cost' => 'required',
-		'type_income' => 'required',
-		'code_income' => 'required',
 		'not_binding' => 'required',
 		'id_gu' => 'required',
 		'partial' => 'required',
@@ -83,6 +81,6 @@ class Service extends Model
         parent::setAttribute($key, $value);
 
         if (is_string($value))
-            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
 }

@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @property $id
  * @property $name
- * @property $order
  * @property $created_at
  * @property $updated_at
  * @property $deleted_at
@@ -26,7 +25,6 @@ class Group extends Model
 
     static $rules = [
 		'name' => 'required',
-		'order' => 'required',
     ];
 
     protected $perPage = 20;
@@ -54,13 +52,12 @@ class Group extends Model
     {
         return $this->hasMany('App\Models\Location', 'group_id', 'id');
     }
+    
     public function setAttribute($key, $value)
     {
         parent::setAttribute($key, $value);
 
         if (is_string($value))
-            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
-    
-
 }

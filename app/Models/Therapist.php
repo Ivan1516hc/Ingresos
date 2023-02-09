@@ -49,6 +49,6 @@ class Therapist extends Model
         parent::setAttribute($key, $value);
 
         if (is_string($value))
-            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
 }

@@ -39,7 +39,6 @@
 										<th>Name</th>
 										<th>Username</th>
 										<th>Post</th>
-										<th>Profile Id</th>
 										<th>Location Id</th>
 
                                         <th></th>
@@ -53,7 +52,6 @@
 											<td>{{ $user->name }}</td>
 											<td>{{ $user->username }}</td>
 											<td>{{ $user->post }}</td>
-											<td>{{ $user->profile_id }}</td>
 											<td>{{ $user->location_id }}</td>
 
                                             <td>

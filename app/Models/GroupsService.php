@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class GroupsService
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $service_id
  * @property $created_at
  * @property $updated_at
+ * @property $deleted_at
  *
  * @property Group $group
  * @property Service $service
@@ -20,7 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class GroupsService extends Model
 {
-    
+    use SoftDeletes;
+
     static $rules = [
 		'group_id' => 'required',
 		'service_id' => 'required',
@@ -57,6 +60,6 @@ class GroupsService extends Model
         parent::setAttribute($key, $value);
 
         if (is_string($value))
-            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
 }

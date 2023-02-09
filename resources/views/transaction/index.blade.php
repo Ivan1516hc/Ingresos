@@ -43,6 +43,7 @@
 										<th>Beneficiary Name</th>
 										<th>Location Id</th>
 										<th>User Id</th>
+										<th>Status</th>
 
                                         <th></th>
                                     </tr>
@@ -59,6 +60,7 @@
 											<td>{{ $transaction->beneficiary_name }}</td>
 											<td>{{ $transaction->location_id }}</td>
 											<td>{{ $transaction->user_id }}</td>
+											<td>{{ $transaction->status }}</td>
 
                                             <td>
                                                 <form action="{{ route('transactions.destroy',$transaction->id) }}" method="POST">

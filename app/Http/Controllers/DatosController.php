@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Promoter;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -30,7 +27,7 @@ class DatosController extends Controller
         return $convertedData;
     }
 
-    public function departments()
+    public function import1()
     {
         $keyToExclude = ['pwd'];
         $departments = DB::connection('mysql_2')->table("departamento")->get();
@@ -88,21 +85,22 @@ class DatosController extends Controller
                 'password'    => Hash::make($user['pwd']),
                 'name'        => $user['nombre'],
                 'post'        => $user['puesto'],
-                'profile_id'  => $user['perfil'],
                 'location_id' => $user['idubicacion'],
                 'created_at' => Carbon::now(),
             ]);
         }
 
-        $therapists = DB::connection('mysql_2')->table("terapeutas")->get();
-        foreach ($therapists as $therapist) {
-            $therapist = $this->convertValuesToUppercase($therapist, $keyToExclude);
-            DB::table('therapists')->insert([
-                'id'  => $therapist['idterapeutas'],
-                'name'  => $therapist['nombre'],
+        $users = DB::connection('mysql_2')->table("user")->get();
+        foreach ($users as $user) {
+            $user = $this->convertValuesToUppercase($user, $keyToExclude);
+            DB::table('profiles_users')->insert([
+                'user_id'   => $user['iduser'],
+                'profile_id'  => $user['perfil'],
                 'created_at' => Carbon::now(),
             ]);
         }
+
+        
 
         $promoters = DB::connection('mysql_2')->table("promotores")->get();
         foreach ($promoters as $promoter) {
@@ -201,7 +199,7 @@ class DatosController extends Controller
         }
     }
 
-    public function import()
+    public function import2()
     {
         $keyToExclude = ['pwd'];
 
@@ -212,6 +210,7 @@ class DatosController extends Controller
                     'transaction_id' => $cancellation['idventa'],
                     'user_id' => $cancellation['idUser'],
                     'created_at' => $cancellation['fecha'],
+                    'reason' => $cancellation['motivocancela']
                 ]);
         }
 
@@ -229,27 +228,7 @@ class DatosController extends Controller
             }
             fclose($handle);
         }
-    }
 
-    public function reprintHistories()
-    {
-        $keyToExclude = ['pwd'];
-        // $file4 = 'C:\Users\Humberto\Downloads\historialreimp.csv';
-        // if (($handle = fopen($file4, "r")) !== false) {
-        //     $header = fgetcsv($handle);
-
-        //     while (($data = fgetcsv($handle)) !== false) {
-        //         $data = array_combine($header, $data);
-
-        //         // Check if a value exists and assign null if not
-        //         foreach ($data as &$value) {
-        //             $value = $value === '' ? null : $value;
-        //         }
-        //         // Save the processed data to the database
-        //         DB::table('reprint_histories')->insert($data);
-        //     }
-        //     fclose($handle);
-        // }
         $reprints = DB::connection('mysql_2')->table("historialreimp")->get();
         foreach ($reprints as $reprint) {
             $reprint = $this->convertValuesToUppercase($reprint, $keyToExclude);
@@ -260,6 +239,11 @@ class DatosController extends Controller
                     'created_at' => $reprint['fecha'],
                 ]);
         }
+    }
+
+    public function import3()
+    {
+        $keyToExclude = ['pwd'];
 
         $partialPayments = DB::connection('mysql_2')->table("parcialidades")->get();
         foreach ($partialPayments as $partialPayment) {
@@ -276,19 +260,35 @@ class DatosController extends Controller
                 'updated_at' => $partialPayment['Fec_Ult']
             ]);
         }
-    }
 
-    public function therapistsTransactions()
-    {
-        $keyToExclude = ['pwd'];
-        $transactions_therapists = DB::connection('mysql_2')->table("movimientos")->select('idventa','terapeuta','fecha')->where('terapeuta','<>','')->first();
-        dd($transactions_therapists);
+        $therapists = DB::connection('mysql_2')->table("terapeutas")->get();
+        foreach ($therapists as $therapist) {
+            $therapist = $this->convertValuesToUppercase($therapist, $keyToExclude);
+            DB::table('therapists')->insert([
+                'id'  => $therapist['idterapeutas'],
+                'name'  => $therapist['nombre'],
+                'created_at' => Carbon::now(),
+            ]);
+        }
+
+       
+        $transactions_therapists = DB::connection('mysql_2')->table("movimientos")->select('idventa','terapeuta','fecha')->where('terapeuta','<>','')->get();
         foreach ($transactions_therapists as $transaction_therapist) {
             $transaction_therapist = $this->convertValuesToUppercase($transaction_therapist, $keyToExclude);
             DB::table('therapists_transactions')->insert([
                 'therapist_id'  => $transaction_therapist['terapeuta'],
-                'transactions_id'  => $transaction_therapist['idventa'],
+                'transaction_id'  => $transaction_therapist['idventa'],
                 'created_at'  => $transaction_therapist['fecha'],
+            ]);
+        }
+
+        $transactions_locations = DB::connection('mysql_2')->table("movimientos")->select('idventa','centroalim','fecha')->where('centroalim','<>','')->get();
+        foreach ($transactions_locations as $transaction_location) {
+            $transaction_location = $this->convertValuesToUppercase($transaction_location, $keyToExclude);
+            DB::table('locations_transactions')->insert([
+                'location_id'  => $transaction_location['centroalim'],
+                'transaction_id'  => $transaction_location['idventa'],
+                'created_at'  => $transaction_location['fecha'],
             ]);
         }
     }

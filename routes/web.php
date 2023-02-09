@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,26 +20,21 @@ Route::get('/', function () {
 });
 Auth::routes();
 
-Route::resource('/users',UserController::class);
-Route::resource('/transactions',App\Http\Controllers\TransactionController::class);
-Route::resource('/services',App\Http\Controllers\ServiceController::class);
-Route::get('import',[App\Http\Controllers\datosController::class,'import']);
-Route::get('importar',[App\Http\Controllers\datosController::class,'importTransactions']);
-Route::get('departamentos',[App\Http\Controllers\datosController::class,'departments']);
-Route::get('perfiles',[App\Http\Controllers\datosController::class,'profiles']);
-Route::get('grupos',[App\Http\Controllers\datosController::class,'groups']);
-Route::get('ubicaciones',[App\Http\Controllers\datosController::class,'locations']);
-Route::get('terapeutas',[App\Http\Controllers\datosController::class,'therapists']);
-Route::get('promotores',[App\Http\Controllers\datosController::class,'promoters']);
-Route::get('usuarios',[App\Http\Controllers\datosController::class,'users']);
-Route::get('servicios',[App\Http\Controllers\datosController::class,'services']);
-Route::get('grupoServicios',[App\Http\Controllers\datosController::class,'groupsServices']);
-Route::get('transacciones',[App\Http\Controllers\datosController::class,'transactions']);
-Route::get('pagosParciales',[App\Http\Controllers\datosController::class,'partialPayments']);
-Route::get('transaccionesServicios',[App\Http\Controllers\datosController::class,'servicesTransactions']);
-Route::get('transaccionesPromotores',[App\Http\Controllers\datosController::class,'promotersTransactions']);
-Route::get('transaccionesTerapeutas',[App\Http\Controllers\datosController::class,'therapistsTransactions']);
-Route::get('historialCancelaciones',[App\Http\Controllers\datosController::class,'cancellationHistories']);
-Route::get('historialReimpresion',[App\Http\Controllers\datosController::class,'reprintHistories']);
+Route::resource('/usuarios',App\Http\Controllers\UserController::class,['names' => 'users']);
+Route::resource('/movimientos',App\Http\Controllers\TransactionController::class,['names' => 'transactions']);
+Route::resource('/servicios',App\Http\Controllers\ServiceController::class,['names' => 'services']);
+Route::resource('/comunidades',App\Http\Controllers\CommunityController::class, ['names' => 'communities']);
+Route::resource('/historial-cancelacion',App\Http\Controllers\CancellationHistoryController::class,['names' => 'cancellation-histories']);
+Route::resource('/grupo-servicios',App\Http\Controllers\GroupsServiceController::class,['names' => 'groups-services']);
+Route::resource('/ubicaciones',App\Http\Controllers\LocationController::class,['names' => 'locations']);
+Route::resource('/pagos-parciales',App\Http\Controllers\PartialPaymentController::class,['names' => 'partial-payments']);
+Route::resource('/promotores',App\Http\Controllers\PromoterController::class,['names' => 'promoters']);
+Route::resource('/historial-reimpresion',App\Http\Controllers\ReprintHistoryController::class,['names' => 'reprint-histories']);
+Route::resource('/terapeutas',App\Http\Controllers\TherapistController::class,['names' => 'therapists']);
+// Route::resource('/comunidades/{nombre}',App\Http\Controllers\BeneficiariesCommunityController::class,['names' => '']);
+
+Route::get('import1',[App\Http\Controllers\datosController::class,'import1']);
+Route::get('import2',[App\Http\Controllers\datosController::class,'import2']);
+Route::get('import3',[App\Http\Controllers\datosController::class,'import3']);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

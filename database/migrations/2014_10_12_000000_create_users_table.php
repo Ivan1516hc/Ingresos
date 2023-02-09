@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('password');
             $table->string('post');
             $table->rememberToken();
-            $table->unsignedTinyInteger('profile_id');
-            $table->foreign('profile_id')->references('id')->on('profiles');
             $table->unsignedTinyInteger('location_id');
             $table->foreign('location_id')->references('id')->on('locations');
             $table->timestamps();

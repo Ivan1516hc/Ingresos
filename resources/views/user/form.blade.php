@@ -17,11 +17,6 @@
             {!! $errors->first('post', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
-            {{ Form::label('profile_id') }}
-            {{ Form::text('profile_id', $user->profile_id, ['class' => 'form-control' . ($errors->has('profile_id') ? ' is-invalid' : ''), 'placeholder' => 'Profile Id']) }}
-            {!! $errors->first('profile_id', '<div class="invalid-feedback">:message</div>') !!}
-        </div>
-        <div class="form-group">
             {{ Form::label('location_id') }}
             {{ Form::text('location_id', $user->location_id, ['class' => 'form-control' . ($errors->has('location_id') ? ' is-invalid' : ''), 'placeholder' => 'Location Id']) }}
             {!! $errors->first('location_id', '<div class="invalid-feedback">:message</div>') !!}

@@ -48,6 +48,10 @@
                             <strong>User Id:</strong>
                             {{ $transaction->user_id }}
                         </div>
+                        <div class="form-group">
+                            <strong>Status:</strong>
+                            {{ $transaction->status }}
+                        </div>
 
                     </div>
                 </div>

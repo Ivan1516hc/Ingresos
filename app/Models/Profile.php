@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property $updated_at
  * @property $deleted_at
  *
- * @property User[] $users
+ * @property ProfilesUser[] $profilesUsers
  * @package App
  * @mixin \Illuminate\Database\Eloquent\Builder
  */
@@ -39,9 +39,9 @@ class Profile extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function users()
+    public function profilesUsers()
     {
-        return $this->hasMany('App\Models\User', 'profile_id', 'id');
+        return $this->hasMany('App\Models\ProfilesUser', 'profile_id', 'id');
     }
     
     public function setAttribute($key, $value)
@@ -49,8 +49,6 @@ class Profile extends Model
         parent::setAttribute($key, $value);
 
         if (is_string($value))
-            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
-    
-
 }

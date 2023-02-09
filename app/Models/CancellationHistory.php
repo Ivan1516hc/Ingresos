@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $transaction_id
  * @property $user_id
  * @property $authorized_user_id
+ * @property $reason
  * @property $created_at
  * @property $updated_at
  *
@@ -35,7 +36,7 @@ class CancellationHistory extends Model
      *
      * @var array
      */
-    protected $fillable = ['transaction_id','user_id','authorized_user_id'];
+    protected $fillable = ['transaction_id','user_id','authorized_user_id','reason'];
 
 
     /**
@@ -43,7 +44,7 @@ class CancellationHistory extends Model
      */
     public function transaction()
     {
-        return $this->hasOne('App\Models\Transaction', 'id', 'transaction_id');
+        return $this->hasOne('App\Models\Transaction', 'invoice', 'transaction_id');
     }
     
     /**
@@ -57,18 +58,16 @@ class CancellationHistory extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function userAuthorized()
+    public function users()
     {
         return $this->hasOne('App\Models\User', 'id', 'authorized_user_id');
     }
-
+    
     public function setAttribute($key, $value)
     {
         parent::setAttribute($key, $value);
 
         if (is_string($value))
-            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
-    
-
 }

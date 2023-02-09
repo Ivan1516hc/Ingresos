@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Transaction
@@ -16,13 +15,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property $beneficiary_name
  * @property $location_id
  * @property $user_id
+ * @property $status
  * @property $created_at
  * @property $updated_at
- * @property $deleted_at
  *
  * @property CancellationHistory[] $cancellationHistories
  * @property Location $location
- * @property PartialPayment[] $partialPayments
+ * @property LocationsTransaction[] $locationsTransactions
  * @property PromotersTransaction[] $promotersTransactions
  * @property ReprintHistory[] $reprintHistories
  * @property ServicesTransaction[] $servicesTransactions
@@ -33,16 +32,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Transaction extends Model
 {
-    use SoftDeletes;
-
+    
     static $rules = [
 		'invoice' => 'required',
-		'bill' => 'required',
 		'total' => 'required',
 		'beneficiary_id' => 'required',
 		'beneficiary_name' => 'required',
 		'location_id' => 'required',
 		'user_id' => 'required',
+		'status' => 'required',
     ];
 
     protected $perPage = 20;
@@ -60,7 +58,7 @@ class Transaction extends Model
      */
     public function cancellationHistories()
     {
-        return $this->hasMany('App\Models\CancellationHistory', 'transaction_id', 'id');
+        return $this->hasMany('App\Models\CancellationHistory', 'transaction_id', 'invoice');
     }
     
     /**
@@ -74,9 +72,9 @@ class Transaction extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function partialPayments()
+    public function locationsTransactions()
     {
-        return $this->hasMany('App\Models\PartialPayment', 'transaction_id', 'id');
+        return $this->hasMany('App\Models\LocationsTransaction', 'transaction_id', 'invoice');
     }
     
     /**
@@ -84,7 +82,7 @@ class Transaction extends Model
      */
     public function promotersTransactions()
     {
-        return $this->hasMany('App\Models\PromotersTransaction', 'transaction_id', 'id');
+        return $this->hasMany('App\Models\PromotersTransaction', 'transaction_id', 'invoice');
     }
     
     /**
@@ -92,7 +90,7 @@ class Transaction extends Model
      */
     public function reprintHistories()
     {
-        return $this->hasMany('App\Models\ReprintHistory', 'transaction_id', 'id');
+        return $this->hasMany('App\Models\ReprintHistory', 'transaction_id', 'invoice');
     }
     
     /**
@@ -100,7 +98,7 @@ class Transaction extends Model
      */
     public function servicesTransactions()
     {
-        return $this->hasMany('App\Models\ServicesTransaction', 'transaction_id', 'id');
+        return $this->hasMany('App\Models\ServicesTransaction', 'transaction_id', 'invoice');
     }
     
     /**
@@ -108,7 +106,7 @@ class Transaction extends Model
      */
     public function therapistsTransactions()
     {
-        return $this->hasMany('App\Models\TherapistsTransaction', 'transaction_id', 'id');
+        return $this->hasMany('App\Models\TherapistsTransaction', 'transaction_id', 'invoice');
     }
     
     /**
@@ -124,6 +122,6 @@ class Transaction extends Model
         parent::setAttribute($key, $value);
 
         if (is_string($value))
-            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
 }

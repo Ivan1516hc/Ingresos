@@ -39,6 +39,7 @@
 										<th>Transaction Id</th>
 										<th>User Id</th>
 										<th>Authorized User Id</th>
+										<th>Reason</th>
 
                                         <th></th>
                                     </tr>
@@ -51,6 +52,7 @@
 											<td>{{ $cancellationHistory->transaction_id }}</td>
 											<td>{{ $cancellationHistory->user_id }}</td>
 											<td>{{ $cancellationHistory->authorized_user_id }}</td>
+											<td>{{ $cancellationHistory->reason }}</td>
 
                                             <td>
                                                 <form action="{{ route('cancellation-histories.destroy',$cancellationHistory->id) }}" method="POST">

@@ -33,10 +33,6 @@
                             {{ $user->post }}
                         </div>
                         <div class="form-group">
-                            <strong>Profile Id:</strong>
-                            {{ $user->profile_id }}
-                        </div>
-                        <div class="form-group">
                             <strong>Location Id:</strong>
                             {{ $user->location_id }}
                         </div>

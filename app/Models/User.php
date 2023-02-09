@@ -14,16 +14,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property $password
  * @property $post
  * @property $remember_token
- * @property $profile_id
  * @property $location_id
  * @property $created_at
  * @property $updated_at
  * @property $deleted_at
  *
  * @property CancellationHistory[] $cancellationHistories
+ * @property CancellationHistory[] $cancellationHistories
+ * @property Location[] $locations
  * @property Location $location
  * @property PartialPayment[] $partialPayments
- * @property Profile $profile
+ * @property ProfilesUser[] $profilesUsers
  * @property ReprintHistory[] $reprintHistories
  * @property Transaction[] $transactions
  * @package App
@@ -37,7 +38,6 @@ class User extends Model
 		'name' => 'required',
 		'username' => 'required',
 		'post' => 'required',
-		'profile_id' => 'required',
 		'location_id' => 'required',
     ];
 
@@ -48,14 +48,17 @@ class User extends Model
      *
      * @var array
      */
-    protected $fillable = ['name','username','post','profile_id','location_id','password'];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $fillable = ['name','username','post','location_id'];
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function authorizedCancellation()
+    {
+        return $this->hasMany('App\Models\CancellationHistory', 'authorized_user_id', 'id');
+    }
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -63,10 +66,13 @@ class User extends Model
     {
         return $this->hasMany('App\Models\CancellationHistory', 'user_id', 'id');
     }
-
-    public function cancellationHistoriesAuthorized()
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function locations()
     {
-        return $this->hasMany('App\Models\CancellationHistory', 'authorized_user_id', 'id');
+        return $this->hasMany('App\Models\Location', 'manager_id', 'id');
     }
     
     /**
@@ -86,11 +92,11 @@ class User extends Model
     }
     
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function profile()
+    public function profilesUsers()
     {
-        return $this->hasOne('App\Models\Profile', 'id', 'profile_id');
+        return $this->hasMany('App\Models\ProfilesUser', 'user_id', 'id');
     }
     
     /**
@@ -114,6 +120,6 @@ class User extends Model
         parent::setAttribute($key, $value);
 
         if (is_string($value) && $key != 'password')
-            $this->attributes[$key] = trim(mb_strtoupper($value),'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
 }

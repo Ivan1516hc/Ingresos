@@ -36,9 +36,11 @@
                                     <tr>
                                         <th>No</th>
                                         
-										<th>Location</th>
 										<th>Name</th>
+										<th>Descripcion</th>
 										<th>Group Id</th>
+										<th>Department Id</th>
+										<th>Manager Id</th>
 
                                         <th></th>
                                     </tr>
@@ -48,9 +50,11 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-											<td>{{ $location->location }}</td>
 											<td>{{ $location->name }}</td>
+											<td>{{ $location->descripcion }}</td>
 											<td>{{ $location->group_id }}</td>
+											<td>{{ $location->department_id }}</td>
+											<td>{{ $location->manager_id }}</td>
 
                                             <td>
                                                 <form action="{{ route('locations.destroy',$location->id) }}" method="POST">

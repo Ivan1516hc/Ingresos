@@ -32,6 +32,10 @@
                             <strong>Authorized User Id:</strong>
                             {{ $cancellationHistory->authorized_user_id }}
                         </div>
+                        <div class="form-group">
+                            <strong>Reason:</strong>
+                            {{ $cancellationHistory->reason }}
+                        </div>
 
                     </div>
                 </div>

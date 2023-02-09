@@ -18,7 +18,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::paginate();
+        $transactions = Transaction::orderBy('invoice','desc')->where('status','<>',3)->paginate();
 
         return view('transaction.index', compact('transactions'))
             ->with('i', (request()->input('page', 1) - 1) * $transactions->perPage());

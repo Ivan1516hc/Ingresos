@@ -24,10 +24,6 @@
                             <strong>Name:</strong>
                             {{ $group->name }}
                         </div>
-                        <div class="form-group">
-                            <strong>Order:</strong>
-                            {{ $group->order }}
-                        </div>
 
                     </div>
                 </div>

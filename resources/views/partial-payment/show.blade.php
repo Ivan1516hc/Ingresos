@@ -33,10 +33,6 @@
                             {{ $partialPayment->service_id }}
                         </div>
                         <div class="form-group">
-                            <strong>Transaction Id:</strong>
-                            {{ $partialPayment->transaction_id }}
-                        </div>
-                        <div class="form-group">
                             <strong>User Id:</strong>
                             {{ $partialPayment->user_id }}
                         </div>

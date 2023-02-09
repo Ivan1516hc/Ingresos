@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Department
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property $dependence
  * @property $created_at
  * @property $updated_at
+ * @property $deleted_at
  *
  * @property Location[] $locations
  * @package App
@@ -21,12 +23,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Department extends Model
 {
-    
+    use SoftDeletes;
+
     static $rules = [
 		'level' => 'required',
 		'name' => 'required',
-		'direction' => 'required',
-		'dependence' => 'required',
     ];
 
     protected $perPage = 20;
@@ -52,7 +53,6 @@ class Department extends Model
         parent::setAttribute($key, $value);
 
         if (is_string($value))
-            $this->attributes[$key] = trim(mb_strtoupper($value), 'UTF-8');
+            $this->attributes[$key] = trim(mb_strtoupper($value));
     }
-
 }

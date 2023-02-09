@@ -21,16 +21,24 @@
                     <div class="card-body">
                         
                         <div class="form-group">
-                            <strong>Location:</strong>
-                            {{ $location->location }}
-                        </div>
-                        <div class="form-group">
                             <strong>Name:</strong>
                             {{ $location->name }}
                         </div>
                         <div class="form-group">
+                            <strong>Descripcion:</strong>
+                            {{ $location->descripcion }}
+                        </div>
+                        <div class="form-group">
                             <strong>Group Id:</strong>
                             {{ $location->group_id }}
+                        </div>
+                        <div class="form-group">
+                            <strong>Department Id:</strong>
+                            {{ $location->department_id }}
+                        </div>
+                        <div class="form-group">
+                            <strong>Manager Id:</strong>
+                            {{ $location->manager_id }}
                         </div>
 
                     </div>

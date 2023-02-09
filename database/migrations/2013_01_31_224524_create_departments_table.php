@@ -20,6 +20,7 @@ return new class extends Migration
             $table->tinyInteger('direction')->nullable();
             $table->tinyInteger('dependence')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
