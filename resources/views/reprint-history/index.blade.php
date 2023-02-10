@@ -66,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $reprintHistories->links() !!}
+                {!! $reprintHistories->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

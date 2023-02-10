@@ -62,6 +62,9 @@
 [data-theme="dark"] .card {
     background-color: var(--bg-card) 
 }
+[data-theme="dark"] .card h5{
+    color: white; 
+}
 [data-theme="dark"] .card-header {
     background-color: var(--bg-card) 
 }

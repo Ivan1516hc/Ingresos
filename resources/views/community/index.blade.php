@@ -66,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $communities->links() !!}
+                {!! $communities->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

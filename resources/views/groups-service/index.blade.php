@@ -66,7 +66,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $groupsServices->links() !!}
+                {!! $groupsServices->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

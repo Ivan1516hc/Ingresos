@@ -76,7 +76,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $partialPayments->links() !!}
+                {!! $partialPayments->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

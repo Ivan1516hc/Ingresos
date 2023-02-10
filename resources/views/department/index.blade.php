@@ -70,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $departments->links() !!}
+                {!! $departments->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

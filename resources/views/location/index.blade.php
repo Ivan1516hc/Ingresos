@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $locations->links() !!}
+                {!! $locations->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

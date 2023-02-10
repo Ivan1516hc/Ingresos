@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $beneficiariesCommunities->links() !!}
+                {!! $beneficiariesCommunities->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

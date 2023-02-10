@@ -1088,6 +1088,7 @@ ul.timeline > li:before {
 }
 
 .dashboard .card h5 {
+	color: var(--default-color);
 	font-weight: 600;
 }
 

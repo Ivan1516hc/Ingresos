@@ -64,7 +64,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $promoters->links() !!}
+                {!! $promoters->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

@@ -70,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $cancellationHistories->links() !!}
+                {!! $cancellationHistories->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>

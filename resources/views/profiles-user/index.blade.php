@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $profilesUsers->links() !!}
+                {!! $profilesUsers->links('pagination::bootstrap-5') !!}
             </div>
         </div>
     </div>
