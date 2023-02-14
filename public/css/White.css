@@ -71,6 +71,9 @@ body {
 	margin: 0;
 }
 
+[data-theme="light"] th{
+    color: var(--default-color);
+}
 
 a {
     color: #ffffff;

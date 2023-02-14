@@ -20,6 +20,7 @@ Route::get('/', function () {
 });
 Auth::routes();
 
+
 Route::resource('/usuarios',App\Http\Controllers\UserController::class,['names' => 'users']);
 Route::resource('/movimientos',App\Http\Controllers\TransactionController::class,['names' => 'transactions']);
 Route::resource('/servicios',App\Http\Controllers\ServiceController::class,['names' => 'services']);
@@ -36,5 +37,8 @@ Route::resource('/terapeutas',App\Http\Controllers\TherapistController::class,['
 Route::get('import1',[App\Http\Controllers\datosController::class,'import1']);
 Route::get('import2',[App\Http\Controllers\datosController::class,'import2']);
 Route::get('import3',[App\Http\Controllers\datosController::class,'import3']);
+
+Route::get('servicios-usuario',[App\Http\Controllers\ServiceController::class,'getServicesUser']);
+
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');

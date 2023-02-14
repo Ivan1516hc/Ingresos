@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 /**
@@ -22,6 +24,14 @@ class ServiceController extends Controller
 
         return view('service.index', compact('services'))
             ->with('i', (request()->input('page', 1) - 1) * $services->perPage());
+    }
+
+    public function getServicesUser(){
+        $services = Service::whereHas('groups.locations.users', function ($query){
+            return $query->where('users.id',10);
+        } )->get();
+
+        return response()->json($services);
     }
 
     /**

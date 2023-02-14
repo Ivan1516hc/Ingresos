@@ -59,6 +59,10 @@ class Service extends Model
     {
         return $this->hasMany('App\Models\GroupsService', 'service_id', 'id');
     }
+
+    public function groups(){
+        return $this->belongsToMany(Group::class,'groups_services','service_id','group_id'); //best practice name relacinship report_user
+    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

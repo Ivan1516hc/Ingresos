@@ -52,6 +52,10 @@ class Group extends Model
     {
         return $this->hasMany('App\Models\Location', 'group_id', 'id');
     }
+
+    public function services(){
+        return $this->belongsToMany(Service::class,'groups_services','group_id','service_id'); //best practice name relacinship report_user
+    }
     
     public function setAttribute($key, $value)
     {

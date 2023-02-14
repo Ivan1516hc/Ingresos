@@ -65,6 +65,9 @@
 [data-theme="dark"] .card h5{
     color: white; 
 }
+[data-theme="dark"] h4{
+    color: white; 
+}
 [data-theme="dark"] .card-header {
     background-color: var(--bg-card) 
 }
@@ -95,6 +98,10 @@
 [data-theme="dark"] .table tr td, th{
     color: var(--font-color);
 }
+[data-theme="dark"] .table tr:hover {
+    background-color:#5ec9e4 !important; 
+}
+
 
 [data-theme="dark"] .card-footer{
     background-color: var(--bg-card);
