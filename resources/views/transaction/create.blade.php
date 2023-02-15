@@ -13,10 +13,10 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Create Transaction</span>
+                        <span class="card-title">GENERAR MOVIMIENTO</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('transactions.store') }}"  role="form" enctype="multipart/form-data">
+                        <form id="myForm" onsubmit="arrayData()" method="POST" role="form"  enctype="multipart/form-data" action="{{ route('transactions.store') }}">
                             @csrf
 
                             @include('transaction.form')

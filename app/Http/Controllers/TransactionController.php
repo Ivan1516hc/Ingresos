@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\ServicesTransaction;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 
@@ -19,7 +19,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::orderBy('invoice','desc')->where('status','<>',3)->paginate();
+        $transactions = Transaction::orderBy('invoice', 'desc')->where('status', '<>', 3)->paginate();
 
         return view('transaction.index', compact('transactions'))
             ->with('i', (request()->input('page', 1) - 1) * $transactions->perPage());
@@ -44,12 +44,35 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate(Transaction::$rules);
 
-        $transaction = Transaction::create($request->all());
+        $serviciosAgregados = json_decode($request->serviciosAgregados);
+        
 
-        return redirect()->route('transactions.index')
-            ->with('success', 'Transaction created successfully.');
+        $transaction = Transaction::created([
+            'invoice' => 'PENDIENTE',
+            'bill' => $request->bill,
+            'total' => $request->total,
+            'beneficiary_id' => $request->beneficiary_id,
+            'beneficiary_name' => $request->beneficiary_name,
+            'location_id' => 'PENDIENTE',
+            'user_id' => 'pendiente',
+        ]);
+
+        foreach ($serviciosAgregados as $service) {
+            $service_transaction = ServicesTransaction::created([
+                'transaction_id' => 'PENDIENTE',
+                dd($request->all()),
+                'service_id' => $service->id,
+            ]);
+        }
+
+        return response()->json($serviciosAgregados);
+        // request()->validate(Transaction::$rules);
+
+        // $transaction = Transaction::create($request->all());
+
+        // return redirect()->route('transactions.index')
+        //     ->with('success', 'Transaction created successfully.');
     }
 
     /**

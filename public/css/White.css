@@ -71,6 +71,14 @@ body {
 	margin: 0;
 }
 
+.centerModal {
+	margin-top: 25vh;
+}
+
+div .modal p, i, a{
+	color: #5A5C69;
+}
+
 [data-theme="light"] th{
     color: var(--default-color);
 }
