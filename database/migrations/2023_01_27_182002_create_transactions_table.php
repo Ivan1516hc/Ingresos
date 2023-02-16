@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('location_id')->references('id')->on('locations');
             $table->unsignedSmallInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

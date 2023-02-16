@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,12 +17,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('opcionMenu.opcion');
-});
+
 Auth::routes();
+Route::get('import1', [App\Http\Controllers\datosController::class, 'import1']);
+Route::get('import2', [App\Http\Controllers\datosController::class, 'import2']);
+Route::get('import3', [App\Http\Controllers\datosController::class, 'import3']);
+
+Route::post('/login-username', [LoginController::class, 'postLogin']);
 
 Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('opcionMenu.opcion');
+    });
     Route::resource('/usuarios', App\Http\Controllers\UserController::class, ['names' => 'users']);
     Route::resource('/movimientos', App\Http\Controllers\TransactionController::class, ['names' => 'transactions']);
     Route::resource('/servicios', App\Http\Controllers\ServiceController::class, ['names' => 'services']);
@@ -34,12 +42,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('/terapeutas', App\Http\Controllers\TherapistController::class, ['names' => 'therapists']);
     // Route::resource('/comunidades/{nombre}',App\Http\Controllers\BeneficiariesCommunityController::class,['names' => '']);
 
-    Route::get('import1', [App\Http\Controllers\datosController::class, 'import1']);
-    Route::get('import2', [App\Http\Controllers\datosController::class, 'import2']);
-    Route::get('import3', [App\Http\Controllers\datosController::class, 'import3']);
-
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);
 
+    Route::get('logout', function() {
+        Auth::logout();
+        return redirect('/login');
+    });
 
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
 });

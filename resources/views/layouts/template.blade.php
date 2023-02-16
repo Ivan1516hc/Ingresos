@@ -64,7 +64,7 @@
                             </a> --}}
                         
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="signin.html">
+                            <a class="dropdown-item" href="logout">
                                 <i class="las la-sign-out-alt mr-2"></i> SALIR
                             </a>
                         </div>

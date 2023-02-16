@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\ServicesTransaction;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class TransactionController
@@ -44,25 +46,36 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-
+        $user = Auth::user();
         $serviciosAgregados = json_decode($request->serviciosAgregados);
         
+        $year = Carbon::now()->format('Y');
+        
+        $number = Transaction::select('invoice')->where('location_id',28)->whereYear('created_at',2024)->orderBy('id','desc')->first();
+        $folio= $number->invoice ?? null;
+        if($folio == null){
+            $folio=intval($year.$user->location_id.'00001');
+        }else{
+            $folio = $folio+1;
+        }
 
-        $transaction = Transaction::created([
-            'invoice' => 'PENDIENTE',
+
+        $transaction = Transaction::create([
+            'invoice' => $folio,
             'bill' => $request->bill,
             'total' => $request->total,
             'beneficiary_id' => $request->beneficiary_id,
             'beneficiary_name' => $request->beneficiary_name,
-            'location_id' => 'PENDIENTE',
-            'user_id' => 'pendiente',
+            'location_id' => $user->location_id,
+            'user_id' => $user->id,
         ]);
 
         foreach ($serviciosAgregados as $service) {
-            $service_transaction = ServicesTransaction::created([
-                'transaction_id' => 'PENDIENTE',
-                dd($request->all()),
+            $service_transaction = ServicesTransaction::create([
+                'transaction_id' => $folio,
                 'service_id' => $service->id,
+                'amount'  => $service->cant,
+                'cost'  => $service->total
             ]);
         }
 

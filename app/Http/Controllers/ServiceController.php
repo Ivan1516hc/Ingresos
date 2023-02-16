@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\Service;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ServiceController
@@ -27,8 +28,9 @@ class ServiceController extends Controller
     }
 
     public function getServicesUser(){
-        $services = Service::whereHas('groups.locations.users', function ($query){
-            return $query->where('users.id',10);
+        $user = Auth::user();
+        $services = Service::whereHas('groups.locations.users', function ($query) use($user){
+            return $query->where('users.id',$user->id);
         } )->get();
 
         return response()->json($services);

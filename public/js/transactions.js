@@ -39,7 +39,7 @@ function getServices() {
                 let opt = response.data[i];
                 let el = document.createElement("option");
                 el.textContent = opt.name;
-                el.value = opt.id + "," + opt.name + "," + opt.cost + "," + opt.not_binding + "," + opt.partial;
+                el.value = {id :opt.id,name: opt.name, const: opt.cost, opt: opt.not_binding, partial: opt.partial, cant: ''};
                 select.add(el);
             }
         })
@@ -50,8 +50,7 @@ function getServices() {
 function addService() {
     // Obtener los valores seleccionados de los select
     let servicio = document.getElementById("services").value;
-    let cant = document.getElementById("cantidad").value;
-    let valores = servicio.split(',');
+    servicio.cant = document.getElementById("cantidad").value;
 
     // Verificar si se seleccionó un servicio válido
     if (servicio == "SELECCIONA SERVICIO") {
@@ -72,14 +71,8 @@ function addService() {
     }
 
     // Agregar el servicio a la letiable global
-    serviciosAgregados.push({
-        id: valores[0],
-        name: valores[1],
-        cost: valores[2],
-        not_binding: valores[3],
-        partial: valores[4],
-        cant: cant
-    });
+    console.log( document.getElementById("services").value);
+    serviciosAgregados.push(servicio);
 
     // Limpiar los valores seleccionados de los select
     document.getElementById("services").value = "SELECCIONA SERVICIO";
@@ -148,9 +141,9 @@ function actualizarTabla() {
         celdaNombre.innerHTML = servicio.name;
         celdaCosto.innerHTML = servicio.cost;
         celdaCantidad.innerHTML = servicio.cant;
-        celdaTotal.innerHTML = servicio.cant * servicio.cost;
+        celdaTotal.innerHTML = servicio.total;
 
-        total += servicio.cant * servicio.cost;
+        total += servicio.total;
 
         // Agregar botón de eliminar y su funcionalidad
         let btnEliminar = document.createElement("button");
