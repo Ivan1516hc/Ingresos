@@ -46,6 +46,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
+
         $user = Auth::user();
         $serviciosAgregados = json_decode($request->serviciosAgregados);
         
@@ -58,8 +59,7 @@ class TransactionController extends Controller
         }else{
             $folio = $folio+1;
         }
-
-
+        
         $transaction = Transaction::create([
             'invoice' => $folio,
             'bill' => $request->bill,
@@ -79,13 +79,8 @@ class TransactionController extends Controller
             ]);
         }
 
-        return response()->json($serviciosAgregados);
-        // request()->validate(Transaction::$rules);
-
-        // $transaction = Transaction::create($request->all());
-
-        // return redirect()->route('transactions.index')
-        //     ->with('success', 'Transaction created successfully.');
+        return redirect()->route('transactions.index')
+            ->with('success', 'MOVIMIENTO REGISTRADO.');
     }
 
     /**

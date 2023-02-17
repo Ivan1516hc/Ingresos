@@ -24,6 +24,8 @@ class ServicesTransaction extends Model
     static $rules = [
 		'transaction_id' => 'required',
 		'service_id' => 'required',
+        'amount' => 'required',
+        'cost' => 'required',
     ];
 
     protected $perPage = 20;
@@ -33,7 +35,7 @@ class ServicesTransaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['transaction_id','service_id'];
+    protected $fillable = ['transaction_id','service_id','cost','amount'];
 
 
     /**

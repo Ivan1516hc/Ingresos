@@ -52,12 +52,12 @@
             <h5>SERVICIOS</h5>
 
             <div class="col-5">
-                <select name="services" id="services" class="form-select">
+                <select  id="services" class="form-select">
                     <option>SELECCIONA SERVICIO</option>
                 </select>
             </div>
             <div class="col-2 offset-lg-1">
-                <select name="cantidad" id="cantidad" class="form-select">
+                <select id="cantidad" class="form-select">
                     <option>CANTIDAD</option>
                     <option value=1>1 UD.</option>
                     @for ($i = 1; $i < 10; $i++)
@@ -73,13 +73,6 @@
                 <div class="table-responsive">
                     <table class="table table-hover" id="tabla-servicios">
                         <thead class="thead">
-                            <tr>
-                                <th>No</th>
-                                <th>Service</th>
-                                <th>Cantidad</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
                         </thead>
                         <tbody id="tabla-servicios">
                         </tbody>

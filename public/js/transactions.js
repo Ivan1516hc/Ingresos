@@ -39,7 +39,7 @@ function getServices() {
                 let opt = response.data[i];
                 let el = document.createElement("option");
                 el.textContent = opt.name;
-                el.value = {id :opt.id,name: opt.name, const: opt.cost, opt: opt.not_binding, partial: opt.partial, cant: ''};
+                el.value = JSON.stringify({ id: opt.id, name: opt.name, cost: opt.cost, opt: opt.not_binding, partial: opt.partial, cant: '' });
                 select.add(el);
             }
         })
@@ -49,8 +49,9 @@ function getServices() {
 
 function addService() {
     // Obtener los valores seleccionados de los select
-    let servicio = document.getElementById("services").value;
+    let servicio = JSON.parse(document.getElementById("services").value);
     servicio.cant = document.getElementById("cantidad").value;
+    servicio.total = servicio.cant * servicio.cost;
 
     // Verificar si se seleccionó un servicio válido
     if (servicio == "SELECCIONA SERVICIO") {
@@ -59,19 +60,19 @@ function addService() {
     }
 
     // Verificar si se seleccionó una cantidad válida
-    if (cantidad == "CANTIDAD") {
+    if (servicio.cant == "CANTIDAD") {
         alert("Selecciona una cantidad válida");
         return;
     }
 
-    if (serviciosAgregados.length >= 1 && valores[4] == 1) {
+    if (serviciosAgregados.length >= 1 && servicio.partial == 1) {
         let modal = document.getElementById('exampleModal');
         let openModal = new bootstrap.Modal(modal);
         return openModal.show();
     }
 
     // Agregar el servicio a la letiable global
-    console.log( document.getElementById("services").value);
+
     serviciosAgregados.push(servicio);
 
     // Limpiar los valores seleccionados de los select
@@ -123,11 +124,11 @@ function actualizarTabla() {
     row.appendChild(th5);
     row.appendChild(th6);
 
+
     let total = 0;
 
     // Crear una nueva fila para cada servicio agregado y agregarla a la tabla
     for (let i = 0; i < serviciosAgregados.length; i++) {
-
         let servicio = serviciosAgregados[i];
         let fila = tabla.insertRow();
         let celdaNo = fila.insertCell(0);
@@ -150,7 +151,7 @@ function actualizarTabla() {
         btnEliminar.innerHTML = "ELIMINAR";
         btnEliminar.dataset.index = i;
         btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
-        btnEliminar.addEventListener("click", function () {
+        btnEliminar.addEventListener("click", function() {
             let index = this.dataset.index;
             serviciosAgregados.splice(index, 1);
             actualizarTabla();
@@ -159,16 +160,28 @@ function actualizarTabla() {
 
     }
 
+    let filas = tabla.insertRow();
+    let checkbox = filas.insertCell(5);
+    // Agregar botón de eliminar y su funcionalidad
+    let checkboxPartial = document.createElement("checkbox");
+    checkboxPartial.type = 'checkbox';
+    checkboxPartial.name = val;
+    checkboxPartial.value = cap;
+    // btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
+    checkbox.appendChild(checkboxPartial);
+
     document.getElementById("total").value = total;
 
 
 }
 
 function arrayData() {
-    myForm.addEventListener("submit", function (evt) {
+    myForm.addEventListener("submit", function(evt) {
         evt.preventDefault();
         window.history.back();
     }, true);
+
+    document.getElementById("total").disabled = false
 
     // después de agregar un servicio a `serviciosAgregados`
     document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
