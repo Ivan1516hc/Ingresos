@@ -46,6 +46,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
 
         $user = Auth::user();
         $serviciosAgregados = json_decode($request->serviciosAgregados);

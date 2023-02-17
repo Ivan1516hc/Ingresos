@@ -69,6 +69,8 @@
                 <button class="btn btn-success btn-md" type="button" onclick="addService()">AGREGAR</button>
             </div>
             <div class="col-12 mt-3 d-none" id="table-container">
+                <p class="text-danger" id='labelPartial'>         
+                </p>
                 <hr>
                 <div class="table-responsive">
                     <table class="table table-hover" id="tabla-servicios">

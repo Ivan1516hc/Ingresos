@@ -49,15 +49,17 @@ function getServices() {
 
 function addService() {
     // Obtener los valores seleccionados de los select
-    let servicio = JSON.parse(document.getElementById("services").value);
-    servicio.cant = document.getElementById("cantidad").value;
-    servicio.total = servicio.cant * servicio.cost;
-
     // Verificar si se seleccionó un servicio válido
-    if (servicio == "SELECCIONA SERVICIO") {
+    let value = document.getElementById("services").value;
+    if (value == 'SELECCIONA SERVICIO') {
         alert("Selecciona un servicio válido");
         return;
     }
+    let servicio = JSON.parse(value);
+    servicio.cant = document.getElementById("cantidad").value;
+    servicio.total = servicio.cant * servicio.cost;
+
+
 
     // Verificar si se seleccionó una cantidad válida
     if (servicio.cant == "CANTIDAD") {
@@ -117,12 +119,14 @@ function actualizarTabla() {
     th4.innerHTML = "Cantidad";
     th5.innerHTML = "Total";
     th6.innerHTML = "";
+
     row.appendChild(th1);
     row.appendChild(th2);
     row.appendChild(th3);
     row.appendChild(th4);
     row.appendChild(th5);
     row.appendChild(th6);
+
 
 
     let total = 0;
@@ -137,12 +141,12 @@ function actualizarTabla() {
         let celdaCantidad = fila.insertCell(3);
         let celdaTotal = fila.insertCell(4);
         let celdaEliminar = fila.insertCell(5); // Agregar celda para botón de eliminar
+        let celdaCheckbox = fila.insertCell(6);
 
         celdaNo.innerHTML = i + 1;
         celdaNombre.innerHTML = servicio.name;
         celdaCosto.innerHTML = servicio.cost;
         celdaCantidad.innerHTML = servicio.cant;
-        celdaTotal.innerHTML = servicio.total;
 
         total += servicio.total;
 
@@ -151,32 +155,41 @@ function actualizarTabla() {
         btnEliminar.innerHTML = "ELIMINAR";
         btnEliminar.dataset.index = i;
         btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
-        btnEliminar.addEventListener("click", function() {
+        btnEliminar.addEventListener("click", function () {
             let index = this.dataset.index;
             serviciosAgregados.splice(index, 1);
             actualizarTabla();
         });
         celdaEliminar.appendChild(btnEliminar);
 
+        if (servicio.partial == 0) {
+            let miTagP = document.getElementById('labelPartial');
+            let cadena = 'Selecciona la casilla de Pago parcial si quieres que el servicio sea pagado a cuotas.<br>' +
+                'Valor del servicio: $' + servicio.total + '<br>' +
+                'Servicio a 5 cuotas de: $' + (servicio.total / 5);
+            miTagP.innerHTML = cadena;
+            let th7 = document.createElement("th");
+            th7.innerHTML = "PAGOS PARCIALES";
+            row.appendChild(th7);
+            celdaTotal.innerHTML = (servicio.total / 5);
+            let checkboxPartial = document.createElement("input");
+            checkboxPartial.type = 'checkbox';
+            checkboxPartial.dataset.index = i;
+            checkboxPartial.name = "payment_partial";
+            checkboxPartial.addEventListener("click", function () {
+                let index = this.dataset.index;
+                console.log(serviciosAgregados[index]);
+            });
+            celdaCheckbox.appendChild(checkboxPartial);
+        } else {
+            celdaTotal.innerHTML = servicio.total;
+        }
     }
-
-    let filas = tabla.insertRow();
-    let checkbox = filas.insertCell(5);
-    // Agregar botón de eliminar y su funcionalidad
-    let checkboxPartial = document.createElement("checkbox");
-    checkboxPartial.type = 'checkbox';
-    checkboxPartial.name = val;
-    checkboxPartial.value = cap;
-    // btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
-    checkbox.appendChild(checkboxPartial);
-
     document.getElementById("total").value = total;
-
-
 }
 
 function arrayData() {
-    myForm.addEventListener("submit", function(evt) {
+    myForm.addEventListener("submit", function (evt) {
         evt.preventDefault();
         window.history.back();
     }, true);
