@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PartialPayment;
 use App\Models\ServicesTransaction;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -46,7 +47,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        request()->validate(Transaction::$rules);
 
         $user = Auth::user();
         $serviciosAgregados = json_decode($request->serviciosAgregados);
@@ -60,7 +61,24 @@ class TransactionController extends Controller
         }else{
             $folio = $folio+1;
         }
+
+        if(isset($request->payment_partial)){
+            dd('Si sirve');
+            $partialPayment = PartialPayment::create([
+                'beneficiary_id' => $request->beneficiary_id,
+                'beneficiary_name' => $request->beneficiary_name,
+                'service_id' => $serviciosAgregados[0]->id,
+                'user_id' => $user->id,
+                'payment' => ($serviciosAgregados[0]->cost / 5),
+                'partiality' => 1,
+                'status' => 1
+            ]);
+
+            $serviciosAgregados[0]->cost = ($serviciosAgregados[0]->cost /5);
+        }
         
+        dd($request->all());
+        dd($serviciosAgregados[0]);
         $transaction = Transaction::create([
             'invoice' => $folio,
             'bill' => $request->bill,

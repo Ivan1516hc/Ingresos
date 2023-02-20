@@ -34,13 +34,9 @@ class Transaction extends Model
 {
     
     static $rules = [
-		'invoice' => 'required',
 		'total' => 'required',
 		'beneficiary_id' => 'required',
 		'beneficiary_name' => 'required',
-		'location_id' => 'required',
-		'user_id' => 'required',
-		'status' => 'required',
     ];
 
     protected $perPage = 20;

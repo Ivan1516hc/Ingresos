@@ -91,17 +91,20 @@ function actualizarTabla() {
     let tabla = document.getElementById("tabla-servicios");
     // Limpiar la tabla
     tabla.innerHTML = "";
+    let tableContainer = document.getElementById("table-container");
+    let totalContainer = document.getElementById("total-container");
+    let button = document.getElementById("button");
+    let inputTotal = document.getElementById("total");
     if (serviciosAgregados.length >= 1) {
-        let tableContainer = document.getElementById("table-container");
-        let totalContainer = document.getElementById("total-container");
-        let button = document.getElementById("button");
         tableContainer.classList.remove("d-none");
         totalContainer.classList.remove("d-none");
         button.classList.remove("d-none");
     } else {
-        ableContainer.classList.add("d-none");
+        tableContainer.classList.add("d-none");
         totalContainer.classList.add("d-none");
         button.classList.add("d-none");
+        inputTotal.classList.add("d-none");
+        return;
     }
 
     // Agregar los encabezados de la tabla
@@ -155,9 +158,10 @@ function actualizarTabla() {
         btnEliminar.innerHTML = "ELIMINAR";
         btnEliminar.dataset.index = i;
         btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
-        btnEliminar.addEventListener("click", function () {
+        btnEliminar.addEventListener("click", function() {
             let index = this.dataset.index;
             serviciosAgregados.splice(index, 1);
+            total -= servicio.total;
             actualizarTabla();
         });
         celdaEliminar.appendChild(btnEliminar);
@@ -171,30 +175,38 @@ function actualizarTabla() {
             let th7 = document.createElement("th");
             th7.innerHTML = "PAGOS PARCIALES";
             row.appendChild(th7);
-            celdaTotal.innerHTML = (servicio.total / 5);
+            celdaTotal.innerHTML = (servicio.total);
             let checkboxPartial = document.createElement("input");
             checkboxPartial.type = 'checkbox';
             checkboxPartial.dataset.index = i;
             checkboxPartial.name = "payment_partial";
-            checkboxPartial.addEventListener("click", function () {
-                let index = this.dataset.index;
-                console.log(serviciosAgregados[index]);
+            checkboxPartial.addEventListener("click", function() {
+                if (checkboxPartial.checked == true) {
+                    let index = this.dataset.index;
+                    console.log(serviciosAgregados[index]);
+                    document.getElementById("total").value = (total / 5);
+                    celdaTotal.innerHTML = (servicio.total / 5);
+                } else {
+                    document.getElementById("total").value = total;
+                    celdaTotal.innerHTML = servicio.total;
+                }
             });
             celdaCheckbox.appendChild(checkboxPartial);
+            document.getElementById("total").value = total;
         } else {
             celdaTotal.innerHTML = servicio.total;
+            document.getElementById("total").value = total;
         }
     }
-    document.getElementById("total").value = total;
 }
 
 function arrayData() {
-    myForm.addEventListener("submit", function (evt) {
+    myForm.addEventListener("submit", function(evt) {
         evt.preventDefault();
         window.history.back();
     }, true);
 
-    document.getElementById("total").disabled = false
+    document.getElementById("total").disabled = false;
 
     // después de agregar un servicio a `serviciosAgregados`
     document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
