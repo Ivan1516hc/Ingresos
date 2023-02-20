@@ -14,6 +14,29 @@ function mostrarInput(checkbox) {
     }
 }
 
+function noBildingCheckbox(checkbox) {
+    let inputName = document.getElementById("beneficiary_name");
+    let inputId = document.getElementById("beneficiary_id");
+    if (checkbox.checked) {
+        inputName.disabled = true;
+        inputId.value = 'DIFZAP2019026294';
+        inputId.disabled = true;
+        inputName.value = 'NO VINCULANTE NO VINCULANTE NO VINCULANTE';
+        serviciosAgregados=[]
+        getServicesNotBulding();
+        actualizarTabla();
+    } else {
+        inputName.disabled = false;
+        inputId.disabled = false;
+        inputId.value = '';
+        inputName.value = '';
+        document.getElementById("table-container").innerHTML = "";
+        serviciosAgregados=[]
+        getServicesNotBulding();
+        getServices();
+    }
+}
+
 function searchBeneficiary(id) {
     axios.get('http://datac.difzapopan.gob.mx/api-servicios/public/api/1111112022/get/' + id)
         .then(response => {
@@ -34,7 +57,11 @@ function searchBeneficiary(id) {
 function getServices() {
     axios.get('http://127.0.0.1:8000/servicios-usuario')
         .then(response => {
+            document.getElementById("services").innerHTML = "";
             let select = document.getElementById("services");
+            let el = document.createElement("option");
+            el.textContent = 'SELECCIONA SERVICIO';
+            select.add(el);
             for (let i = 0; i < response.data.length; i++) {
                 let opt = response.data[i];
                 let el = document.createElement("option");
@@ -46,7 +73,26 @@ function getServices() {
         .catch(error => console.error(error))
 }
 
+function getServicesNotBulding() {
+    axios.get('http://127.0.0.1:8000/servicios-no-vinculantes')
+        .then(response => {
+            document.getElementById("services").innerHTML = "";
+            let select = document.getElementById("services");
+            let el = document.createElement("option");
+            el.textContent = 'SELECCIONA SERVICIO';
+            select.add(el);
+            for (let i = 0; i < response.data.length; i++) {
+                let opt = response.data[i];
+                let el = document.createElement("option");
+                el.textContent = opt.name;
+                el.value = JSON.stringify({ id: opt.id, name: opt.name, cost: opt.cost, opt: opt.not_binding, partial: opt.partial, cant: '' });
+                select.add(el);
+            }
+        })
+        .catch(error => console.error(error))
+}
 
+var noBilding = false;
 function addService() {
     // Obtener los valores seleccionados de los select
     // Verificar si se seleccionó un servicio válido
@@ -59,28 +105,22 @@ function addService() {
     servicio.cant = document.getElementById("cantidad").value;
     servicio.total = servicio.cant * servicio.cost;
 
-
-
     // Verificar si se seleccionó una cantidad válida
     if (servicio.cant == "CANTIDAD") {
         alert("Selecciona una cantidad válida");
         return;
     }
-
-    if (serviciosAgregados.length >= 1 && servicio.partial == 1) {
+    if (serviciosAgregados.length >= 1 && servicio.partial !== serviciosAgregados[0].partial || noBilding) {
         let modal = document.getElementById('exampleModal');
         let openModal = new bootstrap.Modal(modal);
         return openModal.show();
     }
-
     // Agregar el servicio a la letiable global
-
     serviciosAgregados.push(servicio);
-
+    noBilding = serviciosAgregados[0].partial ? true : false;
     // Limpiar los valores seleccionados de los select
     document.getElementById("services").value = "SELECCIONA SERVICIO";
     document.getElementById("cantidad").value = "CANTIDAD";
-
     // Actualizar la tabla con los servicios agregados
     actualizarTabla();
 }
@@ -95,6 +135,8 @@ function actualizarTabla() {
     let totalContainer = document.getElementById("total-container");
     let button = document.getElementById("button");
     let inputTotal = document.getElementById("total");
+    let label = document.getElementById('labelPartial');
+
     if (serviciosAgregados.length >= 1) {
         tableContainer.classList.remove("d-none");
         totalContainer.classList.remove("d-none");
@@ -104,6 +146,7 @@ function actualizarTabla() {
         totalContainer.classList.add("d-none");
         button.classList.add("d-none");
         inputTotal.classList.add("d-none");
+        label.classList.add("d-none");
         return;
     }
 
@@ -158,15 +201,16 @@ function actualizarTabla() {
         btnEliminar.innerHTML = "ELIMINAR";
         btnEliminar.dataset.index = i;
         btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
-        btnEliminar.addEventListener("click", function() {
+        btnEliminar.addEventListener("click", function () {
             let index = this.dataset.index;
             serviciosAgregados.splice(index, 1);
             total -= servicio.total;
+            noBilding = false;
             actualizarTabla();
         });
         celdaEliminar.appendChild(btnEliminar);
 
-        if (servicio.partial == 0) {
+        if (servicio.partial == 5) {
             let miTagP = document.getElementById('labelPartial');
             let cadena = 'Selecciona la casilla de Pago parcial si quieres que el servicio sea pagado a cuotas.<br>' +
                 'Valor del servicio: $' + servicio.total + '<br>' +
@@ -180,7 +224,7 @@ function actualizarTabla() {
             checkboxPartial.type = 'checkbox';
             checkboxPartial.dataset.index = i;
             checkboxPartial.name = "payment_partial";
-            checkboxPartial.addEventListener("click", function() {
+            checkboxPartial.addEventListener("click", function () {
                 if (checkboxPartial.checked == true) {
                     let index = this.dataset.index;
                     console.log(serviciosAgregados[index]);
@@ -201,20 +245,15 @@ function actualizarTabla() {
 }
 
 function arrayData() {
-    myForm.addEventListener("submit", function(evt) {
+    myForm.addEventListener("submit", function (evt) {
         evt.preventDefault();
         window.history.back();
     }, true);
 
-    document.getElementById("total").disabled = false;
+    document.getElementById("beneficiary_id").disabled = false;
+    document.getElementById("beneficiary_name").disabled = false;
 
     // después de agregar un servicio a `serviciosAgregados`
     document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
 
-}
-
-
-function eliminarServicio(indice) {
-    serviciosAgregados.splice(indice, 1);
-    actualizarTabla();
 }

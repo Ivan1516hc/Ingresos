@@ -24,7 +24,7 @@
 
             <h5>BENEFICIARIO</h5>
 
-            <div class="col-6">
+            <div class="col-3">
                 <div class="form-group">
                     <label for="beneficiary_id">ID BENEFICIARIO</label>
                     <input type="text" name="beneficiary_id" id="beneficiary_id"
@@ -46,6 +46,14 @@
                     @if ($errors->has('beneficiary_name'))
                         <div class="invalid-feedback">{{ $errors->first('beneficiary_name') }}</div>
                     @endif
+                </div>
+            </div>
+            <div class="col-2">
+                <div>
+                    <label>
+                        NO VINCULANTE
+                        <input type="checkbox" onchange="noBildingCheckbox(this)">
+                    </label>
                 </div>
             </div>
 

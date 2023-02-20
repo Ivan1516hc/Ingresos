@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     // Route::resource('/comunidades/{nombre}',App\Http\Controllers\BeneficiariesCommunityController::class,['names' => '']);
 
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);
+    Route::get('servicios-no-vinculantes', [App\Http\Controllers\ServiceController::class, 'getServicesNotbilding']);
 
     Route::get('logout', function() {
         Auth::logout();

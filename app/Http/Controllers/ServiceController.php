@@ -29,7 +29,16 @@ class ServiceController extends Controller
 
     public function getServicesUser(){
         $user = Auth::user();
-        $services = Service::whereHas('groups.locations.users', function ($query) use($user){
+        $services = Service::where('not_binding',0)->whereHas('groups.locations.users', function ($query) use($user){
+            return $query->where('users.id',$user->id);
+        } )->get();
+
+        return response()->json($services);
+    }
+
+    public function getServicesNotbilding(){
+        $user = Auth::user();
+        $services = Service::where('not_binding',1)->whereHas('groups.locations.users', function ($query) use($user){
             return $query->where('users.id',$user->id);
         } )->get();
 
