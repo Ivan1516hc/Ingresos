@@ -39,6 +39,11 @@ class Transaction extends Model
         'serviciosAgregados' => 'required'
     ];
 
+    protected $casts=[
+        'created_at'    => 'date:d-m-Y',
+        'update_at'     => 'date:d-m-Y'
+    ];
+
     protected $perPage = 20;
 
     /**

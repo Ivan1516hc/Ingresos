@@ -8,7 +8,7 @@ function myCollapse(target) {
     let cardData = {
         caja: {
             cobros: {
-                links: '/',
+                links: '/movimientos/create',
                 iconClass: 'fas fa-wallet',
                 iconColor: 'bg-primary text-light',
                 title: 'COBROS'

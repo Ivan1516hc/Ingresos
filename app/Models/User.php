@@ -40,6 +40,7 @@ class User extends Authenticatable
 		'username' => 'required',
 		'post' => 'required',
 		'location_id' => 'required',
+        'profile_id' => 'required'
     ];
 
     protected $perPage = 20;
@@ -49,7 +50,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $fillable = ['name','username','post','location_id'];
+    protected $fillable = ['name','username','post','location_id','profile_id'];
 
 
     /**

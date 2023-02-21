@@ -87,20 +87,21 @@ class DatosController extends Controller
                 'name'        => $user['nombre'],
                 'post'        => $user['puesto'],
                 'location_id' => $user['idubicacion'],
+                'profile_id'  => $user['perfil'],
                 'created_at' => Carbon::now(),
             ]);
             //Hash::make($user['pwd']),
         }
 
-        $users = DB::connection('mysql_2')->table("user")->get();
-        foreach ($users as $user) {
-            $user = $this->convertValuesToUppercase($user);
-            DB::table('profiles_users')->insert([
-                'user_id'   => $user['iduser'],
-                'profile_id'  => $user['perfil'],
-                'created_at' => Carbon::now(),
-            ]);
-        }
+        // $users = DB::connection('mysql_2')->table("user")->get();
+        // foreach ($users as $user) {
+        //     $user = $this->convertValuesToUppercase($user);
+        //     DB::table('profiles_users')->insert([
+        //         'user_id'   => $user['iduser'],
+        //         'profile_id'  => $user['perfil'],
+        //         'created_at' => Carbon::now(),
+        //     ]);
+        // }
 
         
 
@@ -153,35 +154,11 @@ class DatosController extends Controller
             }
         }
 
-        $file = 'C:\Users\Humberto\Downloads\movimientos (2).csv';
-        $headerMap = [
-            'idventa' => 'invoice',
-            'facturar' => 'bill',
-            'total' => 'total',
-            'idbeneficiario' => 'beneficiary_id',
-            'nombrebeneficiario' => 'beneficiary_name',
-            'idcentro' => 'location_id',
-            'idUser' => 'user_id',
-            'estatus' => 'status',
-            'fecha' => 'created_at',
-        ];
-        $ignoredColumns = [
-            'idMovimientos', 'idFolio',
-            'idCaja', 'cantidad', 'costo', 'pdescuento', 'iddescuento', 'terapeuta',
-            'motivocancela', 'centroalim', 'idProducto', 'parcial'
-        ];
-
+        $file = 'C:\Users\Humberto\Downloads\movimientos (8).csv';
         if (($handle = fopen($file, "r")) !== false) {
             $header = fgetcsv($handle);
-            $header = array_map(function ($column) use ($headerMap) {
-                return isset($headerMap[$column]) ? $headerMap[$column] : $column;
-            }, $header);
-
             while (($data = fgetcsv($handle)) !== false) {
                 $data = array_combine($header, $data);
-                $data = array_filter($data, function ($key) use ($ignoredColumns) {
-                    return !in_array($key, $ignoredColumns);
-                }, ARRAY_FILTER_USE_KEY);
                 // Check if a value exists and assign null if not
                 foreach ($data as &$value) {
                     $value = $value === '' ? null : $value;
@@ -245,8 +222,6 @@ class DatosController extends Controller
 
     public function import3()
     {
-        
-
         $partialPayments = DB::connection('mysql_2')->table("parcialidades")->get();
         foreach ($partialPayments as $partialPayment) {
             $partialPayment = $this->convertValuesToUppercase($partialPayment);

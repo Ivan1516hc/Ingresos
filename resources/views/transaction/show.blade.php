@@ -11,48 +11,43 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-left">
-                            <span class="card-title">Show Transaction</span>
+                            <span class="card-title">INFORMACÓN DE MOVIMIENTO</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('transactions.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('transactions.index') }}">REGRESAR</a>
                         </div>
                     </div>
 
                     <div class="card-body">
                         
                         <div class="form-group">
-                            <strong>Invoice:</strong>
+                            <strong>Folio:</strong>
                             {{ $transaction->invoice }}
-                        </div>
-                        <div class="form-group">
-                            <strong>Bill:</strong>
-                            {{ $transaction->bill }}
                         </div>
                         <div class="form-group">
                             <strong>Total:</strong>
                             {{ $transaction->total }}
                         </div>
                         <div class="form-group">
-                            <strong>Beneficiary Id:</strong>
+                            <strong>Id Beneficiario:</strong>
                             {{ $transaction->beneficiary_id }}
                         </div>
                         <div class="form-group">
-                            <strong>Beneficiary Name:</strong>
+                            <strong>Nombre Beneficiario:</strong>
                             {{ $transaction->beneficiary_name }}
                         </div>
                         <div class="form-group">
-                            <strong>Location Id:</strong>
-                            {{ $transaction->location_id }}
+                            <strong>Centro:</strong>
+                            {{ $transaction->location->name }}
                         </div>
                         <div class="form-group">
-                            <strong>User Id:</strong>
-                            {{ $transaction->user_id }}
+                            <strong>Cajero:</strong>
+                            {{ $transaction->user->name }}
                         </div>
                         <div class="form-group">
                             <strong>Status:</strong>
                             {{ $transaction->status }}
                         </div>
-
                     </div>
                 </div>
             </div>

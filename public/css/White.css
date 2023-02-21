@@ -1094,6 +1094,10 @@ ul.timeline > li:before {
 	color: #fff !important;
 }
 
+.icon-button{
+	color: #fff !important;
+}
+
 .dashboard .card p {
 	margin-bottom: 5px;
 }

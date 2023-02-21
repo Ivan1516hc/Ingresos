@@ -92,7 +92,7 @@ function getServicesNotBulding() {
         .catch(error => console.error(error))
 }
 
-var noBilding = false;
+var partialPayment = false;
 function addService() {
     // Obtener los valores seleccionados de los select
     // Verificar si se seleccionó un servicio válido
@@ -110,14 +110,17 @@ function addService() {
         alert("Selecciona una cantidad válida");
         return;
     }
-    if (serviciosAgregados.length >= 1 && servicio.partial !== serviciosAgregados[0].partial || noBilding) {
+    if (serviciosAgregados.length >= 1 && servicio.partial !== serviciosAgregados[0].partial || partialPayment) {
         let modal = document.getElementById('exampleModal');
         let openModal = new bootstrap.Modal(modal);
         return openModal.show();
     }
     // Agregar el servicio a la letiable global
     serviciosAgregados.push(servicio);
-    noBilding = serviciosAgregados[0].partial ? true : false;
+    partialPayment = serviciosAgregados[0].partial ? true : false;
+    if(partialPayment){
+        labelPartial.classList.remove("d-none");
+    }
     // Limpiar los valores seleccionados de los select
     document.getElementById("services").value = "SELECCIONA SERVICIO";
     document.getElementById("cantidad").value = "CANTIDAD";
@@ -141,6 +144,7 @@ function actualizarTabla() {
         tableContainer.classList.remove("d-none");
         totalContainer.classList.remove("d-none");
         button.classList.remove("d-none");
+        inputTotal.classList.remove("d-none");
     } else {
         tableContainer.classList.add("d-none");
         totalContainer.classList.add("d-none");
@@ -205,7 +209,7 @@ function actualizarTabla() {
             let index = this.dataset.index;
             serviciosAgregados.splice(index, 1);
             total -= servicio.total;
-            noBilding = false;
+            partialPayment = false;
             actualizarTabla();
         });
         celdaEliminar.appendChild(btnEliminar);
@@ -227,9 +231,9 @@ function actualizarTabla() {
             checkboxPartial.addEventListener("click", function () {
                 if (checkboxPartial.checked == true) {
                     let index = this.dataset.index;
-                    console.log(serviciosAgregados[index]);
+                    serviciosAgregados[index].total= (servicio.total / 5);
                     document.getElementById("total").value = (total / 5);
-                    celdaTotal.innerHTML = (servicio.total / 5);
+                    celdaTotal.innerHTML =servicio.total;
                 } else {
                     document.getElementById("total").value = total;
                     celdaTotal.innerHTML = servicio.total;

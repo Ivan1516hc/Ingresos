@@ -1,5 +1,8 @@
 @extends('layouts.app')
-
+@php
+    use Carbon\Carbon;
+    $user = Auth::user();
+@endphp
 @section('template_title')
     Transaction
 @endsection
@@ -11,17 +14,9 @@
                 <div class="card">
                     <div class="card-header">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-
                             <span id="card_title">
-                                {{ __('Transaction') }}
+                                {{ __('MOVIMIENTOS') }}
                             </span>
-
-                            <div class="float-right">
-                                <a href="{{ route('transactions.create') }}" class="btn btn-primary btn-sm float-right"
-                                    data-placement="left">
-                                    {{ __('Create New') }}
-                                </a>
-                            </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -29,7 +24,6 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
-
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover">
@@ -37,14 +31,13 @@
                                     <tr>
                                         <th>No</th>
 
-                                        <th>Invoice</th>
-                                        <th>Bill</th>
+                                        <th>Folio</th>
                                         <th>Total</th>
-                                        <th>Beneficiary Id</th>
-                                        <th>Beneficiary Name</th>
-                                        <th>Location Id</th>
-                                        <th>User Id</th>
-                                        <th>Status</th>
+                                        <th>Id Beneficiario</th>
+                                        <th>Nombre Beneficiario</th>
+                                        <th>Centro</th>
+                                        <th>Estado</th>
+                                        <th>Fecha</th>
 
                                         <th></th>
                                     </tr>
@@ -55,27 +48,32 @@
                                             <td>{{ ++$i }}</td>
 
                                             <td>{{ $transaction->invoice }}</td>
-                                            <td>{{ $transaction->bill }}</td>
                                             <td>{{ $transaction->total }}</td>
                                             <td>{{ $transaction->beneficiary_id }}</td>
                                             <td>{{ $transaction->beneficiary_name }}</td>
-                                            <td>{{ $transaction->location_id }}</td>
-                                            <td>{{ $transaction->user_id }}</td>
+                                            <td>{{ $transaction->location->name }}</td>
                                             <td>{{ $transaction->status }}</td>
+                                            <td>{{ $transaction->created_at->format('d-m-Y') }}</td>
 
                                             <td>
                                                 <form action="{{ route('transactions.destroy', $transaction->id) }}"
                                                     method="POST">
-                                                    <a class="btn btn-sm btn-primary "
+                                                    <a class="btn btn-md btn-primary "
                                                         href="{{ route('transactions.show', $transaction->id) }}"><i
-                                                            class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success"
-                                                        href="{{ route('transactions.edit', $transaction->id) }}"><i
-                                                            class="fa fa-fw fa-edit"></i> Edit</a>
+                                                            class="la la-fw la-eye icon-button"></i> Ver</a>
                                                     @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i
-                                                            class="fa fa-fw fa-trash"></i> Delete</button>
+                                                    @if ($user->profile_id == 3)
+                                                        @if ($transaction->created_at->isToday())
+                                                            <button type="submit" class="btn btn-md btn-danger">
+                                                                <i class="la la-edit icon-button"></i> Cancelar
+                                                            </button>
+                                                        @elseif ($transaction->created_at->isCurrentMonth())
+                                                            <button type="submit"
+                                                                class="btn btn-md bg-secondary text-light">
+                                                                <i class="la la-edit icon-button"></i> Solicitar Cencelación
+                                                            </button>
+                                                        @endif
+                                                    @endif
                                                 </form>
                                             </td>
                                         </tr>

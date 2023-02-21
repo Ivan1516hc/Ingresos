@@ -2,6 +2,11 @@
     <div class="box-body">
         <div class="row">
             <div class="col-10">
+                @if ($message = Session::get('message'))
+                    <div class="alert alert-danger">
+                        <p>{{ $message }}</p>
+                    </div>
+                @endif
                 <div id="input-container" class="d-none">
                     <div class="form-group">
                         <label for="bill">FACTURAR</label>
@@ -60,7 +65,7 @@
             <h5>SERVICIOS</h5>
 
             <div class="col-5">
-                <select  id="services" class="form-select">
+                <select id="services" class="form-select">
                     <option>SELECCIONA SERVICIO</option>
                 </select>
             </div>
@@ -77,7 +82,7 @@
                 <button class="btn btn-success btn-md" type="button" onclick="addService()">AGREGAR</button>
             </div>
             <div class="col-12 mt-3 d-none" id="table-container">
-                <p class="text-danger" id='labelPartial'>         
+                <p class="text-danger" id='labelPartial'>
                 </p>
                 <hr>
                 <div class="table-responsive">

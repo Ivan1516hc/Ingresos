@@ -22,6 +22,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->unsignedTinyInteger('location_id');
             $table->foreign('location_id')->references('id')->on('locations');
+            $table->unsignedTinyInteger('profile_id');
+            $table->foreign('profile_id')->references('id')->on('profiles');
             $table->timestamps();
             $table->softDeletes();
         });
