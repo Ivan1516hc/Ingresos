@@ -36,7 +36,7 @@
                                     <tr>
                                         <th>No</th>
                                         
-										<th>Name</th>
+										<th>Nombre</th>
 
                                         <th></th>
                                     </tr>
@@ -50,9 +50,6 @@
 
                                             <td>
                                                 <form action="{{ route('therapists.destroy',$therapist->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('therapists.show',$therapist->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('therapists.edit',$therapist->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                                                    @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
                                                 </form>

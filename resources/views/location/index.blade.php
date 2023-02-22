@@ -52,17 +52,14 @@
                                             
 											<td>{{ $location->name }}</td>
 											<td>{{ $location->descripcion }}</td>
-											<td>{{ $location->group_id }}</td>
+											<td>{{ $location->group->name}}</td>
 											<td>{{ $location->department_id }}</td>
-											<td>{{ $location->manager_id }}</td>
+											<td>{{ $location->user->name ?? null}}</td>
 
                                             <td>
                                                 <form action="{{ route('locations.destroy',$location->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('locations.show',$location->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('locations.edit',$location->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                                                    @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
                                                 </form>
                                             </td>
                                         </tr>

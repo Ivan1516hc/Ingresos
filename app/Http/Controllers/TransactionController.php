@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CancellationHistory;
 use App\Models\PartialPayment;
 use App\Models\ServicesTransaction;
 use App\Models\Transaction;
@@ -25,8 +26,8 @@ class TransactionController extends Controller
     {
         $user = Auth::user();
         $model = Transaction::query();
-        ($user->profile_id==3 ? $model->where('user_id',$user->id) : null);
-        ($user->profile_id==2 ? $model->where('location_id',$user->location_id) : null);
+        ($user->profile_id == 3 ? $model->where('user_id', $user->id) : null);
+        ($user->profile_id == 2 ? $model->where('location_id', $user->location_id) : null);
         $transactions = $model->orderBy('id', 'desc')->where('status', '<>', 3)->paginate();
 
         return view('transaction.index', compact('transactions'))
@@ -51,16 +52,6 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function postSolicitud(Request $request)
-    {
-        DB::beginTransaction();
-
-        try {
-        } catch (\Throwable $th) {
-            DB::rollBack();
-        }
-    }
-
     public function store(Request $request)
     {
         request()->validate(Transaction::$rules);
@@ -70,7 +61,7 @@ class TransactionController extends Controller
 
         $year = Carbon::now()->format('Y');
 
-        $number = Transaction::select('invoice')->where('location_id',$user->location_id)->whereYear('created_at',$year)->orderBy('id', 'desc')->first();
+        $number = Transaction::select('invoice')->where('location_id', $user->location_id)->whereYear('created_at', $year)->orderBy('id', 'desc')->first();
         $folio = $number->invoice ?? null;
         if ($folio == null) {
             $folio = intval($year . $user->location_id . '00001');
@@ -98,9 +89,9 @@ class TransactionController extends Controller
             if (isset($request->payment_partial)) {
                 if ($request->beneficiary_id != 'DIFZAP2019026294') {
                     $query = PartialPayment::where('beneficiary_id', $request->beneficiary_id)->where('status', 1)->get();
-                    if($query->count() > 0){
+                    if ($query->count() > 0) {
                         return back()->with('message', 'Beneficiario con deuda.');
-                    }             
+                    }
                 }
                 $partialPayment = PartialPayment::create([
                     'beneficiary_id' => $request->beneficiary_id,
@@ -144,46 +135,41 @@ class TransactionController extends Controller
         return view('transaction.show', compact('transaction'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function cancel($id)
     {
-        $transaction = Transaction::find($id);
-
-        return view('transaction.edit', compact('transaction'));
+        $user = Auth::user();
+        try {
+            $transaction = Transaction::find($id);
+            CancellationHistory::create([
+                'transaction_id' => $transaction->invoice,
+                'user_id' => $transaction->user_id,
+                'authorized_user_id'  => $user->id,
+            ]);
+            Transaction::find($id)->update(['status' => 3]);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('success', $th->getMessage());
+        }
+        return back()->with('success', 'Movimiento Cancelado.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  Transaction $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transaction $transaction)
+    public function requestCancel($id)
     {
-        request()->validate(Transaction::$rules);
-
-        $transaction->update($request->all());
-
-        return redirect()->route('transactions.index')
-            ->with('success', 'Transaction updated successfully');
-    }
-
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
-    public function destroy($id)
-    {
-        $transaction = Transaction::find($id)->delete();
-
-        return redirect()->route('transactions.index')
-            ->with('success', 'Transaction deleted successfully');
+        $user = Auth::user();
+        try {
+            $transaction = Transaction::find($id);
+            if($transaction->status == 1){
+                Transaction::find($id)->update(['status' => 2]);
+            }
+            if($transaction->status == 2){
+                Transaction::find($id)->update(['status' => 1]);
+            }
+            DB::commit();
+            return back()->with('success', 'Petición de Cancelado Mandada.');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('success', 'Movimiento Cancelado.');
+        }
     }
 }

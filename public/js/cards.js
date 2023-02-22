@@ -80,7 +80,7 @@ function myCollapse(target) {
                 title: 'CANCELACIÓN PARCIALIDADES'
             },
             cancelacionRF: {
-                links: '/',
+                links: '/cancelaciones',
                 iconClass: 'fas fa-times-circle',
                 iconColor: 'bg-warning text-light',
                 title: 'CANCELACIÓN RF'

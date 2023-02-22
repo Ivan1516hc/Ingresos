@@ -32,9 +32,8 @@
                                         <th>No</th>
 
                                         <th>Folio</th>
-                                        <th>Total</th>
-                                        <th>Id Beneficiario</th>
-                                        <th>Nombre Beneficiario</th>
+                                        <th>Monto</th>
+                                        <th>Nombre Cajero</th>
                                         <th>Centro</th>
                                         <th>Estado</th>
                                         <th>Fecha</th>
@@ -48,40 +47,30 @@
                                             <td>{{ ++$i }}</td>
 
                                             <td>{{ $transaction->invoice }}</td>
-                                            <td>{{ $transaction->total }}</td>
-                                            <td>{{ $transaction->beneficiary_id }}</td>
-                                            <td>{{ $transaction->beneficiary_name }}</td>
+                                            <td>$ {{ $transaction->total }}</td>
+                                            <td>{{ $transaction->user->name }}</td>
                                             <td>{{ $transaction->location->name }}</td>
                                             <td>{{ $transaction->status == 1 ? 'ACTIVO' : 'PENDIENTE' }}</td>
                                             <td>{{ $transaction->created_at->format('d-m-Y') }}</td>
 
                                             <td>
-                                                <form action="{{ route('transactions.destroy', $transaction->id) }}"
+                                                <form action="{{ route('cancel-transactions.destroy', $transaction->id) }}"
                                                     method="POST">
                                                     <a class="btn btn-md btn-primary "
-                                                        href="{{ route('transactions.show', $transaction->id) }}"><i
+                                                        href="{{ route('cancel-transactions.show', $transaction->id) }}"><i
                                                             class="la la-fw la-eye icon-button"></i> Ver</a>
                                                     @csrf
                                                 </form>
-                                                @if ($user->profile_id == 3)
-                                                    @if ($transaction->created_at->isToday())
-                                                        <button onclick="cancelar({{ $transaction->id }})"
-                                                            class="btn btn-md btn-danger">
-                                                            <i class="la la-edit icon-button"></i> Cancelar
-                                                        </button>
-                                                    @elseif ($transaction->created_at->isCurrentMonth())
-                                                        @if ($transaction->status == 1)
-                                                            <button onclick="sendRequestCancel({{ $transaction->id }})"
-                                                                class="btn btn-md bg-secondary text-light">
-                                                                <i class="la la-edit icon-button"></i> Solicitar Cencelación
-                                                            </button>
-                                                        @elseif ($transaction->status == 2)
-                                                            <button onclick="sendRequestCancel({{ $transaction->id }})"
-                                                                class="btn btn-md bg-dark text-light">
-                                                                <i class="la la-edit icon-button"></i> Cancelar Solicitud
-                                                            </button>
-                                                        @endif
-                                                    @endif
+                                                @if ($user->profile_id == 5)
+                                                    <button onclick="cancelRF({{ $transaction->id }})"
+                                                        class="btn btn-md btn-danger">
+                                                        <i class="la la-edit icon-button"></i> Autorizar Cancelación
+                                                    </button>
+                                                @elseif ($user->profile_id == 1)
+                                                    <button onclick="cancelJD({{ $transaction->id }})"
+                                                        class="btn btn-md btn-danger">
+                                                        <i class="la la-edit icon-button"></i> Autorizar Cancelación
+                                                    </button>
                                                 @endif
                                             </td>
                                         </tr>
@@ -97,4 +86,4 @@
     </div>
 @endsection
 
-<script src="../../js/indexTransactions.js"></script>
+<script src="../../js/cancelTransactions.js"></script>

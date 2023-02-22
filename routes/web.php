@@ -23,6 +23,11 @@ Route::get('import3', [App\Http\Controllers\datosController::class, 'import3']);
 
 Route::post('/login-username', [LoginController::class, 'postLogin']);
 
+
+Route::get('/mov/{id}', [App\Http\Controllers\TransactionController::class, 'cancel']);
+Route::get('/mov/request-cancel/{id}', [App\Http\Controllers\TransactionController::class, 'requestCancel']);
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return view('opcionMenu.opcion');
@@ -38,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/promotores', App\Http\Controllers\PromoterController::class, ['names' => 'promoters']);
     Route::resource('/historial-reimpresion', App\Http\Controllers\ReprintHistoryController::class, ['names' => 'reprint-histories']);
     Route::resource('/terapeutas', App\Http\Controllers\TherapistController::class, ['names' => 'therapists']);
+    Route::resource('/cancelaciones', App\Http\Controllers\CancelTransactions::class, ['names' => 'cancel-transactions']);
     // Route::resource('/comunidades/{nombre}',App\Http\Controllers\BeneficiariesCommunityController::class,['names' => '']);
 
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);

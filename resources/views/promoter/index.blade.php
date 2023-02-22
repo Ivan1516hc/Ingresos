@@ -50,11 +50,8 @@
 
                                             <td>
                                                 <form action="{{ route('promoters.destroy',$promoter->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('promoters.show',$promoter->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('promoters.edit',$promoter->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                                                    @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
