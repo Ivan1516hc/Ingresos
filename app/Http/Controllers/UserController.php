@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +34,8 @@ class UserController extends Controller
     public function create()
     {
         $user = new User();
-        return view('user.create', compact('user'));
+        $locations = Location::all();
+        return view('user.create', compact('user','locations'));
     }
 
     /**
@@ -74,8 +76,9 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
+        $locations = Location::all();
 
-        return view('user.edit', compact('user'));
+        return view('user.edit', compact('user','locations'));
     }
 
     /**

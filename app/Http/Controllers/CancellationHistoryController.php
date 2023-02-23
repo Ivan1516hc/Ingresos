@@ -18,7 +18,7 @@ class CancellationHistoryController extends Controller
      */
     public function index()
     {
-        $cancellationHistories = CancellationHistory::paginate();
+        $cancellationHistories = CancellationHistory::orderBy('id','desc')->paginate();
 
         return view('cancellation-history.index', compact('cancellationHistories'))
             ->with('i', (request()->input('page', 1) - 1) * $cancellationHistories->perPage());

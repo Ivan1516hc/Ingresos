@@ -18,6 +18,12 @@ function myCollapse(target) {
                 iconClass: 'fas fa-history',
                 iconColor: 'bg-primary text-light',
                 title: 'HISTORIAL'
+            },
+            pagos_parciales: {
+                links: '/pagos-parciales',
+                iconClass: 'las la-history',
+                iconColor: 'bg-primary text-light',
+                title: ' PAGOS PARCIALES'
             }
         },
         catalogos: {

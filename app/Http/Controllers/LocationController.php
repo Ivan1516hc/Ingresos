@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use App\Models\Group;
 use App\Models\Location;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 /**
@@ -32,7 +35,10 @@ class LocationController extends Controller
     public function create()
     {
         $location = new Location();
-        return view('location.create', compact('location'));
+        $groups = Group::all();
+        $departments = Department::all();
+        $users = User::orderBy('name')->get();
+        return view('location.create', compact('location','groups','departments','users'));
     }
 
     /**
@@ -73,8 +79,11 @@ class LocationController extends Controller
     public function edit($id)
     {
         $location = Location::find($id);
+        $groups = Group::all();
+        $departments = Department::all();
+        $users = User::all();
 
-        return view('location.edit', compact('location'));
+        return view('location.edit', compact('location','groups','departments','users'));
     }
 
     /**

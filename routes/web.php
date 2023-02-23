@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);
     Route::get('servicios-no-vinculantes', [App\Http\Controllers\ServiceController::class, 'getServicesNotbilding']);
 
+    Route::get('getlocations', [App\Http\Controllers\FormsController::class, 'getLocations']);
+
     Route::get('logout', function() {
         Auth::logout();
         return redirect('/login');

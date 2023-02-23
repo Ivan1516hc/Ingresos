@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Service
+    Servicio
 @endsection
 
 @section('content')
@@ -13,12 +13,12 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Service') }}
+                                {{ __('Servicio') }}
                             </span>
 
                              <div class="float-right">
                                 <a href="{{ route('services.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                  {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
                         </div>
@@ -36,15 +36,14 @@
                                     <tr>
                                         <th>No</th>
                                         
-										<th>Name</th>
-										<th>Cost</th>
-										<th>Type Income</th>
-										<th>Code Income</th>
-										<th>Not Binding</th>
-										<th>Id Gu</th>
-										<th>Partial</th>
-										<th>Unit</th>
-										<th>Leadership</th>
+										<th>Nombre</th>
+										<th>Costo</th>
+										<th>Tipo de ingreso</th>
+										<th>Codigo de ingreso</th>
+										<th>Vinculante</th>
+										<th>Pagos Parciales</th>
+										<th>Unidad</th>
+										<th>Dirección</th>
 
                                         <th></th>
                                     </tr>
@@ -59,15 +58,15 @@
 											<td>{{ $service->type_income }}</td>
 											<td>{{ $service->code_income }}</td>
 											<td>{{ $service->not_binding }}</td>
-											<td>{{ $service->id_gu }}</td>
 											<td>{{ $service->partial }}</td>
 											<td>{{ $service->unit }}</td>
 											<td>{{ $service->leadership }}</td>
 
                                             <td>
                                                 <form action="{{ route('services.destroy',$service->id) }}" method="POST">
+                                                    <a class="btn btn-sm btn-success" href="{{ route('services.edit',$service->id) }}"><i class="la la-fw la-edit icon-button"></i> Edit</a>
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Eliminar</button>
                                                 </form>
                                             </td>
                                         </tr>

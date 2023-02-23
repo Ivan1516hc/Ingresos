@@ -18,7 +18,7 @@
 
                              <div class="float-right">
                                 <a href="{{ route('reprint-histories.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                  {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
                         </div>
@@ -36,10 +36,9 @@
                                     <tr>
                                         <th>No</th>
                                         
-										<th>Transaction Id</th>
-										<th>User Id</th>
-
-                                        <th></th>
+										<th>Movimiento</th>
+										<th>Usuario</th>
+                                        <th>Fecha</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,18 +46,9 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-											<td>{{ $reprintHistory->transaction_id }}</td>
-											<td>{{ $reprintHistory->user_id }}</td>
-
-                                            <td>
-                                                <form action="{{ route('reprint-histories.destroy',$reprintHistory->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('reprint-histories.show',$reprintHistory->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('reprint-histories.edit',$reprintHistory->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
-                                                </form>
-                                            </td>
+											<td>{{ $reprintHistory->transaction_id}}</td>
+											<td>{{ $reprintHistory->user->name}}</td>
+                                            <td>{{ $reprintHistory->created_at->format('d-m-Y')}}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

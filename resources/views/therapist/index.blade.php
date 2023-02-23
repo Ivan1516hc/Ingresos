@@ -18,7 +18,7 @@
 
                              <div class="float-right">
                                 <a href="{{ route('therapists.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
+                                  {{ __('Crear Nuevo') }}
                                 </a>
                               </div>
                         </div>
@@ -51,7 +51,7 @@
                                             <td>
                                                 <form action="{{ route('therapists.destroy',$therapist->id) }}" method="POST">
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
                                                 </form>
                                             </td>
                                         </tr>

@@ -18,7 +18,7 @@ class PartialPaymentController extends Controller
      */
     public function index()
     {
-        $partialPayments = PartialPayment::paginate();
+        $partialPayments = PartialPayment::orderBy('id','desc')->paginate();
 
         return view('partial-payment.index', compact('partialPayments'))
             ->with('i', (request()->input('page', 1) - 1) * $partialPayments->perPage());
