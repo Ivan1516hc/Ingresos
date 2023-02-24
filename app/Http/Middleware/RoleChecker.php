@@ -16,18 +16,14 @@ class RoleChecker
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next, $super_adminRole, $adminRole,  $sellerRole)
+    public function handle($request, Closure $next, ...$roles)
     {
-        $roles = Auth::check() ? Auth::user()->role->pluck('name')->toArray() : [];
-
-        if (in_array($super_adminRole, $roles)) {
-            return $next($request);
-        } else if (in_array($adminRole, $roles)) {
-            return $next($request);
-        } else if (in_array($sellerRole, $roles)) {
-            return $next($request);
+        $userRoles = explode(',', Auth::user()->profile_id);
+        foreach ($roles as $role) {
+            if (in_array($role, $userRoles)) {
+                return $next($request);
+            }
         }
-
-        return Redirect::route('home');
+        abort(403);
     }
 }

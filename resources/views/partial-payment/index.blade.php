@@ -51,12 +51,8 @@
 											<td>$ {{ $partialPayment->payment }}</td>
 											<td>$ {{ $partialPayment->service->cost }}</td>
 											<td>{{($partialPayment->status == 1 ?'Adeudo' : 'Pagado' )}}</td>
-
                                             <td>
-                                                <form action="{{ route('partial-payments.destroy',$partialPayment->id) }}" method="POST">
-                                                    <a class="btn btn-sm bg-primary" href="{{ route('partial-payments.edit',$partialPayment->id) }}"><i class="la la-fw la-edit icon-button"></i>Abonar</a>
-                                                    @csrf
-                                                </form>
+                                                <a class="btn btn-sm bg-primary" onclick="abonar()"><i class="la la-fw la-edit icon-button"></i>Abonar</a>
                                             </td>
                                         </tr>
                                     @endforeach

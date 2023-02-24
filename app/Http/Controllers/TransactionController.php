@@ -17,6 +17,22 @@ use Illuminate\Support\Facades\DB;
  */
 class TransactionController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = $request->user();
+
+            if ($user->profile_id === 1) {
+                if (in_array($request->route()->getName(), ['transactions.create', 'transactions.store'])) {
+                    abort(403, 'Unauthorized action.');
+                }
+            }
+
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -54,6 +70,7 @@ class TransactionController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         request()->validate(Transaction::$rules);
         $user = Auth::user();
         $total = 0;
@@ -114,8 +131,10 @@ class TransactionController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('transactions.index')
+            return back()
                 ->with('success', 'Movimiento registrado');
+            // return redirect()->route('transactions.index')
+            //     ->with('success', 'Movimiento registrado');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('message', $th->getMessage());
@@ -159,10 +178,10 @@ class TransactionController extends Controller
         $user = Auth::user();
         try {
             $transaction = Transaction::find($id);
-            if($transaction->status == 1){
+            if ($transaction->status == 1) {
                 Transaction::find($id)->update(['status' => 2]);
             }
-            if($transaction->status == 2){
+            if ($transaction->status == 2) {
                 Transaction::find($id)->update(['status' => 1]);
             }
             DB::commit();

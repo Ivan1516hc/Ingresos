@@ -22,7 +22,7 @@ function noBildingCheckbox(checkbox) {
         inputId.value = 'DIFZAP2019026294';
         inputId.disabled = true;
         inputName.value = 'NO VINCULANTE NO VINCULANTE NO VINCULANTE';
-        serviciosAgregados=[]
+        serviciosAgregados = []
         getServicesNotBulding();
         actualizarTabla();
     } else {
@@ -31,7 +31,7 @@ function noBildingCheckbox(checkbox) {
         inputId.value = '';
         inputName.value = '';
         document.getElementById("table-container").innerHTML = "";
-        serviciosAgregados=[]
+        serviciosAgregados = []
         getServicesNotBulding();
         getServices();
     }
@@ -118,7 +118,7 @@ function addService() {
     // Agregar el servicio a la letiable global
     serviciosAgregados.push(servicio);
     partialPayment = serviciosAgregados[0].partial ? true : false;
-    if(partialPayment){
+    if (partialPayment) {
         labelPartial.classList.remove("d-none");
     }
     // Limpiar los valores seleccionados de los select
@@ -231,9 +231,9 @@ function actualizarTabla() {
             checkboxPartial.addEventListener("click", function () {
                 if (checkboxPartial.checked == true) {
                     let index = this.dataset.index;
-                    serviciosAgregados[index].total= (servicio.total / 5);
+                    serviciosAgregados[index].total = (servicio.total / 5);
                     document.getElementById("total").value = (total / 5);
-                    celdaTotal.innerHTML =servicio.total;
+                    celdaTotal.innerHTML = servicio.total;
                 } else {
                     document.getElementById("total").value = total;
                     celdaTotal.innerHTML = servicio.total;
@@ -248,12 +248,56 @@ function actualizarTabla() {
     }
 }
 
+function psicologo() {
+    const idsServicios = serviciosAgregados.map(servicio => servicio.id);
+    
+    const serviciosPsicologicos = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
+    const serviciosPsicologicosAgregados = serviciosPsicologicos.filter(id => idsServicios.includes(id));
+    console.log(serviciosPsicologicosAgregados);
+    if (serviciosPsicologicosAgregados.length > 0) {
+      const select = document.createElement('select');
+      select.name = 'terapeutas';
+      select.id = 'terapeutas';
+  
+      const therapints = ['Terapeuta 1', 'Terapeuta 2', 'Terapeuta 3', 'Terapeuta 4'];
+      for (const terapeuta of therapints) {
+        const option = document.createElement('option');
+        option.value = terapeuta;
+        option.text = terapeuta;
+        select.appendChild(option);
+      }
+  
+      const modal = document.createElement('div');
+      modal.classList.add('modal');
+      modal.innerHTML = `
+        <div class="modal-content">
+          <h2>Terapeutas disponibles</h2>
+          <p>Por favor, seleccione un terapeuta:</p>
+          ${select.outerHTML}
+          <button onclick="cerrarModal()">Cerrar</button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+  }
+
+function promotor() {
+
+}
+
+function cuota() {
+
+}
+
 function arrayData() {
+    
     myForm.addEventListener("submit", function (evt) {
         evt.preventDefault();
         window.history.back();
+        
     }, true);
-
+    psicologo();
+    confirm('Aceptar');
     document.getElementById("beneficiary_id").disabled = false;
     document.getElementById("beneficiary_name").disabled = false;
 

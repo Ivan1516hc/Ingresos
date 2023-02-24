@@ -28,22 +28,23 @@ Route::get('/mov/{id}', [App\Http\Controllers\TransactionController::class, 'can
 Route::get('/mov/request-cancel/{id}', [App\Http\Controllers\TransactionController::class, 'requestCancel']);
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth'
+)->group(function () {
     Route::get('/', function () {
         return view('opcionMenu.opcion');
     });
-    Route::resource('/usuarios', App\Http\Controllers\UserController::class, ['names' => 'users']);
-    Route::resource('/movimientos', App\Http\Controllers\TransactionController::class, ['names' => 'transactions']);
-    Route::resource('/servicios', App\Http\Controllers\ServiceController::class, ['names' => 'services']);
-    Route::resource('/comunidades', App\Http\Controllers\CommunityController::class, ['names' => 'communities']);
-    Route::resource('/historial-cancelacion', App\Http\Controllers\CancellationHistoryController::class, ['names' => 'cancellation-histories']);
-    Route::resource('/grupo-servicios', App\Http\Controllers\GroupsServiceController::class, ['names' => 'groups-services']);
-    Route::resource('/ubicaciones', App\Http\Controllers\LocationController::class, ['names' => 'locations']);
-    Route::resource('/pagos-parciales', App\Http\Controllers\PartialPaymentController::class, ['names' => 'partial-payments']);
-    Route::resource('/promotores', App\Http\Controllers\PromoterController::class, ['names' => 'promoters']);
-    Route::resource('/historial-reimpresion', App\Http\Controllers\ReprintHistoryController::class, ['names' => 'reprint-histories']);
-    Route::resource('/terapeutas', App\Http\Controllers\TherapistController::class, ['names' => 'therapists']);
-    Route::resource('/cancelaciones', App\Http\Controllers\CancelTransactions::class, ['names' => 'cancel-transactions']);
+    Route::resource('/usuarios', App\Http\Controllers\UserController::class, ['names' => 'users'])->middleware('role:1');
+    Route::resource('/movimientos', App\Http\Controllers\TransactionController::class, ['names' => 'transactions'])->middleware('role:1,2,3');
+    Route::resource('/servicios', App\Http\Controllers\ServiceController::class, ['names' => 'services'])->middleware('role:1,2,3');
+    Route::resource('/comunidades', App\Http\Controllers\CommunityController::class, ['names' => 'communities'])->middleware('role:2,3');
+    Route::resource('/historial-cancelacion', App\Http\Controllers\CancellationHistoryController::class, ['names' => 'cancellation-histories'])->middleware('role:1,2');
+    Route::resource('/grupo-servicios', App\Http\Controllers\GroupsServiceController::class, ['names' => 'groups-services'])->middleware('role:2,3');
+    Route::resource('/ubicaciones', App\Http\Controllers\LocationController::class, ['names' => 'locations'])->middleware('role:1,2');
+    Route::resource('/pagos-parciales', App\Http\Controllers\PartialPaymentController::class, ['names' => 'partial-payments'])->middleware('role:2,3');
+    Route::resource('/promotores', App\Http\Controllers\PromoterController::class, ['names' => 'promoters'])->middleware('role:1,2,3');
+    Route::resource('/historial-reimpresion', App\Http\Controllers\ReprintHistoryController::class, ['names' => 'reprint-histories'])->middleware('role:2,3');
+    Route::resource('/terapeutas', App\Http\Controllers\TherapistController::class, ['names' => 'therapists'])->middleware('role:1,2,3');
+    Route::resource('/cancelaciones', App\Http\Controllers\CancelTransactions::class, ['names' => 'cancel-transactions'])->middleware('role:2,4');
     // Route::resource('/comunidades/{nombre}',App\Http\Controllers\BeneficiariesCommunityController::class,['names' => '']);
 
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);

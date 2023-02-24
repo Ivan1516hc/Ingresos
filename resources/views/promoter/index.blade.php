@@ -50,6 +50,7 @@
 
                                             <td>
                                                 <form action="{{ route('promoters.destroy',$promoter->id) }}" method="POST">
+                                                    @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
                                                 </form>

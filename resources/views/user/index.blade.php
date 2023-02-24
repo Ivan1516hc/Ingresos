@@ -49,10 +49,10 @@
                                         <tr>
                                             <td>{{ ++$i }}</td>
                                             
-											<td>{{ $user->name }}</td>
+											<td>{{ $user->name}}</td>
 											<td>{{ $user->username }}</td>
 											<td>{{ $user->post }}</td>
-											<td>{{ $user->location->name}}</td>
+											<td>{{ $user->location->name ?? null}}</td>
 
                                             <td>
                                                 <form action="{{ route('users.destroy',$user->id) }}" method="POST">

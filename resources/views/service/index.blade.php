@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@php
+    $user = Auth::user();
+@endphp
 @section('template_title')
     Servicio
 @endsection
@@ -15,12 +17,14 @@
                             <span id="card_title">
                                 {{ __('Servicio') }}
                             </span>
-
-                             <div class="float-right">
-                                <a href="{{ route('services.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
-                                </a>
-                              </div>
+                            @if ($user->profile_id == 1)
+                                <div class="float-right">
+                                    <a href="{{ route('services.create') }}" class="btn btn-primary btn-sm float-right"
+                                        data-placement="left">
+                                        {{ __('Crear Nuevo') }}
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -35,15 +39,15 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-										<th>Nombre</th>
-										<th>Costo</th>
-										<th>Tipo de ingreso</th>
-										<th>Codigo de ingreso</th>
-										<th>Vinculante</th>
-										<th>Pagos Parciales</th>
-										<th>Unidad</th>
-										<th>Dirección</th>
+
+                                        <th>Nombre</th>
+                                        <th>Costo</th>
+                                        <th>Tipo de ingreso</th>
+                                        <th>Codigo de ingreso</th>
+                                        <th>Vinculante</th>
+                                        <th>Pagos Parciales</th>
+                                        <th>Unidad</th>
+                                        <th>Dirección</th>
 
                                         <th></th>
                                     </tr>
@@ -52,23 +56,30 @@
                                     @foreach ($services as $service)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-											<td>{{ $service->name }}</td>
-											<td>{{ $service->cost }}</td>
-											<td>{{ $service->type_income }}</td>
-											<td>{{ $service->code_income }}</td>
-											<td>{{ $service->not_binding }}</td>
-											<td>{{ $service->partial }}</td>
-											<td>{{ $service->unit }}</td>
-											<td>{{ $service->leadership }}</td>
 
-                                            <td>
-                                                <form action="{{ route('services.destroy',$service->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-success" href="{{ route('services.edit',$service->id) }}"><i class="la la-fw la-edit icon-button"></i> Edit</a>
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Eliminar</button>
-                                                </form>
-                                            </td>
+                                            <td>{{ $service->name }}</td>
+                                            <td>$ {{ $service->cost }}</td>
+                                            <td>{{ $service->type_income }}</td>
+                                            <td>{{ $service->code_income }}</td>
+                                            <td>{{ $service->not_binding==1 ? 'Acepta' : 'No Acepta' }}</td>
+                                            <td>{{ $service->partial==1 ? 'Acepta' : 'No Acepta'}}</td>
+                                            <td>{{ $service->unit }}</td>
+                                            <td>{{ $service->leadership }}</td>
+
+                                            @if ($user->profile_id == 1)
+                                                <td>
+                                                    <form action="{{ route('services.destroy', $service->id) }}"
+                                                        method="POST">
+                                                        <a class="btn btn-sm btn-success"
+                                                            href="{{ route('services.edit', $service->id) }}"><i
+                                                                class="la la-fw la-edit icon-button"></i> Edit</a>
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm"><i
+                                                                class="la la-fw la-trash icon-button"></i> Eliminar</button>
+                                                    </form>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
                                 </tbody>

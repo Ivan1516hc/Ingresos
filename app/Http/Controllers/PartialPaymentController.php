@@ -11,6 +11,21 @@ use Illuminate\Http\Request;
  */
 class PartialPaymentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = $request->user();
+
+            if ($user->profile_id === 3) {
+                if (in_array($request->route()->getName(), ['services.edit', 'services.update'])) {
+                    abort(403, 'Unauthorized action.');
+                }
+            }
+
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      *
@@ -22,33 +37,6 @@ class PartialPaymentController extends Controller
 
         return view('partial-payment.index', compact('partialPayments'))
             ->with('i', (request()->input('page', 1) - 1) * $partialPayments->perPage());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $partialPayment = new PartialPayment();
-        return view('partial-payment.create', compact('partialPayment'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        request()->validate(PartialPayment::$rules);
-
-        $partialPayment = PartialPayment::create($request->all());
-
-        return redirect()->route('partial-payments.index')
-            ->with('success', 'PartialPayment created successfully.');
     }
 
     /**
@@ -94,16 +82,4 @@ class PartialPaymentController extends Controller
             ->with('success', 'PartialPayment updated successfully');
     }
 
-    /**
-     * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
-     */
-    public function destroy($id)
-    {
-        $partialPayment = PartialPayment::find($id)->delete();
-
-        return redirect()->route('partial-payments.index')
-            ->with('success', 'PartialPayment deleted successfully');
-    }
 }

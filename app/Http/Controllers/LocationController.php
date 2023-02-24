@@ -14,6 +14,21 @@ use Illuminate\Http\Request;
  */
 class LocationController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = $request->user();
+
+            if ($user->profile_id === 2) {
+                if (in_array($request->route()->getName(), ['location.create', 'location.store', 'location.destroy'])) {
+                    abort(403, 'Unauthorized action.');
+                }
+            }
+
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      *
@@ -35,8 +50,8 @@ class LocationController extends Controller
     public function create()
     {
         $location = new Location();
-        $groups = Group::all();
-        $departments = Department::all();
+        $groups = Group::orderBy('name')->get();
+        $departments = Department::orderBy('name')->get();
         $users = User::orderBy('name')->get();
         return view('location.create', compact('location','groups','departments','users'));
     }
@@ -54,7 +69,7 @@ class LocationController extends Controller
         $location = Location::create($request->all());
 
         return redirect()->route('locations.index')
-            ->with('success', 'Location created successfully.');
+            ->with('success', 'Ubicación creada satisfactoriamente.');
     }
 
     /**
@@ -113,6 +128,6 @@ class LocationController extends Controller
         $location = Location::find($id)->delete();
 
         return redirect()->route('locations.index')
-            ->with('success', 'Location deleted successfully');
+            ->with('success', 'Ubicacion eliminada satisfactoriamente');
     }
 }

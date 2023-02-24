@@ -14,6 +14,21 @@ use Illuminate\Support\Facades\Auth;
  */
 class ServiceController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = $request->user();
+
+            if ($user->profile_id === 2 || $user->profile_id === 3) {
+                if (in_array($request->route()->getName(), ['services.create', 'services.store','services.edit', 'services.update', 'services.destroy'])) {
+                    abort(403, 'Unauthorized action.');
+                }
+            }
+
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      *

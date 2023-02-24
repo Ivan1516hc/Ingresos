@@ -1,17 +1,17 @@
 <div class="box box-info padding-1">
-    <div class="box-body">
+    <div class="box-body row">
 
-        <div class="form-group">
+        <div class="form-group col-6">
             {{ Form::label('Nombre') }}
             {{ Form::text('name', $location->name, ['class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : ''), 'placeholder' => 'Name']) }}
             {!! $errors->first('name', '<div class="invalid-feedback">:message</div>') !!}
         </div>
-        <div class="form-group">
+        <div class="form-group col-6">
             {{ Form::label('Descripción') }}
             {{ Form::text('descripcion', $location->descripcion, ['class' => 'form-control' . ($errors->has('descripcion') ? ' is-invalid' : ''), 'placeholder' => 'Descripcion']) }}
             {!! $errors->first('descripcion', '<div class="invalid-feedback">:message</div>') !!}
         </div>
-        <div class="form-group">
+        <div class="form-group col-6">
             {{ Form::label('group_id', 'Group') }}
             <select name="group_id" id="group_id" class="form-control{{ $errors->has('group_id') ? ' is-invalid' : '' }}">
                 <option value="">--Selecciona Grupo--</option>
@@ -23,7 +23,7 @@
             {!! $errors->first('group_id', '<div class="invalid-feedback">:message</div>') !!}
         </div>
 
-        <div class="form-group">
+        <div class="form-group col-6">
             {{ Form::label('department_id', 'Department') }}
             <select name="department_id" id="department_id"
                 class="form-control{{ $errors->has('department_id') ? ' is-invalid' : '' }}">
