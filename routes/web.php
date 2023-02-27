@@ -51,7 +51,10 @@ Route::middleware('auth'
     Route::get('servicios-no-vinculantes', [App\Http\Controllers\ServiceController::class, 'getServicesNotbilding']);
 
     Route::get('getlocations', [App\Http\Controllers\FormsController::class, 'getLocations']);
+    Route::get('gettherapists', [App\Http\Controllers\TherapistController::class, 'getTherapists']);
 
+    Route::get('getpromoters', [App\Http\Controllers\PromoterController::class, 'getPromoters']);
+    
     Route::get('logout', function() {
         Auth::logout();
         return redirect('/login');

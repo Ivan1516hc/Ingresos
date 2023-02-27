@@ -106,4 +106,10 @@ class TherapistController extends Controller
         return redirect()->route('therapists.index')
             ->with('success', 'Therapist deleted successfully');
     }
+
+    public function getTherapists(){
+        $therapists = Therapist::all();
+
+        return response()->json($therapists);
+    }
 }

@@ -14,6 +14,7 @@ function mostrarInput(checkbox) {
     }
 }
 
+
 function noBildingCheckbox(checkbox) {
     let inputName = document.getElementById("beneficiary_name");
     let inputId = document.getElementById("beneficiary_id");
@@ -67,6 +68,43 @@ function getServices() {
                 let el = document.createElement("option");
                 el.textContent = opt.name;
                 el.value = JSON.stringify({ id: opt.id, name: opt.name, cost: opt.cost, opt: opt.not_binding, partial: opt.partial, cant: '' });
+                select.add(el);
+            }
+        })
+        .catch(error => console.error(error))
+}
+
+function getTherapists() {
+    axios.get('http://127.0.0.1:8000/gettherapists')
+        .then(response => {
+            document.getElementById("therapists").innerHTML = "";
+            let select = document.getElementById("therapists");
+            let el = document.createElement("option");
+            el.textContent = '--Selecciona Terapeuta--';
+            select.add(el);
+            for (let i = 0; i < response.data.length; i++) {
+                let opt = response.data[i];
+                let el = document.createElement("option");
+                el.textContent = opt.name;
+                el.value = opt.id;
+                select.add(el);
+            }
+        })
+        .catch(error => console.error(error))
+}
+function getPromoters() {
+    axios.get('http://127.0.0.1:8000/getpromoters')
+        .then(response => {
+            document.getElementById("promoters").innerHTML = "";
+            let select = document.getElementById("promoters");
+            let el = document.createElement("option");
+            el.textContent = '--Selecciona Promotor--';
+            select.add(el);
+            for (let i = 0; i < response.data.length; i++) {
+                let opt = response.data[i];
+                let el = document.createElement("option");
+                el.textContent = opt.name;
+                el.value = opt.id;
                 select.add(el);
             }
         })
@@ -249,59 +287,72 @@ function actualizarTabla() {
 }
 
 function psicologo() {
-    const idsServicios = serviciosAgregados.map(servicio => servicio.id);
-    
-    const serviciosPsicologicos = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
-    const serviciosPsicologicosAgregados = serviciosPsicologicos.filter(id => idsServicios.includes(id));
-    console.log(serviciosPsicologicosAgregados);
-    if (serviciosPsicologicosAgregados.length > 0) {
-      const select = document.createElement('select');
-      select.name = 'terapeutas';
-      select.id = 'terapeutas';
-  
-      const therapints = ['Terapeuta 1', 'Terapeuta 2', 'Terapeuta 3', 'Terapeuta 4'];
-      for (const terapeuta of therapints) {
-        const option = document.createElement('option');
-        option.value = terapeuta;
-        option.text = terapeuta;
-        select.appendChild(option);
-      }
-  
-      const modal = document.createElement('div');
-      modal.classList.add('modal');
-      modal.innerHTML = `
-        <div class="modal-content">
-          <h2>Terapeutas disponibles</h2>
-          <p>Por favor, seleccione un terapeuta:</p>
-          ${select.outerHTML}
-          <button onclick="cerrarModal()">Cerrar</button>
-        </div>
-      `;
-      document.body.appendChild(modal);
+    let idsServicios = serviciosAgregados.map(servicio => servicio.id);
+    let nbServices = serviciosAgregados.map(servicio => servicio.not_binding);
+
+    let serviciosNB = [0];
+    // let serviciosNB = [0];
+    let serviciosNBAgregados = serviciosNB.filter(not_binding =>nbServices.includes(not_binding));
+
+    let serviciosPsicologicos = [69,70,71,84,85];
+    // let serviciosPsicologicos = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
+    let serviciosPsicologicosAgregados = serviciosPsicologicos.filter(id => idsServicios.includes(id));
+
+    let serviciosCuotas = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
+    // let serviciosCuotas = [69,70,71,84,85];
+    let serviciosCuotasAgregados = serviciosCuotas.filter(id => idsServicios.includes(id));
+
+    let serviciosPromotores = [184, 185, 186, 187, 188];
+    // let serviciosPromotores = [184, 185, 186, 187, 188];
+    let serviciosPromotoresAgregados = serviciosPromotores.filter(id => idsServicios.includes(id));
+
+    if (serviciosNBAgregados.length > 0) {
+        let modal = document.getElementById('modalNB');
+        let openModal = new bootstrap.Modal(modal);
+        openModal.show();
     }
-  }
-
-function promotor() {
-
+    if (serviciosPsicologicosAgregados.length > 0) {
+        let modal = document.getElementById('modalTherapists');
+        let openModal = new bootstrap.Modal(modal);
+        openModal.show();
+        getTherapists();
+    }
+    if (serviciosPromotoresAgregados.length > 0) {
+        let modal = document.getElementById('modalPromotores');
+        let openModal = new bootstrap.Modal(modal);
+        openModal.show();
+        getPromoters();
+    }
+    if (serviciosCuotasAgregados.length > 0) {
+        let modal = document.getElementById('modalCuotas');
+        let openModal = new bootstrap.Modal(modal);
+        openModal.show();
+        bill.value=beneficiary_name.value; 
+    }
+    if(serviciosPsicologicosAgregados == 0 && serviciosCuotasAgregados.length == 0 && serviciosPromotoresAgregados.length == 0){
+        myForm.submit();
+    }
 }
 
-function cuota() {
-
+function submit(){
+    myForm.requestSubmit();
 }
 
 function arrayData() {
-    
-    myForm.addEventListener("submit", function (evt) {
-        evt.preventDefault();
-        window.history.back();
-        
-    }, true);
     psicologo();
-    confirm('Aceptar');
+
     document.getElementById("beneficiary_id").disabled = false;
     document.getElementById("beneficiary_name").disabled = false;
 
     // después de agregar un servicio a `serviciosAgregados`
     document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
-
 }
+
+// Gets a reference to the form element
+var form = document.getElementById('myForm');
+// Adds a listener for the "submit" event.
+form.addEventListener('submit', function (e) {
+
+    e.preventDefault();
+
+});

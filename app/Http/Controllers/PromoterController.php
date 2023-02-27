@@ -106,4 +106,9 @@ class PromoterController extends Controller
         return redirect()->route('promoters.index')
             ->with('success', 'Promoter deleted successfully');
     }
+
+    public function getPromoters(){
+        $promoters = Promoter::all();
+        return response()->json($promoters);
+    }
 }

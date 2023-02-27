@@ -7,24 +7,6 @@
                         <p>{{ $message }}</p>
                     </div>
                 @endif
-                <div id="input-container" class="d-none">
-                    <div class="form-group">
-                        <label for="bill">FACTURAR</label>
-                        <input type="text" name="bill" value="{{ $transaction->bill }}"
-                            class="form-control{{ $errors->has('bill') ? ' is-invalid' : '' }}" placeholder="NOMBRE" />
-                        @if ($errors->has('bill'))
-                            <div class="invalid-feedback">{{ $errors->first('bill') }}</div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="col-2">
-                <div>
-                    <label>
-                        NECESITA FACTURA
-                        <input type="checkbox" name="mostrar_input" onchange="mostrarInput(this)">
-                    </label>
-                </div>
             </div>
 
             <h5>BENEFICIARIO</h5>
@@ -109,9 +91,128 @@
         </div>
     </div>
     <div class="box-footer mt-2 d-none" id="button">
-        <button type="submit" class="btn btn-primary float-right">GENERAR</button>
+        <button onclick="arrayData()" class="btn btn-primary float-right">GENERAR</button>
     </div>
 </div>
+
+<!--Modal: modalPush-->
+<div class="modal fade centerModal" id="modalTherapists" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading text-primary">Terapeutas</p>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <select id="therapists" name="therapists" class="form-select">
+                </select>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer flex-center align-self-center">
+                <button type="button" onclick="submit()" class="btn btn-primary">Generar Movimiento</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: modalPush-->
+
+<!--Modal: modalPush-->
+<div class="modal fade centerModal" id="modalPromotores" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading text-primary">Promotores</p>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <select id="promoters" name="promoters" class="form-select">
+                </select>
+            </div>
+            <!--Footer-->
+            <div class="modal-footer flex-center align-self-center">
+                <button type="button" onclick="submit()" class="btn btn-primary">Generar Movimiento</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: modalPush-->
+
+<div class="modal fade centerModal" id="modalCuotas" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading text-primary">Cuotas</p>
+            </div>
+            <!--Body-->
+            <div class="modal-body row">
+                <label for="recipient-name" class="col-form-label">Couta: </label>
+                <input type="number" class="form-control" id="cuota" value=0 min=0 name="cuota">
+                <label for="recipient-name" class="col-form-label mt-4">Factura: </label>
+                <input type="text" class="form-control" id="bill" name="bill">
+            </div>
+            <!--Footer-->
+            <div class="modal-footer flex-center align-self-center">
+                <button type="button" onclick="submit()" class="btn btn-primary">Generar Movimiento</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: modalPush-->
+
+<!--Modal: modalPush-->
+<div class="modal fade centerModal" id="modalNB" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading text-primary">No Vinculantes</p>
+            </div>
+            <!--Body-->
+            <div class="modal-body row">
+                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
+                <input type="text" class="d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
+                <input type="text" class="d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
+                <input type="text" class="d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
+                <input type="text" class="d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
+                <input type="text" class="d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
+                <input type="text" class="d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
+                <input type="text" class="d-none col-6">
+            </div>
+            <!--Footer-->
+            <div class="modal-footer flex-center align-self-center">
+                <button type="button" onclick="submit()" class="btn btn-primary">Generar Movimiento</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: modalPush-->
+
 
 
 @include('pages.modal')
