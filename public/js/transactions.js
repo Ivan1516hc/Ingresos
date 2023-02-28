@@ -14,6 +14,27 @@ function mostrarInput(checkbox) {
     }
 }
 
+function mostrarInput(checkbox) {
+    let inputContainer = document.getElementById("input-container");
+    if (checkbox.checked) {
+        inputContainer.classList.remove("d-none");
+    } else {
+        inputContainer.classList.add("d-none");
+    }
+}
+
+
+// Seleciona todos los checkboxes con la clase 'checkbox-accion'
+$(".checkbox-accion").change(function() {
+    // Obtiene el valor del atributo 'data-clave' del checkbox que se cambió
+    let clave = $(this).data("clave");
+    // Verifica si el checkbox está activado o no
+    let activado = this.checked;
+    // Utiliza el método 'toggleClass' de jQuery para mostrar u ocultar el elemento correspondiente
+    $(acciones[clave]).toggleClass("d-none", !activado);
+});
+
+
 
 function noBildingCheckbox(checkbox) {
     let inputName = document.getElementById("beneficiary_name");
@@ -92,6 +113,7 @@ function getTherapists() {
         })
         .catch(error => console.error(error))
 }
+
 function getPromoters() {
     axios.get('http://127.0.0.1:8000/getpromoters')
         .then(response => {
@@ -131,6 +153,7 @@ function getServicesNotBulding() {
 }
 
 var partialPayment = false;
+
 function addService() {
     // Obtener los valores seleccionados de los select
     // Verificar si se seleccionó un servicio válido
@@ -243,7 +266,7 @@ function actualizarTabla() {
         btnEliminar.innerHTML = "ELIMINAR";
         btnEliminar.dataset.index = i;
         btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
-        btnEliminar.addEventListener("click", function () {
+        btnEliminar.addEventListener("click", function() {
             let index = this.dataset.index;
             serviciosAgregados.splice(index, 1);
             total -= servicio.total;
@@ -266,7 +289,7 @@ function actualizarTabla() {
             checkboxPartial.type = 'checkbox';
             checkboxPartial.dataset.index = i;
             checkboxPartial.name = "payment_partial";
-            checkboxPartial.addEventListener("click", function () {
+            checkboxPartial.addEventListener("click", function() {
                 if (checkboxPartial.checked == true) {
                     let index = this.dataset.index;
                     serviciosAgregados[index].total = (servicio.total / 5);
@@ -292,9 +315,9 @@ function psicologo() {
 
     let serviciosNB = [0];
     // let serviciosNB = [0];
-    let serviciosNBAgregados = serviciosNB.filter(not_binding =>nbServices.includes(not_binding));
+    let serviciosNBAgregados = serviciosNB.filter(not_binding => nbServices.includes(not_binding));
 
-    let serviciosPsicologicos = [69,70,71,84,85];
+    let serviciosPsicologicos = [69, 70, 71, 84, 85];
     // let serviciosPsicologicos = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
     let serviciosPsicologicosAgregados = serviciosPsicologicos.filter(id => idsServicios.includes(id));
 
@@ -315,26 +338,82 @@ function psicologo() {
         let modal = document.getElementById('modalTherapists');
         let openModal = new bootstrap.Modal(modal);
         openModal.show();
+        therapists.setAttribute('required', true);
         getTherapists();
     }
     if (serviciosPromotoresAgregados.length > 0) {
         let modal = document.getElementById('modalPromotores');
         let openModal = new bootstrap.Modal(modal);
         openModal.show();
+        promoters.setAttribute('required', true);
         getPromoters();
     }
     if (serviciosCuotasAgregados.length > 0) {
         let modal = document.getElementById('modalCuotas');
         let openModal = new bootstrap.Modal(modal);
         openModal.show();
-        bill.value=beneficiary_name.value; 
+        bill.value = beneficiary_name.value;
     }
-    if(serviciosPsicologicosAgregados == 0 && serviciosCuotasAgregados.length == 0 && serviciosPromotoresAgregados.length == 0){
+    if (serviciosPsicologicosAgregados == 0 && serviciosCuotasAgregados.length == 0 && serviciosPromotoresAgregados.length == 0) {
         myForm.submit();
     }
 }
+$('#btn-generar-movimiento').on('click', function() {
+    // Verificar si al menos un input tiene un valor
+    var inputs = $('.elemento');
+    var tieneValor = false;
+    for (var i = 0; i < inputs.length; i++) {
+        if ($(inputs[i]).val() !== '') {
+            tieneValor = true;
+            break;
+        }
+    }
+    if (!tieneValor) {
+        alert('Por favor ingrese al menos un valor');
+        return;
+    }
+    // Si al menos un input tiene valor, continuar con la generación de movimiento
+    submit();
+});
 
-function submit(){
+
+modalNB.addEventListener('hidden.modal', function() {
+    select.removeAttribute('required');
+});
+
+modalPromotores.addEventListener('hidden.modal', function() {
+    select.removeAttribute('required');
+});
+
+modalTherapists.addEventListener('hidden.modal', function() {
+    select.removeAttribute('required');
+});
+
+modalCuotas.addEventListener('hidden.modal', function() {
+    select.removeAttribute('required');
+});
+
+// Agregar un listener al evento click del botón cancelar
+var cancelBtnNB = document.querySelector('#modalNB [data-dismiss="modal"]');
+cancelBtnNB.addEventListener('click', function() {
+    select.removeAttribute('required');
+});
+
+var cancelBtnPromoters = document.querySelector('#modalPromotores [data-dismiss="modal"]');
+cancelBtnPromoters.addEventListener('click', function() {
+    select.removeAttribute('required');
+});
+
+var cancelBtnTherapists = document.querySelector('#modalTherapists [data-dismiss="modal"]');
+cancelBtnTherapists.addEventListener('click', function() {
+    select.removeAttribute('required');
+});
+var cancelBtnCuotas = document.querySelector('#modalCuotas [data-dismiss="modal"]');
+cancelBtnCuotas.addEventListener('click', function() {
+    select.removeAttribute('required');
+});
+
+function submit() {
     myForm.requestSubmit();
 }
 
@@ -351,7 +430,7 @@ function arrayData() {
 // Gets a reference to the form element
 var form = document.getElementById('myForm');
 // Adds a listener for the "submit" event.
-form.addEventListener('submit', function (e) {
+form.addEventListener('submit', function(e) {
 
     e.preventDefault();
 

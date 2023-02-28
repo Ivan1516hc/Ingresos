@@ -187,24 +187,22 @@
             </div>
             <!--Body-->
             <div class="modal-body row">
-                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
-                <input type="text" class="d-none col-6">
-                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
-                <input type="text" class="d-none col-6">
-                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
-                <input type="text" class="d-none col-6">
-                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
-                <input type="text" class="d-none col-6">
-                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
-                <input type="text" class="d-none col-6">
-                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
-                <input type="text" class="d-none col-6">
-                <label class="col-6"><input type="checkbox" id="expand-btn"> Menor Masculino</label>
-                <input type="text" class="d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn" class="checkbox-accion" data-clave="clave1"> Menor Masculino</label>
+                <input type="text" id="mm" name="mm" class="elemento d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn" class="checkbox-accion" data-clave="clave2"> Menor Femenino</label>
+                <input type="text" id="mf" name="mf" class="elemento d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn" class="checkbox-accion" data-clave="clave3"> Adulto Masculino</label>
+                <input type="text" id="am" name="am" class="elemento d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn" class="checkbox-accion" data-clave="clave4"> Adulto Femenino</label>
+                <input type="text" id="af" name="af" class="elemento d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn" class="checkbox-accion" data-clave="clave5"> Adulto Mayor Masculino</label>
+                <input type="text" id="amm" name="amm" class="elemento d-none col-6">
+                <label class="col-6"><input type="checkbox" id="expand-btn" class="checkbox-accion" data-clave="clave6"> Adulto Mayor Feminino</label>
+                <input type="text" id="amf" name="amf" class="elemento d-none col-6">
             </div>
             <!--Footer-->
             <div class="modal-footer flex-center align-self-center">
-                <button type="button" onclick="submit()" class="btn btn-primary">Generar Movimiento</button>
+                <button type="button" onclick="validateModalInputs()" class="btn btn-primary">Generar Movimiento</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
@@ -212,8 +210,6 @@
     </div>
 </div>
 <!--Modal: modalPush-->
-
-
 
 @include('pages.modal')
 
