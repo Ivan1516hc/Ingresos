@@ -5,34 +5,24 @@ window.addEventListener('DOMContentLoaded', () => {
 let serviciosAgregados = [];
 
 
-function mostrarInput(checkbox) {
-    let inputContainer = document.getElementById("input-container");
-    if (checkbox.checked) {
-        inputContainer.classList.remove("d-none");
-    } else {
-        inputContainer.classList.add("d-none");
-    }
-}
+let acciones = {
+    "clave1": "#mm",
+    "clave2": "#mf",
+    "clave3": "#am",
+    "clave4": "#af",
+    "clave5": "#amm",
+    "clave6": "#amf"
+};
 
-function mostrarInput(checkbox) {
-    let inputContainer = document.getElementById("input-container");
-    if (checkbox.checked) {
-        inputContainer.classList.remove("d-none");
-    } else {
-        inputContainer.classList.add("d-none");
-    }
-}
-
-
-// Seleciona todos los checkboxes con la clase 'checkbox-accion'
-$(".checkbox-accion").change(function() {
+$(".checkbox-accion").change(function () {
     // Obtiene el valor del atributo 'data-clave' del checkbox que se cambió
     let clave = $(this).data("clave");
     // Verifica si el checkbox está activado o no
     let activado = this.checked;
-    // Utiliza el método 'toggleClass' de jQuery para mostrar u ocultar el elemento correspondiente
-    $(acciones[clave]).toggleClass("d-none", !activado);
+    // Utiliza el método 'prop' de jQuery para habilitar o deshabilitar el elemento correspondiente
+    $(acciones[clave]).prop("disabled", !activado);
 });
+
 
 
 
@@ -88,7 +78,7 @@ function getServices() {
                 let opt = response.data[i];
                 let el = document.createElement("option");
                 el.textContent = opt.name;
-                el.value = JSON.stringify({ id: opt.id, name: opt.name, cost: opt.cost, opt: opt.not_binding, partial: opt.partial, cant: '' });
+                el.value = JSON.stringify({ id: opt.id, name: opt.name, cost: opt.cost, not_binding: opt.not_binding, partial: opt.partial, cant: '' });
                 select.add(el);
             }
         })
@@ -145,7 +135,7 @@ function getServicesNotBulding() {
                 let opt = response.data[i];
                 let el = document.createElement("option");
                 el.textContent = opt.name;
-                el.value = JSON.stringify({ id: opt.id, name: opt.name, cost: opt.cost, opt: opt.not_binding, partial: opt.partial, cant: '' });
+                el.value = JSON.stringify({ id: opt.id, name: opt.name, cost: opt.cost, not_binding: opt.not_binding, partial: opt.partial, cant: '' });
                 select.add(el);
             }
         })
@@ -238,8 +228,6 @@ function actualizarTabla() {
     row.appendChild(th5);
     row.appendChild(th6);
 
-
-
     let total = 0;
 
     // Crear una nueva fila para cada servicio agregado y agregarla a la tabla
@@ -266,7 +254,7 @@ function actualizarTabla() {
         btnEliminar.innerHTML = "ELIMINAR";
         btnEliminar.dataset.index = i;
         btnEliminar.classList.add("btn", "btn-danger", "btn-sm");
-        btnEliminar.addEventListener("click", function() {
+        btnEliminar.addEventListener("click", function () {
             let index = this.dataset.index;
             serviciosAgregados.splice(index, 1);
             total -= servicio.total;
@@ -289,7 +277,7 @@ function actualizarTabla() {
             checkboxPartial.type = 'checkbox';
             checkboxPartial.dataset.index = i;
             checkboxPartial.name = "payment_partial";
-            checkboxPartial.addEventListener("click", function() {
+            checkboxPartial.addEventListener("click", function () {
                 if (checkboxPartial.checked == true) {
                     let index = this.dataset.index;
                     serviciosAgregados[index].total = (servicio.total / 5);
@@ -311,17 +299,16 @@ function actualizarTabla() {
 
 function psicologo() {
     let idsServicios = serviciosAgregados.map(servicio => servicio.id);
-    let nbServices = serviciosAgregados.map(servicio => servicio.not_binding);
+    let nbServices = serviciosAgregados.map(servicio => servicio.id);
 
-    let serviciosNB = [0];
-    // let serviciosNB = [0];
-    let serviciosNBAgregados = serviciosNB.filter(not_binding => nbServices.includes(not_binding));
+    let serviciosNB = serviciosAgregados.filter(servicio => servicio.not_binding == 1);
+    let serviciosNBAgregados = serviciosNB.filter(servicio => nbServices.includes(servicio.id));
 
-    let serviciosPsicologicos = [69, 70, 71, 84, 85];
+    let serviciosPsicologicos = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
     // let serviciosPsicologicos = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
     let serviciosPsicologicosAgregados = serviciosPsicologicos.filter(id => idsServicios.includes(id));
 
-    let serviciosCuotas = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
+    let serviciosCuotas = [69, 70, 71, 84, 85];
     // let serviciosCuotas = [69,70,71,84,85];
     let serviciosCuotasAgregados = serviciosCuotas.filter(id => idsServicios.includes(id));
 
@@ -332,106 +319,133 @@ function psicologo() {
     if (serviciosNBAgregados.length > 0) {
         let modal = document.getElementById('modalNB');
         let openModal = new bootstrap.Modal(modal);
-        openModal.show();
+        return openModal.show();
     }
     if (serviciosPsicologicosAgregados.length > 0) {
         let modal = document.getElementById('modalTherapists');
         let openModal = new bootstrap.Modal(modal);
-        openModal.show();
         therapists.setAttribute('required', true);
         getTherapists();
+        return openModal.show();
     }
     if (serviciosPromotoresAgregados.length > 0) {
         let modal = document.getElementById('modalPromotores');
         let openModal = new bootstrap.Modal(modal);
-        openModal.show();
         promoters.setAttribute('required', true);
         getPromoters();
+        return openModal.show();
     }
     if (serviciosCuotasAgregados.length > 0) {
         let modal = document.getElementById('modalCuotas');
         let openModal = new bootstrap.Modal(modal);
-        openModal.show();
         bill.value = beneficiary_name.value;
+        bill.disabled = false;
+        bill.setAttribute('required', true);
+        cuota.disabled = false;
+        cuota.setAttribute('required', true);
+        return openModal.show();
     }
-    if (serviciosPsicologicosAgregados == 0 && serviciosCuotasAgregados.length == 0 && serviciosPromotoresAgregados.length == 0) {
-        myForm.submit();
+    if (serviciosPsicologicosAgregados == 0 && serviciosCuotasAgregados.length == 0 && serviciosPromotoresAgregados.length == 0 && serviciosNBAgregados.length == 0) {
+        document.getElementById("beneficiary_id").disabled = false;
+        document.getElementById("beneficiary_name").disabled = false;
+        // después de agregar un servicio a `serviciosAgregados`
+        document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
+        return myForm.submit();
     }
 }
-$('#btn-generar-movimiento').on('click', function() {
-    // Verificar si al menos un input tiene un valor
-    var inputs = $('.elemento');
-    var tieneValor = false;
-    for (var i = 0; i < inputs.length; i++) {
-        if ($(inputs[i]).val() !== '') {
+
+$('#btn-generar-movimiento').on('click', function () {
+    // Verificar si al menos un input tiene un valor y no está deshabilitado
+    let inputs = $('.elemento');
+    let tieneValor = false;
+    for (let i = 0; i < inputs.length; i++) {
+        if ($(inputs[i]).val() !== '' && !$(inputs[i]).is(':disabled')) {
             tieneValor = true;
             break;
         }
     }
-    if (!tieneValor) {
-        alert('Por favor ingrese al menos un valor');
-        return;
+    if (tieneValor) {
+        document.getElementById("beneficiary_id").disabled = false;
+        document.getElementById("beneficiary_name").disabled = false;
+        // después de agregar un servicio a `serviciosAgregados`
+        document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
+        myForm.submit();
+    } else {
+        alert('Por favor ingrese al menos un valor en un campo habilitado');
     }
-    // Si al menos un input tiene valor, continuar con la generación de movimiento
-    submit();
 });
 
+$('#modalPromotores').on('hidden.bs.modal', function (e) {
+    promoters.removeAttribute('required');
+    promoters.innerHTML = "";
+})
 
-modalNB.addEventListener('hidden.modal', function() {
-    select.removeAttribute('required');
-});
+$('#modalTherapists').on('hidden.bs.modal', function (e) {
+    therapists.removeAttribute('required');
+    therapists.innerHTML = "";
+})
 
-modalPromotores.addEventListener('hidden.modal', function() {
-    select.removeAttribute('required');
-});
+$('#modalNB').on('hidden.bs.modal', function (e) {
+    mm.disabled = true;
+    mf.disabled = true;
+    am.disabled = true;
+    af.disabled = true;
+    amm.disabled = true;
+    amf.disabled = true;
+})
 
-modalTherapists.addEventListener('hidden.modal', function() {
-    select.removeAttribute('required');
-});
+$('#modalCuotas').on('hidden.bs.modal', function (e) {
+    bill.removeAttribute('required');
+    bill.disabled = true;
+    cuota.removeAttribute('required');
+    cuota.disabled = true;
+})
 
-modalCuotas.addEventListener('hidden.modal', function() {
-    select.removeAttribute('required');
-});
-
-// Agregar un listener al evento click del botón cancelar
 var cancelBtnNB = document.querySelector('#modalNB [data-dismiss="modal"]');
-cancelBtnNB.addEventListener('click', function() {
-    select.removeAttribute('required');
+cancelBtnNB.addEventListener('click', function () {
+    mm.disabled = true;
+    mf.disabled = true;
+    am.disabled = true;
+    af.disabled = true;
+    amm.disabled = true;
+    amf.disabled = true;
 });
 
 var cancelBtnPromoters = document.querySelector('#modalPromotores [data-dismiss="modal"]');
-cancelBtnPromoters.addEventListener('click', function() {
-    select.removeAttribute('required');
+cancelBtnPromoters.addEventListener('click', function () {
+    promoters.removeAttribute('required');
+    promoters.innerHTML = "";
 });
 
 var cancelBtnTherapists = document.querySelector('#modalTherapists [data-dismiss="modal"]');
-cancelBtnTherapists.addEventListener('click', function() {
-    select.removeAttribute('required');
+cancelBtnTherapists.addEventListener('click', function () {
+    therapists.removeAttribute('required');
+    therapists.innerHTML = "";
 });
+
 var cancelBtnCuotas = document.querySelector('#modalCuotas [data-dismiss="modal"]');
-cancelBtnCuotas.addEventListener('click', function() {
-    select.removeAttribute('required');
+cancelBtnCuotas.addEventListener('click', function () {
+    bill.removeAttribute('required');
+    bill.disabled = true;
+    cuota.removeAttribute('required');
+    cuota.disabled = true;
 });
 
 function submit() {
-    myForm.requestSubmit();
+    document.getElementById("beneficiary_id").disabled = false;
+    document.getElementById("beneficiary_name").disabled = false;
+    // después de agregar un servicio a `serviciosAgregados`
+    document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
+    myForm.submit();
 }
 
 function arrayData() {
     psicologo();
-
-    document.getElementById("beneficiary_id").disabled = false;
-    document.getElementById("beneficiary_name").disabled = false;
-
-    // después de agregar un servicio a `serviciosAgregados`
-    document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
 }
 
 // Gets a reference to the form element
 var form = document.getElementById('myForm');
 // Adds a listener for the "submit" event.
-form.addEventListener('submit', function(e) {
-
+form.addEventListener('submit', function (e) {
     e.preventDefault();
-
 });

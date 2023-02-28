@@ -31,6 +31,8 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+
+    <script src="/bootstrap/js/jquery.min.js"></script>
 </head>
 <body>
 
@@ -102,7 +104,7 @@
 	<div class="loader-overlay"></div>
 
 	<!-- Library Javascipt-->
-	<script src="/bootstrap/js/jquery.min.js"></script>
+	
 	<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="/bootstrap/js/popper.min.js"></script>
 	<script src="/assets/script.js"></script>

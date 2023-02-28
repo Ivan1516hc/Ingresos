@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="/fontawesome/css/all.css">
 	<!-- Icon LineAwesome CSS-->
 	<link rel="stylesheet" href="/lineawesome/css/line-awesome.min.css">
-
+    <script src="/bootstrap/js/jquery.min.js"></script>
 </head>
 <body>
   
@@ -86,7 +86,6 @@
 	<div class="loader-overlay"></div>
 
 	<!-- Library Javascipt-->
-	<script src="/bootstrap/js/jquery.min.js"></script>
 	<script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="/bootstrap/js/popper.min.js"></script>
 	<script src="/assets/script.js"></script>
