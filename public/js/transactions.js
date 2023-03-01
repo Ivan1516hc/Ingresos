@@ -166,6 +166,28 @@ function addService() {
         let openModal = new bootstrap.Modal(modal);
         return openModal.show();
     }
+    let idsServicios = serviciosAgregados.map(servicio => servicio.id);
+    let serviciosCuotas = [69, 70, 71, 84, 85];
+    let serviciosCuotasAgregados = serviciosCuotas.filter(id => idsServicios.includes(id));
+
+    
+    if (serviciosCuotasAgregados.length >= 1) {
+        alert('No se pueden agregar más servicios a cuotas');
+        return;
+    }
+    if (serviciosAgregados.some(s => serviciosCuotas.includes(s.id))) {
+        alert('Ya existe un servicio a cuotas agregado');
+        return;
+    }    
+    if (serviciosAgregados.some(s => s.id === servicio.id)) {
+        alert('El servicio ya ha sido agregado');
+        return;
+    }
+    if (serviciosAgregados.length >= 1 && serviciosCuotas.includes(servicio.id)) {
+        alert('No se pueden agregar un servicio a cuotas con servicios normales');
+        return;
+    }
+
     // Agregar el servicio a la letiable global
     serviciosAgregados.push(servicio);
     partialPayment = serviciosAgregados[0].partial ? true : false;
@@ -264,6 +286,7 @@ function actualizarTabla() {
         celdaEliminar.appendChild(btnEliminar);
 
         if (servicio.partial == 5) {
+            let cost = servicio.cost;
             let miTagP = document.getElementById('labelPartial');
             let cadena = 'Selecciona la casilla de Pago parcial si quieres que el servicio sea pagado a cuotas.<br>' +
                 'Valor del servicio: $' + servicio.total + '<br>' +
@@ -281,11 +304,19 @@ function actualizarTabla() {
                 if (checkboxPartial.checked == true) {
                     let index = this.dataset.index;
                     serviciosAgregados[index].total = (servicio.total / 5);
+                    serviciosAgregados[index].cost = (cost / 5);
+                    console.log(serviciosAgregados[index]);
                     document.getElementById("total").value = (total / 5);
-                    celdaTotal.innerHTML = servicio.total;
+                    celdaTotal.innerHTML = (total / 5);
+                    celdaCosto.innerHTML = (servicio.cost);
                 } else {
+                    let index = this.dataset.index;
+                    serviciosAgregados[index].total = total;
+                    serviciosAgregados[index].cost = cost;
+                    console.log(serviciosAgregados[index]);
+                    celdaCosto.innerHTML = cost;
                     document.getElementById("total").value = total;
-                    celdaTotal.innerHTML = servicio.total;
+                    celdaTotal.innerHTML = total;
                 }
             });
             celdaCheckbox.appendChild(checkboxPartial);
@@ -305,15 +336,12 @@ function psicologo() {
     let serviciosNBAgregados = serviciosNB.filter(servicio => nbServices.includes(servicio.id));
 
     let serviciosPsicologicos = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
-    // let serviciosPsicologicos = [66, 75, 76, 77, 78, 88, 155, 156, 157, 158];
     let serviciosPsicologicosAgregados = serviciosPsicologicos.filter(id => idsServicios.includes(id));
 
     let serviciosCuotas = [69, 70, 71, 84, 85];
-    // let serviciosCuotas = [69,70,71,84,85];
     let serviciosCuotasAgregados = serviciosCuotas.filter(id => idsServicios.includes(id));
 
     let serviciosPromotores = [184, 185, 186, 187, 188];
-    // let serviciosPromotores = [184, 185, 186, 187, 188];
     let serviciosPromotoresAgregados = serviciosPromotores.filter(id => idsServicios.includes(id));
 
     if (serviciosNBAgregados.length > 0) {
@@ -346,11 +374,7 @@ function psicologo() {
         return openModal.show();
     }
     if (serviciosPsicologicosAgregados == 0 && serviciosCuotasAgregados.length == 0 && serviciosPromotoresAgregados.length == 0 && serviciosNBAgregados.length == 0) {
-        document.getElementById("beneficiary_id").disabled = false;
-        document.getElementById("beneficiary_name").disabled = false;
-        // después de agregar un servicio a `serviciosAgregados`
-        document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
-        return myForm.submit();
+        submit();
     }
 }
 
@@ -365,11 +389,7 @@ $('#btn-generar-movimiento').on('click', function () {
         }
     }
     if (tieneValor) {
-        document.getElementById("beneficiary_id").disabled = false;
-        document.getElementById("beneficiary_name").disabled = false;
-        // después de agregar un servicio a `serviciosAgregados`
-        document.getElementById('serviciosAgregadosInput').value = JSON.stringify(serviciosAgregados);
-        myForm.submit();
+        submit();
     } else {
         alert('Por favor ingrese al menos un valor en un campo habilitado');
     }
@@ -442,6 +462,27 @@ function submit() {
 function arrayData() {
     psicologo();
 }
+
+$('#btn-generar-movimiento-therapists').on('click', function () {
+    if ($('#therapists').length) {
+        if ($('#therapists').val() == '--Selecciona Terapeuta--') {
+            return alert('Elige un terapeuta');
+        }
+    }
+    submit();
+});
+$('#btn-generar-movimiento-cuota').on('click', function () {
+    submit();
+});
+
+$('#btn-generar-movimiento-promoters').on('click', function () {
+    if ($('#promoters').length) {
+        if ($('#promoters').val() == '--Selecciona Promotor--') {
+            return alert('Elige un promotor');
+        }
+    }
+    submit();
+});
 
 // Gets a reference to the form element
 var form = document.getElementById('myForm');

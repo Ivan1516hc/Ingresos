@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\CancellationHistory;
 use App\Models\PartialPayment;
+use App\Models\PromotersTransaction;
 use App\Models\ServicesTransaction;
+use App\Models\Therapist;
+use App\Models\TherapistsTransaction;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -70,12 +73,11 @@ class TransactionController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
         request()->validate(Transaction::$rules);
         $user = Auth::user();
         $total = 0;
         $serviciosAgregados = json_decode($request->serviciosAgregados);
-
+        dd($request->all(),count($serviciosAgregados));
         $year = Carbon::now()->format('Y');
 
         $number = Transaction::select('invoice')->where('location_id', $user->location_id)->whereYear('created_at', $year)->orderBy('id', 'desc')->first();
@@ -93,16 +95,43 @@ class TransactionController extends Controller
         DB::beginTransaction();
 
         try {
-            $transaction = Transaction::create([
-                'invoice' => $folio,
-                'bill' => $request->bill,
-                'total' => $total,
-                'beneficiary_id' => $request->beneficiary_id,
-                'beneficiary_name' => $request->beneficiary_name,
-                'location_id' => $user->location_id,
-                'user_id' => $user->id,
-            ]);
+            if (isset($request->cuota) && isset($request->bill)) {
+                $transaction = Transaction::create([
+                    'invoice' => $folio,
+                    'bill' => $request->bill,
+                    'total' => $request->cuota,
+                    'beneficiary_id' => $request->beneficiary_id,
+                    'beneficiary_name' => $request->beneficiary_name,
+                    'location_id' => $user->location_id,
+                    'user_id' => $user->id,
+                ]);
+                foreach ($serviciosAgregados as $service) {
+                    $service_transaction = ServicesTransaction::create([
+                        'transaction_id' => $folio,
+                        'service_id' => $service->id,
+                        'amount'  => $service->cant,
+                        'cost'  => $request->cuota
+                    ]);
+                }
+            } else {
+                $transaction = Transaction::create([
+                    'invoice' => $folio,
+                    'total' => $total,
+                    'beneficiary_id' => $request->beneficiary_id,
+                    'beneficiary_name' => $request->beneficiary_name,
+                    'location_id' => $user->location_id,
+                    'user_id' => $user->id,
+                ]);
 
+                foreach ($serviciosAgregados as $service) {
+                    $service_transaction = ServicesTransaction::create([
+                        'transaction_id' => $folio,
+                        'service_id' => $service->id,
+                        'amount'  => $service->cant,
+                        'cost'  => $service->total
+                    ]);
+                }
+            }
             if (isset($request->payment_partial)) {
                 if ($request->beneficiary_id != 'DIFZAP2019026294') {
                     $query = PartialPayment::where('beneficiary_id', $request->beneficiary_id)->where('status', 1)->get();
@@ -116,17 +145,20 @@ class TransactionController extends Controller
                     'service_id' => $serviciosAgregados[0]->id,
                     'user_id' => $user->id,
                     'payment' => $serviciosAgregados[0]->cost,
-                    'partiality' => 1,
+                    'partiality' => 5,
                     'status' => 1
                 ]);
             }
-
-            foreach ($serviciosAgregados as $service) {
-                $service_transaction = ServicesTransaction::create([
-                    'transaction_id' => $folio,
-                    'service_id' => $service->id,
-                    'amount'  => $service->cant,
-                    'cost'  => $service->total
+            if (isset($request->therapists)) {
+                TherapistsTransaction::create([
+                    'therapist_id' => $request->therapists,
+                    'transaction_id' => $folio
+                ]);
+            }
+            if (isset($request->promoters)){
+                PromotersTransaction::create([
+                    'promoter_id' => $request->promoters,
+                    'transaction_id' => $folio
                 ]);
             }
 

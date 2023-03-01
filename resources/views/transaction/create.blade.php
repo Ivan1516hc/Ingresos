@@ -16,7 +16,7 @@
                         <span class="card-title">GENERAR MOVIMIENTO</span>
                     </div>
                     <div class="card-body">
-                        <form id="myForm" onsubmit="arrayData()" method="POST" role="form"  enctype="multipart/form-data" action="{{ route('transactions.store') }}">
+                        <form id="myForm" onsubmit="psicologo()" method="POST" role="form"  enctype="multipart/form-data" action="{{ route('transactions.store') }}">
                             @csrf
 
                             @include('transaction.form')

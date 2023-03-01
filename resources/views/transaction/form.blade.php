@@ -113,7 +113,7 @@
 
             <!--Footer-->
             <div class="modal-footer flex-center align-self-center">
-                <button type="button" onclick="submit()" class="btn btn-primary">Generar Movimiento</button>
+                <button type="button" id="btn-generar-movimiento-therapists" class="btn btn-primary">Generar Movimiento</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
@@ -139,7 +139,7 @@
             </div>
             <!--Footer-->
             <div class="modal-footer flex-center align-self-center">
-                <button type="button" onclick="submit()" class="btn btn-primary">Generar Movimiento</button>
+                <button type="button" id="btn-generar-movimiento-promoters" class="btn btn-primary">Generar Movimiento</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
@@ -166,7 +166,7 @@
             </div>
             <!--Footer-->
             <div class="modal-footer flex-center align-self-center">
-                <button type="button" onclick="submit()" class="btn btn-primary">Generar Movimiento</button>
+                <button type="button" id="btn-generar-movimiento-cuota" class="btn btn-primary">Generar Movimiento</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
