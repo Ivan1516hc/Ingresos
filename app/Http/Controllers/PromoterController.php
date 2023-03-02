@@ -11,6 +11,20 @@ use Illuminate\Http\Request;
  */
 class PromoterController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = $request->user();
+
+            if ($user->profile_id === 2 || $user->profile_id === 3) {
+                if (in_array($request->route()->getName(), ['promoters.create', 'promoters.store', 'promoters.destroy'])) {
+                    abort(403, 'Unauthorized action.');
+                }
+            }
+
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      *

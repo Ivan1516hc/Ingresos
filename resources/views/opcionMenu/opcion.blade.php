@@ -1,5 +1,7 @@
 @extends('layouts.template')
-
+<script>
+    window.profile_id = {{auth()->user()->profile_id}}
+</script>
 <script src="../../js/cards.js"></script>
 
 @section('content')

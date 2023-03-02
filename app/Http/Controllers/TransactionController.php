@@ -6,7 +6,6 @@ use App\Models\CancellationHistory;
 use App\Models\PartialPayment;
 use App\Models\PromotersTransaction;
 use App\Models\ServicesTransaction;
-use App\Models\Therapist;
 use App\Models\TherapistsTransaction;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -53,6 +52,14 @@ class TransactionController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * $transactions->perPage());
     }
 
+    public function ticket($invoice){
+        $transaction = Transaction::where('invoice',$invoice)->first();
+        $service_transaction = ServicesTransaction::where('transaction_id',$invoice)->get();
+        $therapist = TherapistsTransaction::where('transaction_id',$invoice)->first();
+        $promoter = PromotersTransaction::where('transaction_id',$invoice)->first();
+        return view('transaction.ticket',compact('transaction','service_transaction','therapist','promoter'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -77,13 +84,16 @@ class TransactionController extends Controller
         $user = Auth::user();
         $total = 0;
         $serviciosAgregados = json_decode($request->serviciosAgregados);
-        dd($request->all(),count($serviciosAgregados));
         $year = Carbon::now()->format('Y');
 
         $number = Transaction::select('invoice')->where('location_id', $user->location_id)->whereYear('created_at', $year)->orderBy('id', 'desc')->first();
         $folio = $number->invoice ?? null;
         if ($folio == null) {
-            $folio = intval($year . $user->location_id . '00001');
+            if ($user->location < 10) {
+                $folio = intval($year . '0' . $user->location_id . '00001');
+            } else {
+                $folio = intval($year . $user->location_id . '00001');
+            }
         } else {
             $folio = $folio + 1;
         }
@@ -139,7 +149,7 @@ class TransactionController extends Controller
                         return back()->with('message', 'Beneficiario con deuda.');
                     }
                 }
-                $partialPayment = PartialPayment::create([
+                $data = PartialPayment::create([
                     'beneficiary_id' => $request->beneficiary_id,
                     'beneficiary_name' => $request->beneficiary_name,
                     'service_id' => $serviciosAgregados[0]->id,
@@ -150,21 +160,21 @@ class TransactionController extends Controller
                 ]);
             }
             if (isset($request->therapists)) {
-                TherapistsTransaction::create([
+                $data=TherapistsTransaction::create([
                     'therapist_id' => $request->therapists,
                     'transaction_id' => $folio
                 ]);
             }
-            if (isset($request->promoters)){
-                PromotersTransaction::create([
+            if (isset($request->promoters)) {
+                $data=PromotersTransaction::create([
                     'promoter_id' => $request->promoters,
                     'transaction_id' => $folio
                 ]);
             }
 
             DB::commit();
-            return back()
-                ->with('success', 'Movimiento registrado');
+            return redirect('/ticket/'.$folio);
+
             // return redirect()->route('transactions.index')
             //     ->with('success', 'Movimiento registrado');
         } catch (\Throwable $th) {
@@ -212,12 +222,14 @@ class TransactionController extends Controller
             $transaction = Transaction::find($id);
             if ($transaction->status == 1) {
                 Transaction::find($id)->update(['status' => 2]);
+                DB::commit();
+                return back()->with('success', 'Petición de Cancelado Mandada.');
             }
             if ($transaction->status == 2) {
                 Transaction::find($id)->update(['status' => 1]);
+                DB::commit();
+                return back()->with('success', 'Petición de Cancelado Cancelada.');
             }
-            DB::commit();
-            return back()->with('success', 'Petición de Cancelado Mandada.');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('success', 'Movimiento Cancelado.');

@@ -48,7 +48,7 @@
                                             <td>{{ ++$i }}</td>
 
                                             <td>{{ $transaction->invoice }}</td>
-                                            <td>{{ $transaction->total }}</td>
+                                            <td>$ {{ $transaction->total }}</td>
                                             <td>{{ $transaction->beneficiary_id }}</td>
                                             <td>{{ $transaction->beneficiary_name }}</td>
                                             <td>{{ $transaction->location->name }}</td>

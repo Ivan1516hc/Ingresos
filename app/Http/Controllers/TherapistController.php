@@ -11,6 +11,20 @@ use Illuminate\Http\Request;
  */
 class TherapistController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $user = $request->user();
+
+            if ($user->profile_id === 2 || $user->profile_id === 3) {
+                if (in_array($request->route()->getName(), ['therapists.create', 'therapists.store', 'therapists.destroy'])) {
+                    abort(403, 'Unauthorized action.');
+                }
+            }
+
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
      *
@@ -107,7 +121,8 @@ class TherapistController extends Controller
             ->with('success', 'Therapist deleted successfully');
     }
 
-    public function getTherapists(){
+    public function getTherapists()
+    {
         $therapists = Therapist::all();
 
         return response()->json($therapists);
