@@ -57,6 +57,7 @@ class TransactionController extends Controller
         $service_transaction = ServicesTransaction::where('transaction_id',$invoice)->get();
         $therapist = TherapistsTransaction::where('transaction_id',$invoice)->first();
         $promoter = PromotersTransaction::where('transaction_id',$invoice)->first();
+        $transaction['numberToWord']=$this->convertNumberToWords($transaction->total);
         return view('transaction.ticket',compact('transaction','service_transaction','therapist','promoter'));
     }
 
@@ -235,4 +236,64 @@ class TransactionController extends Controller
             return back()->with('success', 'Movimiento Cancelado.');
         }
     }
+
+    function convertNumberToWords(float $number) {
+        $number = number_format($number, 2, '.', '');
+        $decimalPart = intval(substr($number, -2));
+        $integerPart = intval(substr($number, 0, -3));
+        
+        $units = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve','veinte','veintiuno','veintidos','veintitres','veinticuatro','veinticinco','veintiseis','veintisiete','veintiocho','veintinueve'];
+        $tens = ['', '','veinte' ,'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
+        $hundreds = ['', 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];
+        
+        if ($integerPart == 0) {
+            $result = 'cero';
+        } else {
+            $thousands = ['', 'mil', 'millones', 'mil millones', 'billones', 'mil billones'];
+            $groupCount = 0;
+            $result = '';
+            
+            do {
+                $group = $integerPart % 1000;
+                $integerPart = intdiv($integerPart, 1000);
+                
+                if ($group != 0) {
+                    $groupString = '';
+                    
+                    if ($group >= 100) {
+                        $groupString .= $hundreds[intdiv($group, 100)] . ' ';
+                        $group %= 100;
+                    }
+                    
+                    if ($group >= 30) {
+                        $groupString .= $tens[intdiv($group, 10)];
+                        if(($group % 10) != 0){
+                            $groupString .=' Y ';
+                        }
+                        $group %= 10;
+                    }
+                    
+                    if ($group > 0) {
+                        if ($group == 1 && $groupCount == 1) {
+                            $groupString .= '';
+                        } else {
+                            $groupString .= $units[$group] . ' ';
+                        }
+                    }
+                    
+                    $groupString .= $thousands[$groupCount] . ' ';
+                    $result = $groupString . $result;
+                }
+                
+                $groupCount++;
+            } while ($integerPart > 0);
+        }
+        $result .= ' PESOS ';
+        if ($decimalPart > 0) {
+            $result .= 'con ' . $decimalPart . '/100 CENTAVOS';
+        }
+        
+        return ucfirst(trim($result));
+    }
+    
 }
