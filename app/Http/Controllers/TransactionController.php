@@ -53,7 +53,14 @@ class TransactionController extends Controller
     }
 
     public function ticket($invoice){
-        $transaction = Transaction::where('invoice',$invoice)->first();
+        $user = Auth::user();
+        $model = Transaction::query();
+        ($user->profile_id == 3 ? $model->where('user_id', $user->id) : null);
+        ($user->profile_id == 2 ? $model->where('location_id', $user->location_id) : null);
+        $transaction = $model->where('invoice',$invoice)->first();
+        if($transaction == null){
+            return;
+        }
         $service_transaction = ServicesTransaction::where('transaction_id',$invoice)->get();
         $therapist = TherapistsTransaction::where('transaction_id',$invoice)->first();
         $promoter = PromotersTransaction::where('transaction_id',$invoice)->first();

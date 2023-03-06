@@ -29,13 +29,13 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-										<th>Beneficiario</th>
-										<th>Servicio</th>
-										<th>Usuario</th>
-										<th>Abonado</th>
-										<th>Total</th>
-										<th>Estado</th>
+
+                                        <th>Beneficiario</th>
+                                        <th>Servicio</th>
+                                        <th>Usuario</th>
+                                        <th>Abonado</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
 
                                         <th></th>
                                     </tr>
@@ -44,15 +44,31 @@
                                     @foreach ($partialPayments as $partialPayment)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-											<td>{{ $partialPayment->beneficiary_id }}</td>
-											<td>{{ $partialPayment->service->name }}</td>
-											<td>{{ $partialPayment->user->name }}</td>
-											<td>$ {{ $partialPayment->payment }}</td>
-											<td>$ {{ $partialPayment->service->cost }}</td>
-											<td>{{($partialPayment->status == 1 ?'Adeudo' : 'Pagado' )}}</td>
+
+                                            <td>{{ $partialPayment->beneficiary_id }}</td>
+                                            <td>{{ $partialPayment->service->name }}</td>
+                                            <td>{{ $partialPayment->user->name }}</td>
+                                            <td>$ {{ $partialPayment->payment }}</td>
+                                            <td>$ {{ $partialPayment->service->cost }}</td>
+                                            <td>{{ $partialPayment->status == 1 ? 'Adeudo' : 'Pagado' }}</td>
                                             <td>
-                                                <a class="btn btn-sm bg-primary" onclick="abonar()"><i class="la la-fw la-edit icon-button"></i>Abonar</a>
+                                                @if ($partialPayment->status == 1)
+                                                    <button onclick="abonar({{ $partialPayment->id}})"
+                                                        class="btn btn-md btn-primary">
+                                                        <i class="la la-box icon-button"></i> Abonar
+                                                    </button>
+                                                    <button onclick="cancel({{ $partialPayment->id}})"
+                                                        class="btn btn-md btn-danger">
+                                                        <i class="la la-box icon-button"></i> Terminar
+                                                    </button>
+                                                @else
+                                                    @if ($partialPayment->payment != $partialPayment->service->cost)
+                                                        <button onclick="cancel({{ $partialPayment->id}})"
+                                                            class="btn btn-md btn-info">
+                                                            <i class="la la-box icon-button"></i>Reactivar
+                                                        </button>
+                                                    @endif
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
@@ -66,3 +82,33 @@
         </div>
     </div>
 @endsection
+
+<script src="../../js/partialPayment.js"></script>
+
+<!--Modal: modalPush-->
+<div class="modal fade centerModal" id="modalPagosParciales" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header d-flex justify-content-center">
+                <p class="heading text-primary">Pagos Parciales</p>
+            </div>
+            <!--Body-->
+            {{-- <div class="modal-body">
+                <p>Generar abono del servicio {{}}, el servicio fue adquirido a 5 parcialidades. 
+                    El servicio tiene un valor de ${{}} y actualmente se a abonado ${{}}</p>
+                    <p>El abono sera de ${{}}</p>
+            </div> --}}
+            <!--Footer-->
+            <div class="modal-footer flex-center align-self-center">
+                <button type="button" onclick="abonar()" class="btn btn-primary">Generar Abono</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: modalPush-->
+

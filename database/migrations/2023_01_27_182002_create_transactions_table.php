@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->autoIncrement();
             $table->unsignedBigInteger('invoice')->unique();
-            $table->string('bill')->nullable();
             $table->float('total');
             $table->string('beneficiary_id');
             $table->string('beneficiary_name');

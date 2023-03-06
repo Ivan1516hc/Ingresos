@@ -24,10 +24,6 @@ Route::get('import3', [App\Http\Controllers\datosController::class, 'import3']);
 Route::post('/login-username', [LoginController::class, 'postLogin']);
 
 
-Route::get('/mov/{id}', [App\Http\Controllers\TransactionController::class, 'cancel']);
-Route::get('/mov/request-cancel/{id}', [App\Http\Controllers\TransactionController::class, 'requestCancel']);
-
-
 Route::middleware('auth'
 )->group(function () {
     Route::get('/', function () {
@@ -40,7 +36,7 @@ Route::middleware('auth'
     Route::resource('/historial-cancelacion', App\Http\Controllers\CancellationHistoryController::class, ['names' => 'cancellation-histories'])->middleware('role:1,2,3,5');
     Route::resource('/grupo-servicios', App\Http\Controllers\GroupsServiceController::class, ['names' => 'groups-services'])->middleware('role:2,3');
     Route::resource('/ubicaciones', App\Http\Controllers\LocationController::class, ['names' => 'locations'])->middleware('role:1,2');
-    Route::resource('/pagos-parciales', App\Http\Controllers\PartialPaymentController::class, ['names' => 'partial-payments'])->middleware('role:2,3');
+    Route::resource('/pagos-parciales', App\Http\Controllers\PartialPaymentController::class, ['names' => 'partial-payments'])->middleware('role:1,2,3');
     Route::resource('/promotores', App\Http\Controllers\PromoterController::class, ['names' => 'promoters'])->middleware('role:1,2,3');
     Route::resource('/historial-reimpresion', App\Http\Controllers\ReprintHistoryController::class, ['names' => 'reprint-histories'])->middleware('role:2,3,1');
     Route::resource('/terapeutas', App\Http\Controllers\TherapistController::class, ['names' => 'therapists'])->middleware('role:1,2,3');
@@ -49,6 +45,12 @@ Route::middleware('auth'
 
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);
     Route::get('servicios-no-vinculantes', [App\Http\Controllers\ServiceController::class, 'getServicesNotbilding']);
+    
+    Route::get('/mov/{id}', [App\Http\Controllers\TransactionController::class, 'cancel']);
+    Route::get('/mov/request-cancel/{id}', [App\Http\Controllers\TransactionController::class, 'requestCancel']);
+
+    Route::get('/partial/{id}', [App\Http\Controllers\PartialPaymentController::class, 'abono']);
+    Route::get('/partial/cancel/{id}', [App\Http\Controllers\PartialPaymentController::class, 'requestCancel']);
 
     Route::get('getlocations', [App\Http\Controllers\FormsController::class, 'getLocations']);
     Route::get('gettherapists', [App\Http\Controllers\TherapistController::class, 'getTherapists']);

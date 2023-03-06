@@ -1,5 +1,8 @@
 @extends('layouts.app')
+@php
 
+    $user = Auth::user();
+@endphp
 @section('template_title')
     Promoter
 @endsection
