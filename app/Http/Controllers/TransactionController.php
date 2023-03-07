@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CancellationHistory;
 use App\Models\PartialPayment;
+use App\Models\PartialPaymentsTransaction;
 use App\Models\PromotersTransaction;
 use App\Models\ServicesTransaction;
 use App\Models\TherapistsTransaction;
@@ -64,8 +65,9 @@ class TransactionController extends Controller
         $service_transaction = ServicesTransaction::where('transaction_id',$invoice)->get();
         $therapist = TherapistsTransaction::where('transaction_id',$invoice)->first();
         $promoter = PromotersTransaction::where('transaction_id',$invoice)->first();
+        $partial = PartialPaymentsTransaction::where('transaction_id',$invoice)->first();
         $transaction['numberToWord']=$this->convertNumberToWords($transaction->total);
-        return view('transaction.ticket',compact('transaction','service_transaction','therapist','promoter'));
+        return view('transaction.ticket',compact('transaction','service_transaction','therapist','promoter','partial'));
     }
 
     /**
@@ -97,7 +99,7 @@ class TransactionController extends Controller
         $number = Transaction::select('invoice')->where('location_id', $user->location_id)->whereYear('created_at', $year)->orderBy('id', 'desc')->first();
         $folio = $number->invoice ?? null;
         if ($folio == null) {
-            if ($user->location < 10) {
+            if ($user->location_id < 10) {
                 $folio = intval($year . '0' . $user->location_id . '00001');
             } else {
                 $folio = intval($year . $user->location_id . '00001');
@@ -113,10 +115,9 @@ class TransactionController extends Controller
         DB::beginTransaction();
 
         try {
-            if (isset($request->cuota) && isset($request->bill)) {
+            if (isset($request->cuota)) {
                 $transaction = Transaction::create([
                     'invoice' => $folio,
-                    'bill' => $request->bill,
                     'total' => $request->cuota,
                     'beneficiary_id' => $request->beneficiary_id,
                     'beneficiary_name' => $request->beneficiary_name,

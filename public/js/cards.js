@@ -9,21 +9,21 @@ function myCollapse(target) {
     let cardData = {
         caja: {
             cobros: {
-                profile_id: [2,3],
+                profile_id: [2, 3],
                 links: '/movimientos/create',
                 iconClass: 'fas fa-wallet',
                 iconColor: 'bg-primary text-light',
                 title: 'COBROS'
             },
             historial: {
-                profile_id: [2,3,1],
+                profile_id: [1, 2, 3],
                 links: '/movimientos',
                 iconClass: 'fas fa-history',
                 iconColor: 'bg-primary text-light',
                 title: 'HISTORIAL'
             },
             pagos_parciales: {
-                profile_id: [2,3,1],
+                profile_id: [2, 1, 3],
                 links: '/pagos-parciales',
                 iconClass: 'las la-history',
                 iconColor: 'bg-primary text-light',
@@ -32,35 +32,35 @@ function myCollapse(target) {
         },
         catalogos: {
             servicios: {
-                profile_id: [1,2,3],
+                profile_id: [1, 2, 3],
                 links: '/servicios',
                 iconClass: 'fas fa-chalkboard-teacher',
                 iconColor: 'bg-success text-light',
                 title: 'SERVICIOS'
             },
             ubicaciones: {
-                profile_id: [2,1],
+                profile_id: [2, 1],
                 links: '/ubicaciones',
                 iconClass: 'fas fa-map-marked',
                 iconColor: 'bg-success text-light',
                 title: 'UBICACIONES'
             },
             promotores: {
-                profile_id: [1, 2,3],
+                profile_id: [1, 2, 3],
                 links: '/promotores',
                 iconClass: 'fas fa-user-tie',
                 iconColor: 'bg-success text-light',
                 title: 'PROMOTORES'
             },
             terapeutas: {
-                profile_id: [1, 2,3],
+                profile_id: [1, 2, 3],
                 links: '/terapeutas',
                 iconClass: 'fas fa-user-nurse',
                 iconColor: 'bg-success text-light',
                 title: 'TERAPEUTAS'
             },
             usuarios: {
-                profile_id: [1, 2],
+                profile_id: [1],
                 links: '/usuarios',
                 iconClass: 'fas fa-users',
                 iconColor: 'bg-success text-light',
@@ -69,14 +69,14 @@ function myCollapse(target) {
         },
         reportes: {
             reporteFechas: {
-                profile_id: [1, 2,3],
+                profile_id: [1, 2, 3],
                 links: '/',
                 iconClass: 'fas fa-calendar-alt',
                 iconColor: 'bg-info text-light',
                 title: 'REPORTE POR FECHA'
             },
             reporteCentro: {
-                profile_id: [1, 2,3,4],
+                profile_id: [1, 2, 3, 4],
                 links: '/',
                 iconClass: 'fas fa-file-invoice',
                 iconColor: 'bg-info text-light',
@@ -91,19 +91,26 @@ function myCollapse(target) {
             }
         },
         administracion: {
-            cancelacionParcialidades: {
-                profile_id: [1, 5],
-                links: '/',
-                iconClass: 'fas fa-window-close',
-                iconColor: 'bg-warning text-light',
-                title: 'CANCELACIÓN PARCIALIDADES'
-            },
             cancelacionRF: {
-                profile_id: [1, 2,5],
+                profile_id: [1, 2, 5],
                 links: '/cancelaciones',
                 iconClass: 'fas fa-times-circle',
                 iconColor: 'bg-warning text-light',
-                title: 'CANCELACIÓN RF'
+                title: 'CANCELACIONES'
+            },
+            historialC: {
+                profile_id: [1, 2, 5],
+                links: '/historial-cancelacion',
+                iconClass: 'fas fa-times-circle',
+                iconColor: 'bg-warning text-light',
+                title: 'HISTORIAL CANCELACION'
+            },
+            historialR: {
+                profile_id: [1, 2, 5],
+                links: '/historial-reimpresion',
+                iconClass: 'fas fa-times-circle',
+                iconColor: 'bg-warning text-light',
+                title: 'HISTORIAL REIMPRECIÓN'
             }
         }
     }
@@ -148,25 +155,25 @@ function generateCards() {
             iconClass: 'fas fa-inbox',
             iconColor: 'bg-primary text-light',
             title: 'CAJA',
-            profile_id: [2,3,1] // Tarjeta de Caja visible para perfiles 1 y 2
+            profile_id: [2, 3, 1] // Tarjeta de Caja visible para perfiles 1 y 2
         }, {
             target: 'catalogos',
             iconClass: 'fas fa-list-ul',
             iconColor: 'bg-success text-light',
             title: 'CATÁLOGOS',
-            profile_id: [1, 2,3] // Tarjeta de Catálogos visible para perfiles 1 y 2
+            profile_id: [1, 2, 3] // Tarjeta de Catálogos visible para perfiles 1 y 2
         }, {
             target: 'reportes',
             iconClass: 'las la-clipboard-list',
             iconColor: 'bg-info text-light',
             title: 'REPORTES',
-            profile_id: [1, 2,3,4] // Tarjeta de Reportes visible solo para perfil 2
+            profile_id: [1, 2, 3, 4] // Tarjeta de Reportes visible solo para perfil 2
         }, {
             target: 'administracion',
             iconClass: 'fas fa-file-archive',
             iconColor: 'bg-warning text-light',
             title: 'ADMINISTRACIÓN',
-            profile_id: [1,2,5] // Tarjeta de Administración visible solo para perfil 1
+            profile_id: [1, 2, 5] // Tarjeta de Administración visible solo para perfil 1
         }];
 
     for (var i = 0; i < cardData.length; i++) {

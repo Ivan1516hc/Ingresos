@@ -20,6 +20,7 @@ Auth::routes();
 Route::get('import1', [App\Http\Controllers\datosController::class, 'import1']);
 Route::get('import2', [App\Http\Controllers\datosController::class, 'import2']);
 Route::get('import3', [App\Http\Controllers\datosController::class, 'import3']);
+Route::get('import4', [App\Http\Controllers\datosController::class, 'import4']);
 
 Route::post('/login-username', [LoginController::class, 'postLogin']);
 

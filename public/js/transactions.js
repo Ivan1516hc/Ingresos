@@ -366,9 +366,6 @@ function psicologo() {
     if (serviciosCuotasAgregados.length > 0) {
         let modal = document.getElementById('modalCuotas');
         let openModal = new bootstrap.Modal(modal);
-        bill.value = beneficiary_name.value;
-        bill.disabled = false;
-        bill.setAttribute('required', true);
         cuota.disabled = false;
         cuota.setAttribute('required', true);
         return openModal.show();
@@ -415,8 +412,6 @@ $('#modalNB').on('hidden.bs.modal', function (e) {
 })
 
 $('#modalCuotas').on('hidden.bs.modal', function (e) {
-    bill.removeAttribute('required');
-    bill.disabled = true;
     cuota.removeAttribute('required');
     cuota.disabled = true;
 })
@@ -445,8 +440,6 @@ cancelBtnTherapists.addEventListener('click', function () {
 
 var cancelBtnCuotas = document.querySelector('#modalCuotas [data-dismiss="modal"]');
 cancelBtnCuotas.addEventListener('click', function () {
-    bill.removeAttribute('required');
-    bill.disabled = true;
     cuota.removeAttribute('required');
     cuota.disabled = true;
 });

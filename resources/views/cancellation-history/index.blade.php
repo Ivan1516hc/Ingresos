@@ -16,11 +16,12 @@
                                 {{ __('Cancellation History') }}
                             </span>
 
-                             <div class="float-right">
-                                <a href="{{ route('cancellation-histories.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
+                            <div class="float-right">
+                                <a href="{{ route('cancellation-histories.create') }}"
+                                    class="btn btn-primary btn-sm float-right" data-placement="left">
+                                    {{ __('Crear Nuevo') }}
                                 </a>
-                              </div>
+                            </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -35,11 +36,11 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-										<th>Transaction Id</th>
-										<th>User Id</th>
-										<th>Authorized User Id</th>
-										<th>Reason</th>
+
+                                        <th>Transaction Id</th>
+                                        <th>User Id</th>
+                                        <th>Authorized User Id</th>
+                                        <th>Reason</th>
 
                                         <th></th>
                                     </tr>
@@ -48,21 +49,11 @@
                                     @foreach ($cancellationHistories as $cancellationHistory)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-											<td>{{ $cancellationHistory->transaction_id }}</td>
-											<td>{{ $cancellationHistory->user_id }}</td>
-											<td>{{ $cancellationHistory->authorized_user_id }}</td>
-											<td>{{ $cancellationHistory->reason }}</td>
 
-                                            <td>
-                                                <form action="{{ route('cancellation-histories.destroy',$cancellationHistory->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('cancellation-histories.show',$cancellationHistory->id) }}"><i class="la la-fw la-eye icon-button"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('cancellation-histories.edit',$cancellationHistory->id) }}"><i class="la la-fw la-edit icon-button"></i> Edit</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
-                                                </form>
-                                            </td>
+                                            <td>{{ $cancellationHistory->transaction_id }}</td>
+                                            <td>{{ $cancellationHistory->user->name}}</td>
+                                            <td>{{ $cancellationHistory->users }}</td>
+                                            <td>{{ $cancellationHistory->reason }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

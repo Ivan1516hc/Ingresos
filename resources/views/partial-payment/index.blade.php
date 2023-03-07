@@ -53,7 +53,7 @@
                                             <td>{{ $partialPayment->status == 1 ? 'Adeudo' : 'Pagado' }}</td>
                                             <td>
                                                 @if ($partialPayment->status == 1)
-                                                    <button onclick="abonar({{ $partialPayment->id}})"
+                                                    <button onclick="modal({{$partialPayment}})"
                                                         class="btn btn-md btn-primary">
                                                         <i class="la la-box icon-button"></i> Abonar
                                                     </button>
@@ -96,14 +96,12 @@
                 <p class="heading text-primary">Pagos Parciales</p>
             </div>
             <!--Body-->
-            {{-- <div class="modal-body">
-                <p>Generar abono del servicio {{}}, el servicio fue adquirido a 5 parcialidades. 
-                    El servicio tiene un valor de ${{}} y actualmente se a abonado ${{}}</p>
-                    <p>El abono sera de ${{}}</p>
-            </div> --}}
+            <div class="modal-body">
+                <p id='text'></p>
+            </div>
             <!--Footer-->
             <div class="modal-footer flex-center align-self-center">
-                <button type="button" onclick="abonar()" class="btn btn-primary">Generar Abono</button>
+                <button type="button" id="abono" class="btn btn-primary">Generar Abono</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>

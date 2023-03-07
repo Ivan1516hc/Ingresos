@@ -18,7 +18,7 @@ class ReprintHistoryController extends Controller
      */
     public function index()
     {
-        $reprintHistories = ReprintHistory::paginate();
+        $reprintHistories = ReprintHistory::orderBy('id','desc')->paginate();
 
         return view('reprint-history.index', compact('reprintHistories'))
             ->with('i', (request()->input('page', 1) - 1) * $reprintHistories->perPage());

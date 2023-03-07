@@ -72,8 +72,8 @@ class PartialPaymentController extends Controller
 
     public function abono($id)
     {
+        
         DB::beginTransaction();
-
         try {
             $user = Auth::user();
             $model = PartialPayment::query();
@@ -98,7 +98,7 @@ class PartialPaymentController extends Controller
             $number = Transaction::select('invoice')->where('location_id', $user->location_id)->whereYear('created_at', $year)->orderBy('id', 'desc')->first();
             $folio = $number->invoice ?? null;
             if ($folio == null) {
-                if ($user->location < 10) {
+                if ($user->location_id < 10) {
                     $folio = intval($year . '0' . $user->location_id . '00001');
                 } else {
                     $folio = intval($year . $user->location_id . '00001');
@@ -134,7 +134,7 @@ class PartialPaymentController extends Controller
             );
         } catch (\Throwable $th) {
             DB::rollBack();
-            return back()->with('message', $th->getMessage());
+            return response()->json(['jsjs' => $th->getMessage()]);
         }
     }
 

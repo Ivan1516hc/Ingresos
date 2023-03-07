@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CancellationHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class CancellationHistoryController
@@ -18,6 +19,8 @@ class CancellationHistoryController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+        $model = CancelTransactions::query();
         $cancellationHistories = CancellationHistory::orderBy('id','desc')->paginate();
 
         return view('cancellation-history.index', compact('cancellationHistories'))

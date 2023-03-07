@@ -166,8 +166,6 @@
             <div class="modal-body row">
                 <label for="recipient-name" class="col-form-label">Couta: </label>
                 <input type="number" class="form-control" id="cuota" value=0 min=0 name="cuota" disabled>
-                <label for="recipient-name" class="col-form-label mt-4">Factura: </label>
-                <input type="text" class="form-control" id="bill" name="bill" disabled>
             </div>
             <!--Footer-->
             <div class="modal-footer flex-center align-self-center">

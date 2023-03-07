@@ -15,12 +15,6 @@
                             <span id="card_title">
                                 {{ __('Reprint History') }}
                             </span>
-
-                             <div class="float-right">
-                                <a href="{{ route('reprint-histories.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
-                                </a>
-                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))

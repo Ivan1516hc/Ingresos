@@ -30,7 +30,7 @@ class DatosController extends Controller
 
     public function import1()
     {
-        
+
         $departments = DB::connection('mysql_2')->table("departamento")->get();
         foreach ($departments as $department) {
             $department = $this->convertValuesToUppercase($department);
@@ -103,7 +103,7 @@ class DatosController extends Controller
         //     ]);
         // }
 
-        
+
 
         $promoters = DB::connection('mysql_2')->table("promotores")->get();
         foreach ($promoters as $promoter) {
@@ -153,7 +153,9 @@ class DatosController extends Controller
                 ]);
             }
         }
-
+    }
+    public function import2()
+    {
         $file = 'C:\Users\Humberto\Downloads\movimientos (9).csv';
         if (($handle = fopen($file, "r")) !== false) {
             $header = fgetcsv($handle);
@@ -178,19 +180,19 @@ class DatosController extends Controller
         }
     }
 
-    public function import2()
+    public function import3()
     {
-        
 
-        $cancellations = DB::connection('mysql_2')->table("movimientos")->where('estatus',3)->get();
+
+        $cancellations = DB::connection('mysql_2')->table("movimientos")->where('estatus', 3)->get();
         foreach ($cancellations as $cancellation) {
             $cancellation = $this->convertValuesToUppercase($cancellation);
-                DB::table('cancellation_histories')->insert([
-                    'transaction_id' => $cancellation['idventa'],
-                    'user_id' => $cancellation['idUser'],
-                    'created_at' => $cancellation['fecha'],
-                    'reason' => $cancellation['motivocancela']
-                ]);
+            DB::table('cancellation_histories')->insert([
+                'transaction_id' => $cancellation['idventa'],
+                'user_id' => $cancellation['idUser'],
+                'created_at' => $cancellation['fecha'],
+                'reason' => $cancellation['motivocancela']
+            ]);
         }
 
         $file2 = 'C:\Users\Humberto\Downloads\movimientos (5).csv';
@@ -211,16 +213,17 @@ class DatosController extends Controller
         $reprints = DB::connection('mysql_2')->table("historialreimp")->get();
         foreach ($reprints as $reprint) {
             $reprint = $this->convertValuesToUppercase($reprint);
-                DB::table('reprint_histories')->insert([
-                    'id'  => $reprint['idhistorialreimp'],
-                    'transaction_id' => $reprint['idventa'],
-                    'user_id' => $reprint['iduser'],
-                    'created_at' => $reprint['fecha'],
-                ]);
+            DB::table('reprint_histories')->insert([
+                'id'  => $reprint['idhistorialreimp'],
+                'transaction_id' => $reprint['idventa'],
+                'user_id' => $reprint['iduser'],
+                'created_at' => $reprint['fecha'],
+            ]);
         }
     }
 
-    public function import3()
+
+    public function import4()
     {
         $partialPayments = DB::connection('mysql_2')->table("parcialidades")->get();
         foreach ($partialPayments as $partialPayment) {
@@ -248,8 +251,8 @@ class DatosController extends Controller
             ]);
         }
 
-       
-        $transactions_therapists = DB::connection('mysql_2')->table("movimientos")->select('idventa','terapeuta','fecha')->where('terapeuta','<>','')->get();
+
+        $transactions_therapists = DB::connection('mysql_2')->table("movimientos")->select('idventa', 'terapeuta', 'fecha')->where('terapeuta', '<>', '')->get();
         foreach ($transactions_therapists as $transaction_therapist) {
             $transaction_therapist = $this->convertValuesToUppercase($transaction_therapist);
             DB::table('therapists_transactions')->insert([
@@ -259,7 +262,7 @@ class DatosController extends Controller
             ]);
         }
 
-        $transactions_locations = DB::connection('mysql_2')->table("movimientos")->select('idventa','centroalim','fecha')->where('centroalim','<>','')->get();
+        $transactions_locations = DB::connection('mysql_2')->table("movimientos")->select('idventa', 'centroalim', 'fecha')->where('centroalim', '<>', '')->get();
         foreach ($transactions_locations as $transaction_location) {
             $transaction_location = $this->convertValuesToUppercase($transaction_location);
             DB::table('locations_transactions')->insert([
