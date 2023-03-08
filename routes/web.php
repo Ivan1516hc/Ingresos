@@ -41,7 +41,7 @@ Route::middleware('auth'
     Route::resource('/promotores', App\Http\Controllers\PromoterController::class, ['names' => 'promoters'])->middleware('role:1,2,3');
     Route::resource('/historial-reimpresion', App\Http\Controllers\ReprintHistoryController::class, ['names' => 'reprint-histories'])->middleware('role:2,3,1');
     Route::resource('/terapeutas', App\Http\Controllers\TherapistController::class, ['names' => 'therapists'])->middleware('role:1,2,3');
-    Route::resource('/cancelaciones', App\Http\Controllers\CancelTransactions::class, ['names' => 'cancel-transactions'])->middleware('role:2,5');
+    Route::resource('/cancelaciones', App\Http\Controllers\CancelTransactions::class, ['names' => 'cancel-transactions'])->middleware('role:1,2,5');
     // Route::resource('/comunidades/{nombre}',App\Http\Controllers\BeneficiariesCommunityController::class,['names' => '']);
 
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);

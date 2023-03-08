@@ -14,7 +14,7 @@
                             <span class="card-title">Show Group</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('groups.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('groups.index') }}"> Regresar</a>
                         </div>
                     </div>
 

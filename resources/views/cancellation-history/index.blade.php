@@ -13,15 +13,8 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Cancellation History') }}
+                                {{ __('HISTORIAL DE CANCELACIÓN') }}
                             </span>
-
-                            <div class="float-right">
-                                <a href="{{ route('cancellation-histories.create') }}"
-                                    class="btn btn-primary btn-sm float-right" data-placement="left">
-                                    {{ __('Crear Nuevo') }}
-                                </a>
-                            </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -37,10 +30,10 @@
                                     <tr>
                                         <th>No</th>
 
-                                        <th>Transaction Id</th>
-                                        <th>User Id</th>
-                                        <th>Authorized User Id</th>
-                                        <th>Reason</th>
+                                        <th>Movimiento</th>
+                                        <th>Usuario</th>
+                                        <th>Autorización</th>
+                                        <th>Razón</th>
 
                                         <th></th>
                                     </tr>

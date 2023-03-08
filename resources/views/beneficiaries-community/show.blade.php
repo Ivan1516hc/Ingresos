@@ -14,7 +14,7 @@
                             <span class="card-title">Show Beneficiaries Community</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('beneficiaries-communities.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('beneficiaries-communities.index') }}"> Regresar</a>
                         </div>
                     </div>
 

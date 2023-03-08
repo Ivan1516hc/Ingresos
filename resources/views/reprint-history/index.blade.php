@@ -13,7 +13,7 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Reprint History') }}
+                                {{ __('HISTORIAL DE REIMPRESIÓN') }}
                             </span>
                         </div>
                     </div>

@@ -14,7 +14,7 @@
                             <span class="card-title">Show Cancellation History</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('cancellation-histories.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('cancellation-histories.index') }}"> Regresar</a>
                         </div>
                     </div>
 

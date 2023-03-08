@@ -14,7 +14,7 @@
                             <span class="card-title">Show Locations Transaction</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('locations-transactions.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('locations-transactions.index') }}"> Regresar</a>
                         </div>
                     </div>
 

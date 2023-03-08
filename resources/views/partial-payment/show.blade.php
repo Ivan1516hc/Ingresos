@@ -14,7 +14,7 @@
                             <span class="card-title">Show Partial Payment</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('partial-payments.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('partial-payments.index') }}"> Regresar</a>
                         </div>
                     </div>
 
