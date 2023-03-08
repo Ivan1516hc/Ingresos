@@ -54,11 +54,11 @@
 
                                             <td>
                                                 <form action="{{ route('beneficiaries-communities.destroy',$beneficiariesCommunity->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('beneficiaries-communities.show',$beneficiariesCommunity->id) }}"><i class="la la-fw la-eye icon-button"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('beneficiaries-communities.edit',$beneficiariesCommunity->id) }}"><i class="la la-fw la-edit icon-button"></i> Edit</a>
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('beneficiaries-communities.show',$beneficiariesCommunity->id) }}"><i class="la la-fw la-eye icon-button"></i> Ver</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('beneficiaries-communities.edit',$beneficiariesCommunity->id) }}"><i class="la la-fw la-edit icon-button"></i> Editar</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Eliminar</button>
                                                 </form>
                                             </td>
                                         </tr>

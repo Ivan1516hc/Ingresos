@@ -13,7 +13,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Update Locations Transaction</span>
+                        <span class="card-title">Editar Locations Transaction</span>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('locations-transactions.update', $locationsTransaction->id) }}"  role="form" enctype="multipart/form-data">

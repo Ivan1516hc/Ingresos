@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('authorized_user_id')->nullable();
             $table->foreign('authorized_user_id')->references('id')->on('users');
             $table->string('reason')->nullable();
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

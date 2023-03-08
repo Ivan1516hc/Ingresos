@@ -13,7 +13,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Create Promoter</span>
+                        <span class="card-title">Crear Promoter</span>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('promoters.store') }}"  role="form" enctype="multipart/form-data">

@@ -12,7 +12,7 @@
             {!! $errors->first('descripcion', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group col-6">
-            {{ Form::label('group_id', 'Group') }}
+            {{ Form::label('group_id', 'Grupo') }}
             <select name="group_id" id="group_id" class="form-control{{ $errors->has('group_id') ? ' is-invalid' : '' }}">
                 <option value="">--Selecciona Grupo--</option>
                 @foreach ($groups as $group)
@@ -24,7 +24,7 @@
         </div>
 
         <div class="form-group col-6">
-            {{ Form::label('department_id', 'Department') }}
+            {{ Form::label('department_id', 'Departamento') }}
             <select name="department_id" id="department_id"
                 class="form-control{{ $errors->has('department_id') ? ' is-invalid' : '' }}">
                 <option value="">--Selecciona Departamento--</option>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="form-group">
-            {{ Form::label('manager_id', 'Manager') }}
+            {{ Form::label('manager_id', 'Responsable') }}
             <select name="manager_id" id="manager_id"
                 class="form-control{{ $errors->has('manager_id') ? ' is-invalid' : '' }}">
                 <option value="">--Selecciona Responsable--</option>

@@ -72,7 +72,7 @@
                                                         method="POST">
                                                         <a class="btn btn-sm btn-success"
                                                             href="{{ route('services.edit', $service->id) }}"><i
-                                                                class="la la-fw la-edit icon-button"></i> Edit</a>
+                                                                class="la la-fw la-edit icon-button"></i> Editar</a>
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm"><i

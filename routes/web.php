@@ -35,7 +35,7 @@ Route::middleware('auth'
     Route::resource('/servicios', App\Http\Controllers\ServiceController::class, ['names' => 'services'])->middleware('role:1,2,3');
     Route::resource('/comunidades', App\Http\Controllers\CommunityController::class, ['names' => 'communities'])->middleware('role:2,3');
     Route::resource('/historial-cancelacion', App\Http\Controllers\CancellationHistoryController::class, ['names' => 'cancellation-histories'])->middleware('role:1,2,3,5');
-    Route::resource('/grupo-servicios', App\Http\Controllers\GroupsServiceController::class, ['names' => 'groups-services'])->middleware('role:2,3');
+    Route::resource('/grupos', App\Http\Controllers\GroupController::class, ['names' => 'groups'])->middleware('role:1,2');
     Route::resource('/ubicaciones', App\Http\Controllers\LocationController::class, ['names' => 'locations'])->middleware('role:1,2');
     Route::resource('/pagos-parciales', App\Http\Controllers\PartialPaymentController::class, ['names' => 'partial-payments'])->middleware('role:1,2,3');
     Route::resource('/promotores', App\Http\Controllers\PromoterController::class, ['names' => 'promoters'])->middleware('role:1,2,3');

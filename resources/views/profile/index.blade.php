@@ -36,7 +36,7 @@
                                     <tr>
                                         <th>No</th>
                                         
-										<th>Name</th>
+										<th>Nombre</th>
 
                                         <th></th>
                                     </tr>
@@ -50,11 +50,11 @@
 
                                             <td>
                                                 <form action="{{ route('profiles.destroy',$profile->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('profiles.show',$profile->id) }}"><i class="la la-fw la-eye icon-button"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('profiles.edit',$profile->id) }}"><i class="la la-fw la-edit icon-button"></i> Edit</a>
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('profiles.show',$profile->id) }}"><i class="la la-fw la-eye icon-button"></i> Ver</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('profiles.edit',$profile->id) }}"><i class="la la-fw la-edit icon-button"></i> Editar</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Eliminar</button>
                                                 </form>
                                             </td>
                                         </tr>

@@ -205,17 +205,19 @@ class TransactionController extends Controller
         return view('transaction.show', compact('transaction'));
     }
 
-    public function cancel($id)
+    public function cancel(Request $request)
     {
         $user = Auth::user();
         try {
-            $transaction = Transaction::find($id);
+            $transaction = Transaction::find($request->id);
             CancellationHistory::create([
                 'transaction_id' => $transaction->invoice,
                 'user_id' => $transaction->user_id,
                 'authorized_user_id'  => $user->id,
+                'reason' => $request->reason,
+                'status' => 1
             ]);
-            Transaction::find($id)->update(['status' => 3]);
+            Transaction::find($request->id)->update(['status' => 3]);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -224,18 +226,26 @@ class TransactionController extends Controller
         return back()->with('success', 'Movimiento Cancelado.');
     }
 
-    public function requestCancel($id)
+    public function requestCancel(Request $request)
     {
         $user = Auth::user();
         try {
-            $transaction = Transaction::find($id);
+            $transaction = Transaction::find($request->id);
             if ($transaction->status == 1) {
-                Transaction::find($id)->update(['status' => 2]);
+                CancellationHistory::create([
+                    'transaction_id' => $transaction->invoice,
+                    'user_id' => $transaction->user_id,
+                    'authorized_user_id'  => $user->id,
+                    'reason' => $request->reason,
+                    'status' => 2
+                ]);
+                Transaction::find($request->id)->update(['status' => 2]);
                 DB::commit();
                 return back()->with('success', 'Petición de Cancelado Mandada.');
             }
             if ($transaction->status == 2) {
-                Transaction::find($id)->update(['status' => 1]);
+                Transaction::find($request->id)->update(['status' => 1]);
+                CancellationHistory::where('transaction_id',$transaction->invoice)->update(['status' => 3]);
                 DB::commit();
                 return back()->with('success', 'Petición de Cancelado Cancelada.');
             }

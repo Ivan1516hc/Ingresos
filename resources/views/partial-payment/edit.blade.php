@@ -13,7 +13,7 @@
 
                 <div class="card card-default">
                     <div class="card-header">
-                        <span class="card-title">Update Partial Payment</span>
+                        <span class="card-title">Editar Partial Payment</span>
                     </div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('partial-payments.update', $partialPayment->id) }}"  role="form" enctype="multipart/form-data">

@@ -2,8 +2,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
-function cancelar(id) {
-    axios.get('http://127.0.0.1:8000/mov/' + id)
+function modal() {
+    let modal = document.getElementById('modalCancel');
+    let openModal = new bootstrap.Modal(modal);
+    return openModal.show();
+}
+
+function cancelar(data) {
+    axios.post('http://127.0.0.1:8000/mov', data)
         .then(response => {
             location.reload();
         })

@@ -45,8 +45,8 @@
 
                                             <td>{{ $cancellationHistory->transaction_id }}</td>
                                             <td>{{ $cancellationHistory->user->name}}</td>
-                                            <td>{{ $cancellationHistory->users }}</td>
-                                            <td>{{ $cancellationHistory->reason }}</td>
+                                            <td>{{ $cancellationHistory->users->name ?? null }}</td>
+                                            <td>{{ $cancellationHistory->reason ?? null }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

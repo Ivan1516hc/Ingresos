@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ReprintHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class ReprintHistoryController
@@ -18,7 +19,13 @@ class ReprintHistoryController extends Controller
      */
     public function index()
     {
-        $reprintHistories = ReprintHistory::orderBy('id','desc')->paginate();
+        $user = Auth::user();
+        $model = ReprintHistory::query();
+        ($user->profile_id == 3 ? $model->where('user_id', $user->id) : null);
+        ($user->profile_id == 2 ? $model->whereHas('user', function ($query) use($user){
+            return  $query->where('location_id',$user->location_id);
+        }) : null);
+        $reprintHistories = $model->orderBy('id','desc')->paginate();
 
         return view('reprint-history.index', compact('reprintHistories'))
             ->with('i', (request()->input('page', 1) - 1) * $reprintHistories->perPage());

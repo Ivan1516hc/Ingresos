@@ -20,7 +20,12 @@ class CancellationHistoryController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $cancellationHistories = CancellationHistory::orderBy('id','desc')->paginate();
+        $model = CancellationHistory::query();
+        ($user->profile_id == 3 ? $model->where('user_id', $user->id) : null);
+        ($user->profile_id == 2 ? $model->whereHas('user', function ($query) use($user){
+            return  $query->where('location_id',$user->location_id);
+        }) : null);
+        $cancellationHistories = $model->orderBy('id','desc')->paginate();
 
         return view('cancellation-history.index', compact('cancellationHistories'))
             ->with('i', (request()->input('page', 1) - 1) * $cancellationHistories->perPage());

@@ -37,7 +37,7 @@
                                         <th>No</th>
                                         
 										<th>Level</th>
-										<th>Name</th>
+										<th>Nombre</th>
 										<th>Direction</th>
 										<th>Dependence</th>
 
@@ -56,11 +56,11 @@
 
                                             <td>
                                                 <form action="{{ route('departments.destroy',$department->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('departments.show',$department->id) }}"><i class="la la-fw la-eye icon-button"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('departments.edit',$department->id) }}"><i class="la la-fw la-edit icon-button"></i> Edit</a>
+                                                    <a class="btn btn-sm btn-primary " href="{{ route('departments.show',$department->id) }}"><i class="la la-fw la-eye icon-button"></i> Ver</a>
+                                                    <a class="btn btn-sm btn-success" href="{{ route('departments.edit',$department->id) }}"><i class="la la-fw la-edit icon-button"></i> Editar</a>
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Eliminar</button>
                                                 </form>
                                             </td>
                                         </tr>

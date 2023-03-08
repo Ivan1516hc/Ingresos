@@ -41,7 +41,7 @@
                                     <tr>
                                         <th>No</th>
 
-                                        <th>Name</th>
+                                        <th>Nombre</th>
 
                                         <th></th>
                                     </tr>
@@ -60,7 +60,7 @@
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger btn-sm"><i
-                                                                class="la la-fw la-trash icon-button"></i> Delete</button>
+                                                                class="la la-fw la-trash icon-button"></i> Eliminar</button>
                                                     </form>
                                                 @endif
                                             </td>

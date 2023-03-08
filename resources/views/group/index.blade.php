@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@php
+    $user = Auth::user();
+@endphp
 @section('template_title')
     Group
 @endsection
@@ -13,14 +15,17 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Group') }}
+                                {{ __('GRUPOS') }}
                             </span>
+                            @if ($user->profile_id == 1)
+                                <div class="float-right">
+                                    <a href="{{ route('groups.create') }}" class="btn btn-primary btn-sm float-right"
+                                        data-placement="left">
+                                        {{ __('Crear Nuevo') }}
+                                    </a>
+                                </div>
+                            @endif
 
-                             <div class="float-right">
-                                <a href="{{ route('groups.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Crear Nuevo') }}
-                                </a>
-                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -35,8 +40,8 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
-										<th>Name</th>
+
+                                        <th>Nombre</th>
 
                                         <th></th>
                                     </tr>
@@ -45,17 +50,21 @@
                                     @foreach ($groups as $group)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
-											<td>{{ $group->name }}</td>
+
+                                            <td>{{ $group->name }}</td>
 
                                             <td>
-                                                <form action="{{ route('groups.destroy',$group->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('groups.show',$group->id) }}"><i class="la la-fw la-eye icon-button"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('groups.edit',$group->id) }}"><i class="la la-fw la-edit icon-button"></i> Edit</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="la la-fw la-trash icon-button"></i> Delete</button>
-                                                </form>
+                                                @if ($user->profile_id == 1)
+                                                    <form action="{{ route('groups.destroy', $group->id) }}" method="POST">
+                                                        <a class="btn btn-sm btn-success"
+                                                            href="{{ route('groups.edit', $group->id) }}"><i
+                                                                class="la la-fw la-edit icon-button"></i> Editar</a>
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm"><i
+                                                                class="la la-fw la-trash icon-button"></i> Eliminar</button>
+                                                    </form>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

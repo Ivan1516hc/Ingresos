@@ -66,8 +66,8 @@
                                                         class="btn btn-md btn-danger">
                                                         <i class="la la-edit icon-button"></i> Autorizar Cancelación
                                                     </button>
-                                                @elseif ($user->profile_id == 1)
-                                                    <button onclick="cancelJD({{ $transaction->id }})"
+                                                @elseif ($user->profile_id == 2)
+                                                    <button onclick="cancelRF({{ $transaction->id }})"
                                                         class="btn btn-md btn-danger">
                                                         <i class="la la-edit icon-button"></i> Autorizar Cancelación
                                                     </button>

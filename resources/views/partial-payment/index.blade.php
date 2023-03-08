@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@php
+    $user = Auth::user();
+@endphp
 @section('template_title')
     Partial Payment
 @endsection
@@ -52,21 +54,23 @@
                                             <td>$ {{ $partialPayment->service->cost }}</td>
                                             <td>{{ $partialPayment->status == 1 ? 'Adeudo' : 'Pagado' }}</td>
                                             <td>
-                                                @if ($partialPayment->status == 1)
-                                                    <button onclick="modal({{$partialPayment}})"
-                                                        class="btn btn-md btn-primary">
-                                                        <i class="la la-box icon-button"></i> Abonar
-                                                    </button>
-                                                    <button onclick="cancel({{ $partialPayment->id}})"
-                                                        class="btn btn-md btn-danger">
-                                                        <i class="la la-box icon-button"></i> Terminar
-                                                    </button>
-                                                @else
-                                                    @if ($partialPayment->payment != $partialPayment->service->cost)
-                                                        <button onclick="cancel({{ $partialPayment->id}})"
-                                                            class="btn btn-md btn-info">
-                                                            <i class="la la-box icon-button"></i>Reactivar
+                                                @if ($user->profile_id == 3 || $user->profile_id == 2)
+                                                    @if ($partialPayment->status == 1)
+                                                        <button onclick="modal({{ $partialPayment }})"
+                                                            class="btn btn-md btn-primary">
+                                                            <i class="la la-box icon-button"></i> Abonar
                                                         </button>
+                                                        <button onclick="cancel({{ $partialPayment->id }})"
+                                                            class="btn btn-md btn-danger">
+                                                            <i class="la la-box icon-button"></i> Terminar
+                                                        </button>
+                                                    @else
+                                                        @if ($partialPayment->payment != $partialPayment->service->cost)
+                                                            <button onclick="cancel({{ $partialPayment->id }})"
+                                                                class="btn btn-md btn-info">
+                                                                <i class="la la-box icon-button"></i>Reactivar
+                                                            </button>
+                                                        @endif
                                                     @endif
                                                 @endif
                                             </td>
@@ -109,4 +113,3 @@
     </div>
 </div>
 <!--Modal: modalPush-->
-

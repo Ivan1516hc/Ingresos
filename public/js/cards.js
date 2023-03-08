@@ -65,6 +65,13 @@ function myCollapse(target) {
                 iconClass: 'fas fa-users',
                 iconColor: 'bg-success text-light',
                 title: 'USUARIOS'
+            },
+            grupos: {
+                profile_id: [1,2],
+                links: '/grupos',
+                iconClass: 'fas fa-users',
+                iconColor: 'bg-success text-light',
+                title: 'GRUPOS'
             }
         },
         reportes: {
