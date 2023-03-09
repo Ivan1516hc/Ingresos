@@ -40,6 +40,7 @@ class CancellationHistoryController extends Controller
     {
         $cancellationHistory = new CancellationHistory();
         return view('cancellation-history.create', compact('cancellationHistory'));
+        
     }
 
     /**

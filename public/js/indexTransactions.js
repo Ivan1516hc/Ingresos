@@ -18,8 +18,8 @@ function cancelar(data) {
         })
 }
 
-function sendRequestCancel(id) {
-    axios.get('http://127.0.0.1:8000/mov/request-cancel/' + id)
+function sendRequestCancel(data){
+    axios.post('http://127.0.0.1:8000/mov/request-cancel',data)
         .then(response => {
             location.reload();
         })

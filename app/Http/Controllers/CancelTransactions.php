@@ -54,6 +54,7 @@ class CancelTransactions extends Controller
                 'authorized_user_id'  => $user->id,
             ]);
             Transaction::find($id)->update(['status' => 3]);
+            
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();

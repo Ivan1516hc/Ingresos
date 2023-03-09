@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\cancelTransaction;
 use App\Models\CancellationHistory;
 use App\Models\PartialPayment;
 use App\Models\PartialPaymentsTransaction;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class TransactionController
@@ -53,21 +55,22 @@ class TransactionController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * $transactions->perPage());
     }
 
-    public function ticket($invoice){
+    public function ticket($invoice)
+    {
         $user = Auth::user();
         $model = Transaction::query();
         ($user->profile_id == 3 ? $model->where('user_id', $user->id) : null);
         ($user->profile_id == 2 ? $model->where('location_id', $user->location_id) : null);
-        $transaction = $model->where('invoice',$invoice)->first();
-        if($transaction == null){
+        $transaction = $model->where('invoice', $invoice)->first();
+        if ($transaction == null) {
             return;
         }
-        $service_transaction = ServicesTransaction::where('transaction_id',$invoice)->get();
-        $therapist = TherapistsTransaction::where('transaction_id',$invoice)->first();
-        $promoter = PromotersTransaction::where('transaction_id',$invoice)->first();
-        $partial = PartialPaymentsTransaction::where('transaction_id',$invoice)->first();
-        $transaction['numberToWord']=$this->convertNumberToWords($transaction->total);
-        return view('transaction.ticket',compact('transaction','service_transaction','therapist','promoter','partial'));
+        $service_transaction = ServicesTransaction::where('transaction_id', $invoice)->get();
+        $therapist = TherapistsTransaction::where('transaction_id', $invoice)->first();
+        $promoter = PromotersTransaction::where('transaction_id', $invoice)->first();
+        $partial = PartialPaymentsTransaction::where('transaction_id', $invoice)->first();
+        $transaction['numberToWord'] = $this->convertNumberToWords($transaction->total);
+        return view('transaction.ticket', compact('transaction', 'service_transaction', 'therapist', 'promoter', 'partial'));
     }
 
     /**
@@ -169,20 +172,20 @@ class TransactionController extends Controller
                 ]);
             }
             if (isset($request->therapists)) {
-                $data=TherapistsTransaction::create([
+                $data = TherapistsTransaction::create([
                     'therapist_id' => $request->therapists,
                     'transaction_id' => $folio
                 ]);
             }
             if (isset($request->promoters)) {
-                $data=PromotersTransaction::create([
+                $data = PromotersTransaction::create([
                     'promoter_id' => $request->promoters,
                     'transaction_id' => $folio
                 ]);
             }
 
             DB::commit();
-            return redirect('/ticket/'.$folio);
+            return redirect('/ticket/' . $folio);
 
             // return redirect()->route('transactions.index')
             //     ->with('success', 'Movimiento registrado');
@@ -240,12 +243,14 @@ class TransactionController extends Controller
                     'status' => 2
                 ]);
                 Transaction::find($request->id)->update(['status' => 2]);
+                //The email sending is done using the to method on the Mail facade
+                Mail::to('bihernandez@difzapopan.gob.mx')->send(new cancelTransaction($transaction));
                 DB::commit();
                 return back()->with('success', 'Petición de Cancelado Mandada.');
             }
             if ($transaction->status == 2) {
                 Transaction::find($request->id)->update(['status' => 1]);
-                CancellationHistory::where('transaction_id',$transaction->invoice)->update(['status' => 3]);
+                CancellationHistory::where('transaction_id', $transaction->invoice)->update(['status' => 3]);
                 DB::commit();
                 return back()->with('success', 'Petición de Cancelado Cancelada.');
             }
@@ -255,42 +260,43 @@ class TransactionController extends Controller
         }
     }
 
-    function convertNumberToWords(float $number) {
+    function convertNumberToWords(float $number)
+    {
         $number = number_format($number, 2, '.', '');
         $decimalPart = intval(substr($number, -2));
         $integerPart = intval(substr($number, 0, -3));
-        
-        $units = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve','veinte','veintiuno','veintidos','veintitres','veinticuatro','veinticinco','veintiseis','veintisiete','veintiocho','veintinueve'];
-        $tens = ['', '','veinte' ,'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
+
+        $units = ['', 'uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez', 'once', 'doce', 'trece', 'catorce', 'quince', 'dieciséis', 'diecisiete', 'dieciocho', 'diecinueve', 'veinte', 'veintiuno', 'veintidos', 'veintitres', 'veinticuatro', 'veinticinco', 'veintiseis', 'veintisiete', 'veintiocho', 'veintinueve'];
+        $tens = ['', '', 'veinte', 'treinta', 'cuarenta', 'cincuenta', 'sesenta', 'setenta', 'ochenta', 'noventa'];
         $hundreds = ['', 'ciento', 'doscientos', 'trescientos', 'cuatrocientos', 'quinientos', 'seiscientos', 'setecientos', 'ochocientos', 'novecientos'];
-        
+
         if ($integerPart == 0) {
             $result = 'cero';
         } else {
             $thousands = ['', 'mil', 'millones', 'mil millones', 'billones', 'mil billones'];
             $groupCount = 0;
             $result = '';
-            
+
             do {
                 $group = $integerPart % 1000;
                 $integerPart = intdiv($integerPart, 1000);
-                
+
                 if ($group != 0) {
                     $groupString = '';
-                    
+
                     if ($group >= 100) {
                         $groupString .= $hundreds[intdiv($group, 100)] . ' ';
                         $group %= 100;
                     }
-                    
+
                     if ($group >= 30) {
                         $groupString .= $tens[intdiv($group, 10)];
-                        if(($group % 10) != 0){
-                            $groupString .=' Y ';
+                        if (($group % 10) != 0) {
+                            $groupString .= ' Y ';
                         }
                         $group %= 10;
                     }
-                    
+
                     if ($group > 0) {
                         if ($group == 1 && $groupCount == 1) {
                             $groupString .= '';
@@ -298,11 +304,11 @@ class TransactionController extends Controller
                             $groupString .= $units[$group] . ' ';
                         }
                     }
-                    
+
                     $groupString .= $thousands[$groupCount] . ' ';
                     $result = $groupString . $result;
                 }
-                
+
                 $groupCount++;
             } while ($integerPart > 0);
         }
@@ -310,8 +316,7 @@ class TransactionController extends Controller
         if ($decimalPart > 0) {
             $result .= 'con ' . $decimalPart . '/100 CENTAVOS';
         }
-        
+
         return ucfirst(trim($result));
     }
-    
 }

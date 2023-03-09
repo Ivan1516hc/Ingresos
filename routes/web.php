@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Mail\cancelTransaction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +27,8 @@ Route::get('import4', [App\Http\Controllers\datosController::class, 'import4']);
 Route::post('/login-username', [LoginController::class, 'postLogin']);
 
 
-Route::middleware('auth'
+Route::middleware(
+    'auth'
 )->group(function () {
     Route::get('/', function () {
         return view('opcionMenu.opcion');
@@ -46,9 +49,9 @@ Route::middleware('auth'
 
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);
     Route::get('servicios-no-vinculantes', [App\Http\Controllers\ServiceController::class, 'getServicesNotbilding']);
-    
-    Route::get('/mov/{id}', [App\Http\Controllers\TransactionController::class, 'cancel']);
-    Route::get('/mov/request-cancel/{id}', [App\Http\Controllers\TransactionController::class, 'requestCancel']);
+
+    Route::post('/mov', [App\Http\Controllers\TransactionController::class, 'cancel']);
+    Route::post('/mov/request-cancel', [App\Http\Controllers\TransactionController::class, 'requestCancel']);
 
     Route::get('/partial/{id}', [App\Http\Controllers\PartialPaymentController::class, 'abono']);
     Route::get('/partial/cancel/{id}', [App\Http\Controllers\PartialPaymentController::class, 'requestCancel']);
@@ -58,11 +61,10 @@ Route::middleware('auth'
 
     Route::get('getpromoters', [App\Http\Controllers\PromoterController::class, 'getPromoters']);
 
-    Route::get('/ticket/{invoice}', [App\Http\Controllers\TransactionController::class,'ticket']);
-    
-    Route::get('logout', function() {
+    Route::get('/ticket/{invoice}', [App\Http\Controllers\TransactionController::class, 'ticket']);
+
+    Route::get('logout', function () {
         Auth::logout();
         return redirect('/login');
     });
-
 });
