@@ -50,7 +50,7 @@ Route::middleware(
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);
     Route::get('servicios-no-vinculantes', [App\Http\Controllers\ServiceController::class, 'getServicesNotbilding']);
 
-    Route::post('/mov', [App\Http\Controllers\TransactionController::class, 'cancel']);
+    Route::post('/mov', [App\Http\Controllers\CancelTransactions::class, 'cancelJD']);
     Route::post('/mov/request-cancel', [App\Http\Controllers\TransactionController::class, 'requestCancel']);
 
     Route::get('/partial/{id}', [App\Http\Controllers\PartialPaymentController::class, 'abono']);

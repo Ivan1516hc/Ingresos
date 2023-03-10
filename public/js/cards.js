@@ -9,7 +9,7 @@ function myCollapse(target) {
     let cardData = {
         caja: {
             cobros: {
-                profile_id: [2, 3],
+                profile_id: [3],
                 links: '/movimientos/create',
                 iconClass: 'fas fa-wallet',
                 iconColor: 'bg-primary text-light',
@@ -67,7 +67,7 @@ function myCollapse(target) {
                 title: 'USUARIOS'
             },
             grupos: {
-                profile_id: [1,2],
+                profile_id: [1, 2],
                 links: '/grupos',
                 iconClass: 'fas fa-users',
                 iconColor: 'bg-success text-light',

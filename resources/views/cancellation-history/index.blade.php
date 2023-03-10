@@ -33,7 +33,7 @@
                                         <th>Movimiento</th>
                                         <th>Usuario</th>
                                         <th>Autorización</th>
-                                        <th>Razón</th>
+                                        <th>Motivo</th>
 
                                         <th></th>
                                     </tr>

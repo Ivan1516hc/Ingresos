@@ -208,27 +208,6 @@ class TransactionController extends Controller
         return view('transaction.show', compact('transaction'));
     }
 
-    public function cancel(Request $request)
-    {
-        $user = Auth::user();
-        try {
-            $transaction = Transaction::find($request->id);
-            CancellationHistory::create([
-                'transaction_id' => $transaction->invoice,
-                'user_id' => $transaction->user_id,
-                'authorized_user_id'  => $user->id,
-                'reason' => $request->reason,
-                'status' => 1
-            ]);
-            Transaction::find($request->id)->update(['status' => 3]);
-            DB::commit();
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            return back()->with('success', $th->getMessage());
-        }
-        return back()->with('success', 'Movimiento Cancelado.');
-    }
-
     public function requestCancel(Request $request)
     {
         $user = Auth::user();
@@ -238,13 +217,12 @@ class TransactionController extends Controller
                 CancellationHistory::create([
                     'transaction_id' => $transaction->invoice,
                     'user_id' => $transaction->user_id,
-                    'authorized_user_id'  => $user->id,
                     'reason' => $request->reason,
                     'status' => 2
                 ]);
                 Transaction::find($request->id)->update(['status' => 2]);
                 //The email sending is done using the to method on the Mail facade
-                Mail::to('bihernandez@difzapopan.gob.mx')->send(new cancelTransaction($transaction));
+                Mail::to('bihernandez@difzapopan.gob.mx')->send(new cancelTransaction($transaction,$request->reason));
                 DB::commit();
                 return back()->with('success', 'Petición de Cancelado Mandada.');
             }

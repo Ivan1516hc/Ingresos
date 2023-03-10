@@ -63,7 +63,20 @@
                                                             class="la la-fw la-eye icon-button"></i> Ver</a>
                                                     @csrf
                                                 </form>
-                                                @if ($user->profile_id == 3 || $user->profile_id == 2)
+                                                @if ($user->profile_id == 3 && $transaction->created_at->isToday())
+                                                    @if ($transaction->status == 1)
+                                                        <button onclick="modal({{ $transaction }})"
+                                                            class="btn btn-md bg-secondary text-light">
+                                                            <i class="la la-edit icon-button"></i> Solicitar Cencelación
+                                                        </button>
+                                                    @elseif ($transaction->status == 2)
+                                                        <button onclick="modal({{ $transaction }})"
+                                                            class="btn btn-md bg-dark text-light">
+                                                            <i class="la la-edit icon-button"></i> Cancelar Solicitud
+                                                        </button>
+                                                    @endif
+                                                @endif
+                                                {{-- @if ($user->profile_id == 3 || $user->profile_id == 2)
                                                     @if ($transaction->created_at->isToday())
                                                         <button onclick="modal({{ $transaction}})"
                                                             class="btn btn-md btn-danger">
@@ -87,7 +100,7 @@
                                                             </button>
                                                         @endif
                                                     @endif
-                                                @endif
+                                                @endif --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -102,10 +115,9 @@
     </div>
 @endsection
 
-<script src="../../js/indexTransactions.js"></script>
 
-<div class="modal fade centerModal" id="modalCancel" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade centerModal" id="modalCancel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-notify modal-info" role="document">
         <!--Content-->
         <div class="modal-content text-center">
@@ -115,12 +127,12 @@
             </div>
             <!--Body-->
             <div class="modal-body row">
-                <label for="recipient-name" class="col-form-label">Razón: </label>
-                <input class="form-control" id="reason" name="reason">
+                <label for="recipient-name" class="col-form-label">Motivo de cancelación: </label>
+                <input class="form-control" id="reason" name="reason" required>
             </div>
             <!--Footer-->
             <div class="modal-footer flex-center align-self-center">
-                <button type="button" id="btn-cancelar" class="btn btn-primary">Cancelar/Solicitar cancelación</button>
+                <button type="button"  id="btnCancel" class="btn btn-primary">Solicitar cancelación</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
@@ -128,3 +140,5 @@
     </div>
 </div>
 <!--Modal: modalPush-->
+
+<script src="../../js/indexTransactions.js"></script>

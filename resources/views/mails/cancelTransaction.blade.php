@@ -25,7 +25,7 @@
             display: block;
             width: 200px;
             height: 25px;
-            background: #418296;
+            background: #add8e5;
             padding: 10px;
             text-align: center;
             border-radius: 5px;
@@ -44,15 +44,13 @@
             <strong>{{ $new_date }}</strong> recuerda que tienes 3 dias desde la creción del movimiento para aprobar
             la cancelación.
         </p>
-        @if ($transaction->reason)
-            <p>La razón de la solicitud de cancelacion es: <strong>{{ $transaction->reason }}</strong></p>
-        @endif
+        <p>El motivo de cancelacion es: <strong>{{ $reason }}.</strong></p>
 
         <p>Folio: <strong>{{ $transaction->invoice }}</strong><br>
             Id beneficiario: <strong>{{ $transaction->beneficiary_id }}</strong><br>
             Nombre beneficiario: <strong>{{ $transaction->beneficiary_name }}</strong><br>
             Centro: <strong>{{ $transaction->location->name }}</strong><br>
-            Total: <strong>{{ $transaction->total }}</strong><br></p>
+            Total: <strong>${{ $transaction->total }}</strong><br></p>
         <a target="_blank" href="http://127.0.0.1:8000/cancelaciones"> Ver Solicitudes de Cancelación</a>
         <div>
             <img src="https://situaciondecalle.difzapopan.gob.mx/assets/images/Logo_DIF.png" width="150px"

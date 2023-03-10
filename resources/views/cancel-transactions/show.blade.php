@@ -26,7 +26,7 @@
                         </div>
                         <div class="form-group">
                             <strong>Total:</strong>
-                            {{ $transaction->total }}
+                            $ {{ $transaction->total }}
                         </div>
                         <div class="form-group">
                             <strong>Id Beneficiario:</strong>
@@ -45,8 +45,8 @@
                             {{ $transaction->user->name }}
                         </div>
                         <div class="form-group">
-                            <strong>Status:</strong>
-                            {{ $transaction->status }}
+                            <strong>Estado:</strong>
+                            {{ $transaction->status==1 ? 'ACTIVO' : ($transaction->status==2 ? 'PENDIENTE' : 'CANCELADO')}}
                         </div>
                     </div>
                 </div>

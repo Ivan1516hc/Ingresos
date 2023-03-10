@@ -18,7 +18,7 @@ class cancelTransaction extends Mailable
      *
      * @return void
      */
-    public function __construct(private $transaction)
+    public function __construct(private $transaction, private $reason)
     {
         //
     }
@@ -44,7 +44,7 @@ class cancelTransaction extends Mailable
     {
         return new Content(
             view: 'mails.cancelTransaction',
-            with: ['transaction'=>$this->transaction]
+            with: ['transaction'=>$this->transaction, 'reason' => $this->reason]
         );
     }
 

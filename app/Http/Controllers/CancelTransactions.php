@@ -18,10 +18,13 @@ class CancelTransactions extends Controller
     public function index()
     {
         $user = Auth::user();
-        $model = Transaction::query();
-        ($user->profile_id == 1 ? $model->where('created_at', '>=', now()->subMonth(1)) : ($user->profile_id == 2 ? $model->where('location_id', $user->location_id)->where('created_at', '>=', now()->subDays(3)) : null));
+        $model = CancellationHistory::query();
+        ($user->profile_id == 1 ? $model->where('created_at', '>=', now()->subMonth(1)) 
+        : ($user->profile_id == 2 ? $model->whereHas('user.location', function ($query) use ($user) {
+                return $query->where('manager_id', $user->id);
+            }) : null));
 
-        $transactions = $model->orderBy('id', 'desc')->where('status', 2)->paginate();
+        $transactions = $model->orderBy('id', 'desc')->paginate();
 
         return view('cancel-transactions.index', compact('transactions'))
             ->with('i', (request()->input('page', 1) - 1) * $transactions->perPage());
@@ -40,21 +43,12 @@ class CancelTransactions extends Controller
         return view('cancel-transactions.show', compact('transaction'));
     }
 
-    public function cancelJD($id)
+    public function cancelJD(Request $request)
     {
         $user = Auth::user();
-        // if($user->profile_id !== 2){
-        //     return;
-        // }
         try {
-            $transaction = Transaction::find($id);
-            CancellationHistory::create([
-                'transaction_id' => $transaction->invoice,
-                'user_id' => $transaction->user_id,
-                'authorized_user_id'  => $user->id,
-            ]);
-            Transaction::find($id)->update(['status' => 3]);
-            
+            CancellationHistory::find($request->id)->update(['status'=>1,'authorized_user_id'=>$user->id]);
+            Transaction::where('invoice',$request->transaction_id)->update(['status' => 3]);
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();

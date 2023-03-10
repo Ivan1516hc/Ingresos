@@ -54,12 +54,14 @@
                                             <td>$ {{ $partialPayment->service->cost }}</td>
                                             <td>{{ $partialPayment->status == 1 ? 'Adeudo' : 'Pagado' }}</td>
                                             <td>
-                                                @if ($user->profile_id == 3 || $user->profile_id == 2)
+                                                @if ($user->profile_id == 3 && $partialPayment->status == 1)
+                                                    <button onclick="modal({{ $partialPayment }})"
+                                                        class="btn btn-md btn-primary">
+                                                        <i class="la la-box icon-button"></i> Abonar
+                                                    </button>
+                                                @endif
+                                                @if ($user->profile_id == 2)
                                                     @if ($partialPayment->status == 1)
-                                                        <button onclick="modal({{ $partialPayment }})"
-                                                            class="btn btn-md btn-primary">
-                                                            <i class="la la-box icon-button"></i> Abonar
-                                                        </button>
                                                         <button onclick="cancel({{ $partialPayment->id }})"
                                                             class="btn btn-md btn-danger">
                                                             <i class="la la-box icon-button"></i> Terminar

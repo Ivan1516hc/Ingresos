@@ -36,7 +36,7 @@ class CancellationHistory extends Model
      *
      * @var array
      */
-    protected $fillable = ['transaction_id','user_id','authorized_user_id','reason'];
+    protected $fillable = ['transaction_id','user_id','authorized_user_id','reason','status'];
 
 
     /**
