@@ -22,40 +22,13 @@ class ReprintHistoryController extends Controller
         $user = Auth::user();
         $model = ReprintHistory::query();
         ($user->profile_id == 3 ? $model->where('user_id', $user->id) : null);
-        ($user->profile_id == 2 ? $model->whereHas('user', function ($query) use($user){
-            return  $query->where('location_id',$user->location_id);
+        ($user->profile_id == 2 ? $model->whereHas('user', function ($query) use ($user) {
+            return  $query->where('location_id', $user->location_id);
         }) : null);
-        $reprintHistories = $model->orderBy('id','desc')->paginate();
+        $reprintHistories = $model->orderBy('id', 'desc')->paginate();
 
         return view('reprint-history.index', compact('reprintHistories'))
             ->with('i', (request()->input('page', 1) - 1) * $reprintHistories->perPage());
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $reprintHistory = new ReprintHistory();
-        return view('reprint-history.create', compact('reprintHistory'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        request()->validate(ReprintHistory::$rules);
-
-        $reprintHistory = ReprintHistory::create($request->all());
-
-        return redirect()->route('reprint-histories.index')
-            ->with('success', 'ReprintHistory created successfully.');
     }
 
     /**
@@ -112,5 +85,14 @@ class ReprintHistoryController extends Controller
 
         return redirect()->route('reprint-histories.index')
             ->with('success', 'ReprintHistory deleted successfully');
+    }
+
+    public function reprint(Request $request)
+    {
+        $user = Auth::user();
+        $data['user_id'] = $user->id;
+        $data['transaction_id'] = $request->invoice;
+        ReprintHistory::create($data);
+        return response()->json($data);
     }
 }

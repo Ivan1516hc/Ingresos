@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @php
     use Carbon\Carbon;
     $user = Auth::user();
@@ -24,7 +25,48 @@
                             <p>{{ $message }}</p>
                         </div>
                     @endif
-                    <div class="card-body">
+                    <div class="container">
+                        <form>
+                            <div class="row">
+                                <div class="col-4">
+                                    <p class="text-left">FILTROS DE BUSQUEDA:</p>
+                                    <select class="form-control" id="selectAccion">
+                                        <option value="TODOS">Todos</option>
+                                        <option value="transactions:invoice">Folio</option>
+                                        <option value="transactions:benefiriary_id">Id beneficiario</option>
+                                        <option value="transactions:beneficiary_name">Nombre beneficiario</option>
+                                        <option value="transactions:status">Estado</option>
+                                        <option value="transactions:created_at">Fecha</option>
+                                    </select>
+                                </div>
+                                <div id="invoice" class="offset-2 col-5 d-none accion">
+                                    <label>Folio:</label>
+                                    <input type="text" name="search" class="form-control">
+                                </div>
+                                <div id="benefiriary_id" class="col-9 col-md-6 col-lg-5 d-none accion">
+                                    <label>Id beneficiario:</label>
+                                    <input type="text" name="search" class="form-control">
+                                </div>
+                                <div id="beneficiary_name" class="col-9 col-md-6 col-lg-5 d-none accion">
+                                    <label>Nombre beneficiario:</label>
+                                    <input type="text" name="search" class="form-control">
+                                </div>
+                                <div id="status" class="col-9 col-md-6 col-lg-5 d-none accion">
+                                    <label>Estado:</label>
+                                    <select class="form-control" name="search" id="singleselect">
+                                        <option value=1>Activo</option>
+                                        <option value=2>Pendiente</option>
+                                        <option value=3>Cancelado</option>
+                                    </select>
+                                </div>
+                                <div id="created_at" class="col-9 col-md-6 col-lg-5 d-none accion">
+                                    <label>Fecha: </label>
+                                    <input type="date" name="search" class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body mt-3">
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead class="thead">
@@ -132,7 +174,7 @@
             </div>
             <!--Footer-->
             <div class="modal-footer flex-center align-self-center">
-                <button type="button"  id="btnCancel" class="btn btn-primary">Solicitar cancelación</button>
+                <button type="button" id="btnCancel" class="btn btn-primary">Solicitar cancelación</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
             </div>
         </div>

@@ -32,7 +32,7 @@ function myCollapse(target) {
         },
         catalogos: {
             servicios: {
-                profile_id: [1, 2, 3],
+                profile_id: [1, 2],
                 links: '/servicios',
                 iconClass: 'fas fa-chalkboard-teacher',
                 iconColor: 'bg-success text-light',

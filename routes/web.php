@@ -35,7 +35,7 @@ Route::middleware(
     });
     Route::resource('/usuarios', App\Http\Controllers\UserController::class, ['names' => 'users'])->middleware('role:1');
     Route::resource('/movimientos', App\Http\Controllers\TransactionController::class, ['names' => 'transactions'])->middleware('role:1,2,3');
-    Route::resource('/servicios', App\Http\Controllers\ServiceController::class, ['names' => 'services'])->middleware('role:1,2,3');
+    Route::resource('/servicios', App\Http\Controllers\ServiceController::class, ['names' => 'services'])->middleware('role:1,2');
     Route::resource('/comunidades', App\Http\Controllers\CommunityController::class, ['names' => 'communities'])->middleware('role:2,3');
     Route::resource('/historial-cancelacion', App\Http\Controllers\CancellationHistoryController::class, ['names' => 'cancellation-histories'])->middleware('role:1,2,3,5');
     Route::resource('/grupos', App\Http\Controllers\GroupController::class, ['names' => 'groups'])->middleware('role:1,2');
@@ -46,6 +46,8 @@ Route::middleware(
     Route::resource('/terapeutas', App\Http\Controllers\TherapistController::class, ['names' => 'therapists'])->middleware('role:1,2,3');
     Route::resource('/cancelaciones', App\Http\Controllers\CancelTransactions::class, ['names' => 'cancel-transactions'])->middleware('role:1,2,5');
     // Route::resource('/comunidades/{nombre}',App\Http\Controllers\BeneficiariesCommunityController::class,['names' => '']);
+
+    Route::post('/reprint', [App\Http\Controllers\ReprintHistoryController::class, 'reprint']);
 
     Route::get('servicios-usuario', [App\Http\Controllers\ServiceController::class, 'getServicesUser']);
     Route::get('servicios-no-vinculantes', [App\Http\Controllers\ServiceController::class, 'getServicesNotbilding']);
@@ -62,6 +64,10 @@ Route::middleware(
     Route::get('getpromoters', [App\Http\Controllers\PromoterController::class, 'getPromoters']);
 
     Route::get('/ticket/{invoice}', [App\Http\Controllers\TransactionController::class, 'ticket']);
+
+    Route::post('/report/day', [App\Http\Controllers\ReportController::class, 'dayReports']);
+    Route::post('/report/location', [App\Http\Controllers\ReportController::class, 'locationReports']);
+    Route::post('/search/table/transaction', [App\Http\Controllers\SearchTableController::class, 'searchTransaction']);
 
     Route::get('logout', function () {
         Auth::logout();
